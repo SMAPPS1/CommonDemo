@@ -1,0 +1,166 @@
+<!-- <div class="collapse navbar-collapse justify-content-end" id="navigation" *ngIf="isLoggedIn$ | async">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" (click)="hideseachbox()" href="javascript:void(0)" [routerLink]="['/dashboard']" routerLinkActive="active">
+            Home
+        </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" (click)="hideseachbox1()" href="javascript:void(0)" [routerLink]="['/purchaseOrdersList']" routerLinkActive="active">
+            Purchase orders
+            <span class="imgWithNotification__div" *ngIf="poItemCount != undefined">{{poItemCount}}</span>
+   
+        </a>
+        </li>
+        
+
+        <li class="nav-item">
+            <a class="nav-link"  href="javascript:void(0)" (click)="submitInvoicePopup()" routerLinkActive="active">
+            Submit Invoices
+        </a>
+        </li>
+         <li class="nav-item">
+         <a class="nav-link" href="javascript:void(0)" [routerLink]="['/InvalidInvoices']" routerLinkActive="active">Invalid Invoices
+            <span class="imgWithNotification__div" *ngIf="InvoiceItemCount != 0">{{InvoiceItemCount}}</span>
+        </a>
+         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" (click)="hideseachbox2()" href="javascript:void(0)" [routerLink]="['/trackInvoiceList']" routerLinkActive="active">
+            Track Invoices
+        </a>
+        </li>
+    </ul>
+</div> -->
+
+<div *ngIf="isLoggedIn$ | async" [@slideInOut]="isSidebarOpen ? 'open' : 'closed'" class="sidebar">
+    <ul class="sidebarList navbar-nav">
+        <div>
+            <!-- <li class="listItem nav-item">
+                <div class="list nav-link" (click)="hideseachbox();closeSidebar()" href="javascript:void(0)" [routerLink]="['/dashboard']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/home-sidebar.png" alt="">
+                    <div class="sidebarTitle">Home</div>
+                </div>
+            </li> -->
+            <li class="listItem nav-item">
+                <div class="list nav-link" (click)="hideseachbox1();closeSidebar()" href="javascript:void(0)" [routerLink]="['/purchaseOrdersList']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/purchase-order.png" alt="">
+                    <div class="sidebarTitle">Purchase Orders</div>
+                </div>
+            </li>
+            <li class="listItem nav-item">
+                <div class="list nav-link" href="javascript:void(0)" (click)="submitInvoicePopup();closeSidebar()" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/submit-invoice-sidebar.png" alt="">
+                    <div class="sidebarTitle">Submit Invoice</div>
+                </div>
+            </li>
+            <li class="listItem nav-item">
+                <div class="list nav-link" href="javascript:void(0)" (click)="closeSidebar()" [routerLink]="['/InvalidInvoices']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/invalid-invoices-sidebar.png" alt="">
+                    <div class="sidebarTitle">Invalid Invoices <span class="imgWithNotification__div" *ngIf="InvoiceItemCount != 0">{{InvoiceItemCount}}</span></div>
+                </div>
+            </li>
+            <li class="listItem nav-item">
+                <div class="list nav-link"  (click)="hideseachbox2();closeSidebar()" href="javascript:void(0)" [routerLink]="['/trackInvoiceList']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/track-invoices-sidebar.png" alt="">
+                    <div class="sidebarTitle">Track Invoices</div>
+                </div>
+            </li>
+       
+            <!-- <li class="listItem nav-item">
+                <div class="list nav-link" (click)="closeSidebar()">
+                    <img class="sidebarIcon" src="./assets/img/purchase-order.png" alt="">
+                    <div class="sidebarTitle">FAQ</div>
+                </div>
+            </li> -->
+        </div>
+        <div>
+            <li class="listItem nav-item">
+                <div class="list nav-link" (click)="logOut()">
+                    <img class="sidebarIcon" src="./assets/img/logout-sidebar.png" alt="">
+                    <div class="sidebarTitle">Logout</div>
+                </div>
+            </li>
+        </div>        
+    </ul>
+</div>
+
+ <!-- ----------------------------------------------internal portal start --------------------------------- -->
+
+<div *ngIf="(isLoggedIn$ | async) && sidebarVendor == false" [@slideInOut]="isSidebarOpen ? 'open' : 'closed'" class="sidebar">
+    <ul class="sidebarList navbar-nav">
+        <div>
+            <li class="listItem nav-item" *ngIf="ispayee || functionaldirector && hideNavbar == true">
+                <div class="list nav-link" (click)="closeSidebar()" href="javascript:void(0)" [routerLink]="['/admindashboard']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/home-sidebar.png" alt="">
+                    <div class="sidebarTitle">Dashboard</div>
+                </div>
+            </li>
+            <li class="listItem nav-item" *ngIf ="type == 'payerportal' && hideNavbar == true">
+                <div class="list nav-link" (click)="closeSidebar()" href="javascript:void(0)" [routerLink]="['/internalportal']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/adv-search-sidebar.png" alt="">
+                    <div class="sidebarTitle">Adv Search</div>
+                </div>
+            </li>
+            <li class="listItem nav-item" *ngIf="!internalbcclportal || ispayee   && hideNavbar == false">
+                <div class="list nav-link" href="javascript:void(0)" (click)="TrackPO();closeSidebar()" [routerLink]="['/internalTrackPO']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/purchase-order.png" alt="">
+                    <div class="sidebarTitle">Purchase Orders <span class="imgWithNotification__div" *ngIf="poItemCount1 != undefined">{{poItemCount1}}</span></div>
+                </div>
+            </li>
+            <li class="listItem nav-item" *ngIf="!internalbcclportal || ispayee  && hideNavbar == false">
+                <div class="list nav-link" href="javascript:void(0)" (click)="closeSidebar()" [routerLink]="['/internalinvoicelist']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/track-invoices-sidebar.png" alt="">
+                    <div class="sidebarTitle">View Invoices</div>
+                </div>
+            </li>            
+            <li class="listItem nav-item" *ngIf="internalbcclportal  && hideNavbar == false">
+                <div class="list nav-link"  (click)="closeSidebar()" href="javascript:void(0)" [routerLink]="['/internalTrackPO']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/purchase-order.png" alt="">
+                    <div class="sidebarTitle">Purchase Orders</div>
+                </div>
+            </li>
+            <li class="listItem nav-item" *ngIf="!functionaldirector">
+                <div class="list nav-link" (click)="closeSidebar()" href="javascript:void(0)" [routerLink]="['/InternalInvalidInvoice']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/invalid-invoices-sidebar.png" alt="">
+                    <div class="sidebarTitle">Invalid Invoices <span class="imgWithNotification__div" *ngIf="InvoiceItemCountinvalid != 0">{{InvoiceItemCountinvalid}}</span></div>
+                </div>
+            </li>
+
+            <li class="listItem nav-item" *ngIf="internalbcclportal  && hideNavbar == false">
+                <div class="list nav-link" (click)="closeSidebar()" [routerLink]="['/internalinvoicelist']" href="javascript:void(0)">
+                    <img class="sidebarIcon" src="./assets/img/track-invoices-sidebar.png" alt="">
+                    <div class="sidebarTitle">View Invoices</div>
+                </div>
+            </li>
+            <li class="listItem nav-item">
+                <div class="list nav-link" (click)="closeSidebar()" href="javascript:void(0)" [routerLink]="['/internaltrackInvoiceList']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/submit-invoice-sidebar.png" alt="">
+                    <div class="sidebarTitle">Approve Invoices</div>
+                </div>
+            </li>
+            <li class="listItem nav-item">
+                <div class="list nav-link" (click)="closeSidebar()" href="javascript:void(0)" [routerLink]="['/NewRegistration']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/submit-invoice-sidebar.png" alt="">
+                    <div class="sidebarTitle">New Partner Registration</div>
+                </div>
+            </li>
+            <li class="listItem nav-item">
+                <div class="list nav-link" (click)="closeSidebar()" href="javascript:void(0)" [routerLink]="['/ViewRegistration']" routerLinkActive="active">
+                    <img class="sidebarIcon" src="./assets/img/submit-invoice-sidebar.png" alt="">
+                    <div class="sidebarTitle">Vendor Registration List</div>
+                </div>
+            </li>
+        </div>
+        <div>
+            <li class="listItem nav-item">
+                <div class="list nav-link" (click)="logOut()">
+                    <img class="sidebarIcon" src="./assets/img/logout-sidebar.png" alt="">
+                    <div class="sidebarTitle">Logout</div>
+                </div>
+            </li>
+        </div>        
+    </ul>
+</div>
+
+<app-dialog-model></app-dialog-model>

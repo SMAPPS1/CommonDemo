@@ -1,0 +1,1569 @@
+<div class="main-content my-4">
+  <div class="container dashboardpt">
+
+    <div class="">
+      <div class="form-wizard">
+        <div class="row" *ngIf="!showfeilds">
+    
+          <div class="col-md-12">
+            <div class="card card-form-wizard-list">
+              <div class="card-body form-wizard-list">
+                <div class="form-wizard-header">
+                  <ul class="list-unstyled form-wizard-steps clearfix">
+          
+                    <li data-id="step1" [class.active]="showfeilds1">
+                      <span class="pointer" *ngIf="!showfeilds1">
+                        <img src="./assets/img/general_data_icon_grey.png" />
+                      </span>
+                      <span class="pointer" *ngIf="showfeilds1">
+                        <img src="./assets/img/general_data_icon_red.png" />
+                      </span>
+                      <p class="text">General Data</p>
+                    </li>
+          
+                    <li data-id="step2" [class.active]="showCheque">
+                      <span class="pointer" *ngIf="!showCheque">
+                        <img src="./assets/img/bank_data_icon_grey.png" />
+                      </span>
+                      <span class="pointer" *ngIf="showCheque">
+                        <img src="./assets/img/bank_data_icon_red.png" />
+                      </span>
+                      <p class="text">Banking Data</p>
+                    </li>
+          
+                    <li data-id="step3" [class.active]="showGST">
+                      <span class="pointer" *ngIf="!showGST">
+                        <img src="./assets/img/business_data_icon_grey.png" />
+                      </span>
+                      <span class="pointer" *ngIf="showGST">
+                        <img src="./assets/img/business_data_icon_red.png" />
+                      </span>
+                      <p class="text">Business Data</p>
+                    </li>
+          
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="row">
+          <div class="col-md-12" style="padding: 0 !important;">
+            <div class="mainInvoiceTable mt-0">
+              <div class="tableTopHeader">
+                <div class="tableTopHeaderTitle" *ngIf="showfeilds">New Partner Registration</div>
+                <div class="tableTopHeaderTitle" *ngIf="showfeilds1">Personal Information</div>
+                <div class="tableTopHeaderTitle" *ngIf="showCheque">Banking Data</div>
+                <div class="tableTopHeaderTitle" *ngIf="showGST">Bussiness Data</div>
+                <div>
+                    Kindly fill in the mandatory fields to proceed on the Partner Registration.<sup class="imp">*</sup>
+                </div>
+            </div>
+            <div class="">
+              <form *ngIf="showfeilds" [formGroup]="UploadDocument">
+                  <div style="display: flex; flex-wrap: wrap; padding: 40px; gap: 35px; justify-content: space-between;">
+
+                      <div class="text-center submitUploadCard" style="width: 48%;">
+                          <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                              <div class="add-file-input">
+                                  <label for="input-file1" class="file-input submitUploadCardContent">
+                                      <div style="display: flex; gap: 10px; justify-content: center;">
+                                          <div class="submitUploadTitle">Upload PAN Card. <sup class="imp">*</sup></div>
+                                          <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                      </div>
+                                      
+                                      <span class="submitUploadDesc">(upto 4MB with no special characters)</span>
+                                  </label>
+                                  <input type="file" id="input-file1" class="d-none" accept="image/*"
+                                      formControlName="PANattachments" (change)="onFileSelectEvent($event,'PanCard')">
+  
+                              </div>
+                              <p class="imp" *ngIf="UploadDocument.controls?.PANattachments.touched && UploadDocument.controls.PANattachments.errors?.required">
+                                  Please upload Pan Card.
+                              </p>
+                              <div class="CloseDocument">
+                                  <p class="imp">{{pancardfilename}}</p>
+                                  <div *ngIf="pancardfilename!=null && pancardfilename!=''">
+                                      <i class="fa fa-close fileCrossIcon" aria-hidden="true" (click)="close('PAN')"></i>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+
+                     
+
+                      <div class="text-center submitUploadCard" style="width: 48%;">
+                          <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                              <div class="add-file-input">
+                                  <label for="input-file3" class="file-input submitUploadCardContent">
+                                      <div style="display: flex; gap: 10px;">
+                                          <div class="submitUploadTitle">Upload Cancel cheque / Bank statement. <sup class="imp">*</sup></div>
+                                          <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                      </div>
+                                      
+                                      <span class="submitUploadDesc">(upto 4MB with no special characters)</span>
+                                  </label>
+                                  <input type="file" id="input-file3" class="d-none" accept="image/*"
+                                      formControlName="ChequeAtt" (change)="onFileSelectEvent($event,'Cancelled')">
+  
+                              </div>
+                              <p class="imp"
+                                  *ngIf="UploadDocument.controls?.ChequeAtt.touched && UploadDocument.controls.ChequeAtt.errors?.required">
+                                  Please upload Cancel Cheque.</p>
+                                  <div class="CloseDocument"><p class="imp">{{cancelledCheque}}</p>
+                                      <div *ngIf="cancelledCheque!=null && cancelledCheque!=''">
+                                          <i class="fa fa-close fileCrossIcon" aria-hidden="true" (click)="close('')"></i></div>
+                              
+                              </div>
+                          </div>
+                      </div>
+              </div>
+              <!-- <P *ngIf="invalidflage"> Please Upload all the documents.</P> -->
+              <div class="buttonWrapper" *ngIf="TypeNo != 'reopen'">
+                  <div class="row">
+                      <div class="col-lg-12 text-center">
+                          <!-- || checkinputbalance() -->
+                          <button type="submit" class="btn submitButton" (click)="SubmitDocument()">
+                              Upload
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          </div>
+           <div class="row">
+                        <div class="col-md-12">
+                            <!-- <div class="card" id="jumptoWizard"> -->
+                            <div class="card-body pd-0">
+                              <form [formGroup]="formdetails">
+                                <div class="inv-form-inputs" style="width: 100% !important">
+                                  <div *ngIf="showfeilds1">
+                                    <div class="filedpd">
+                                      <div class="row">
+                                        <div class="form-group col-md-3">
+                                          <label for="title" class="submitInputLabel">Title</label>
+                                          <!-- <select
+                                            id="title"
+                                            class="form-control form-select noDataBase submitInputBox"
+                                            [matAutocomplete]="auto"
+                                            formControlName="Title"
+                                          >
+                                            <option value="" disabled>Select Title</option>
+                                            <option
+                                              *ngFor="let status of dropdownLists.title"
+                                              [value]="status?.value"
+                                            >
+                                              {{ status?.value }}
+                                            </option>
+                                          </select> -->
+                                          <ng-select
+    id="title"
+    class="form-control noDataBase submitInputBox"
+    [items]="dropdownLists.title"
+    bindLabel="value"
+    bindValue="value"
+    formControlName="Title"
+    [searchable]="true"
+    [clearable]="true"
+  >
+  </ng-select>
+                                        </div>
+                                    
+                                        
+                                        
+                                        <div class="form-group col-md-9">
+                                          <label class="submitInputLabel">Vendor Name (Line 1)</label>
+                                          <sup class="imp">*</sup>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="vendorName1"
+                                            maxlength="40"
+                                          />
+                                          <p
+                                          class="imp"
+                                            *ngIf="formdetails.controls.vendorName1.errors?.required"
+                                          >
+                                            Vendor Name is required.
+                                        </p>
+                                        </div>
+                                      </div>
+                                      
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Vendor Name (Line 2)</label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Plantcode"
+                                            placeholder="Type here.."
+                                            formControlName="vendorName2"
+                                            maxlength="40"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      
+                                        <div class="form-group col-md-6">
+                                          <label for="Infotech" class="submitInputLabel">PAN Number.</label>
+                                          <sup class="imp">*</sup>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required noDataBase submitInputBox"
+                                            id="Infotech"
+                                            
+                                            placeholder="Type here.."
+                                            formControlName="PanNumber"
+                                            maxlength="40"
+                                            (change)="checkPan()"
+                                            (input)="showGSTDocument()"
+
+                                            appUppercase
+                                          />
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.PanNumber?.touched && formdetails.controls.PanNumber.errors?.pattern "
+                                          >
+                                            Please enter valid Pan number.
+                                          </p>
+                                          <p
+                                          class="imp"
+                                            *ngIf="this.formdetails.controls.PanNumber?.touched && formdetails.controls.PanNumber.errors?.required"
+                                          >
+                                            PAN number is required.
+                                        </p>
+                                        <!-- <p
+  class="imp"
+  *ngIf="formdetails.controls.PanNumber?.touched && formdetails.controls.PanNumber.errors?.minlength"
+>
+  PAN number must be exactly 10 characters long.
+</p> -->
+
+<!-- Maxlength error -->
+<!-- <p
+  class="imp"
+  *ngIf="formdetails.controls.PanNumber?.touched && formdetails.controls.PanNumber.errors?.maxlength"
+>
+  PAN number cannot be more than 10 characters.
+</p> -->
+                                        </div>
+                                      </div>
+                                      
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Street (Line 1)</label>
+                                          <sup class="imp">*</sup>
+                                          <textarea
+                                            name="user-message"
+                                            id="user-message"
+                                            class="form-control wizard-required submitInputBox"
+                                            cols="2"
+                                            rows="1"
+                                            placeholder="Type here.."
+                                            formControlName="Street1"
+                                            maxlength="40"
+                                          ></textarea>
+                                          <p
+                                          class="imp"
+                                            *ngIf="formdetails.controls.Street1.errors?.required"
+                                          >
+                                            Steet 1 of your address is required.
+                                        </p>
+                                        </div>
+                                      
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Street (Line 2)</label>
+                                          <textarea
+                                            name="user-message"
+                                            id="user-message"
+                                            class="form-control wizard-required submitInputBox"
+                                            placeholder="Type here.."
+                                            cols="2"
+                                            rows="1"
+                                            formControlName="Street2"
+                                            maxlength="40"
+                                          ></textarea>
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div>
+                                      
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Street (Line 3)</label>
+                                          <textarea
+                                            name="user-message"
+                                            id="user-message"
+                                            class="form-control wizard-required submitInputBox"
+                                            placeholder="Type here.."
+                                            cols="2"
+                                            rows="1"
+                                            formControlName="Street3"
+                                            maxlength="40"
+                                          ></textarea>
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Street (Line 4)</label>
+                                          <textarea
+                                            name="user-message"
+                                            id="user-message"
+                                            class="form-control wizard-required submitInputBox"
+                                            placeholder="Type here.."
+                                            cols="2"
+                                            rows="1"
+                                            formControlName="Street4"
+                                            maxlength="40"
+                                          ></textarea>
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div>
+                                      
+                                      
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Postal Code </label>
+                                          <sup class="imp">*</sup>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            name="user-message"
+                                            id="user-message"
+                                            placeholder="Type here.."
+                                            formControlName="PinCode"
+                                            maxlength="6"
+                                            appOnlyNumbers
+                                          />
+                                          <!-- disabled -->
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.PinCode?.touched && formdetails.controls.PinCode.errors?.required "
+                                          >
+                                            postal Code is required.
+                                          </p>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.PinCode?.touched && formdetails.controls.PinCode.errors?.pattern "
+                                          >
+                                            Please enter valid postal code.
+                                          </p>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">City</label>
+                                          <sup class="imp">*</sup>
+                
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Plantcode"
+                                            name="city"
+                                            placeholder="Type here.."
+                                            formControlName="City"
+                                            maxlength="40"
+                                          />
+                                          <!-- disabled -->
+                                          <p
+                                            class="imp"
+                                            *ngIf="  this.formdetails.controls.City?.touched && formdetails.controls.City.errors?.required"
+                                          >
+                                            city name is required.
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <!-- <div class="form-group col-md-6">
+                                          <label>Country</label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required"
+                                            id="Infotech"
+                                            disabled
+                                            formControlName="countryKey"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div> -->
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Country</label>
+                                          <sup class="imp" *ngIf="!showregistrationFields">*</sup>
+                                          <!-- <select
+                                            id="countryKey"
+                                            class="form-control wizard-required submitInputBox"
+                                            formControlName="countryKey"
+                                            (change)="GetRegion($event, null)"
+                                          >
+                                          <option value="" disabled selected>Select Country</option>
+                
+                                            <option selected *ngFor="let status of dropdownLists['Countrykey']" [value]="status?.id">
+                                              {{ status?.value }}
+                                            </option>
+                                          </select> -->
+                                          <ng-select
+    id="countryKey"
+    class="form-control wizard-required submitInputBox"
+    [items]="dropdownLists['Countrykey']"
+    bindLabel="value"
+    bindValue="id"
+    formControlName="countryKey"
+    [searchable]="true"
+    [clearable]="true"
+    (change)="GetRegion($event, null)"
+    [ngClass]="{ 'ng-invalid': formdetails.controls['countryKey'].invalid && formdetails.controls['countryKey'].touched }"
+  >
+  </ng-select>
+                                          <div
+                                            *ngIf="
+                                              formdetails.controls['countryKey'].hasError('required') &&
+                                              formdetails.controls['countryKey'].touched
+                                            "
+                                            style="color: red;"
+                                          >
+                                            * Country is required
+                                          </div>
+                                        </div>
+                                        
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Region</label>
+                                          <sup class="imp" *ngIf="!showregistrationFields">*</sup>
+                                          <!-- <select
+                                            id="region"
+                                            class="form-control wizard-required submitInputBox"
+                                            formControlName="region"
+                                          >
+                                          <option value="" disabled selected>Select Region</option>
+                                            <option selected *ngFor="let status of Region" [value]="status?.id">
+                                              {{ status?.value }}
+                                            </option>
+                                          </select> -->
+                                          <ng-select
+    id="region"
+    class="form-control wizard-required submitInputBox"
+    [items]="Region"
+    bindLabel="value"
+    bindValue="id"
+    
+    formControlName="region"
+    [searchable]="true"
+    [clearable]="true"
+    [ngClass]="{ 'ng-invalid': formdetails.controls['region'].invalid && formdetails.controls['region'].touched }"
+  >
+  </ng-select>
+                                          <div
+                                            *ngIf="
+                                              formdetails.controls['region'].hasError('required') &&
+                                              formdetails.controls['region'].touched
+                                            "
+                                            style="color: red;"
+                                          >
+                                            * Region is required
+                                          </div>
+                                        </div>                 
+                                      </div>
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Telephone No.</label>
+                                          <!-- <sup class="imp">*</sup> -->
+                
+                                          <input
+                                            type="text" 
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="TelNo"
+                                            maxlength="10"
+                                          />
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.TelNo?.touched &&
+                                              formdetails.controls.TelNo.errors?.required
+                                            "
+                                          >
+                                            Telephone No. is required.
+                                          </p>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.TelNo?.touched &&
+                                              formdetails.controls.TelNo.errors?.pattern 
+                                               || this.formdetails.controls.TelNo?.touched && 
+                                               formdetails.controls.TelNo.errors?.minlength 
+                                              
+                                            "
+                                          >
+                                            Telephone number is not valid.
+                                          </p>
+                                          
+                
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Mobile No.</label>
+                                          <sup class="imp">*</sup>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Plantcode"
+                                            placeholder="Type here.."
+                                            formControlName="Mobile_No"
+                                          />
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.Mobile_No?.touched &&  
+                                            formdetails.controls.Mobile_No.errors?.required 
+                                               "
+                                          >
+                                            Mobile number is required.
+                                          </p>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.Mobile_No?.touched &&
+                                              formdetails.controls.Mobile_No.errors?.pattern 
+                                              
+                                            "
+                                          >
+                                            Mobile number is not valid.
+                                          </p>
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div>
+                                     
+                                      <div class="row">
+                                       
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Email ID (Primary)</label>
+                                          <sup class="imp">*</sup>
+                
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Plantcode"
+                                            placeholder="Type here.."
+                                            formControlName="Email_ID"
+                                          />
+                                          <span
+                                            style="color: #066cda; font-weight: bold"
+                                          >
+                                            This Email ID is used for all communications and
+                                            invoice submission.
+                                          </span>
+                
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.Email_ID?.touched &&
+                                              formdetails.controls.Email_ID.errors?.required 
+                                              
+                                            "
+                                          >
+                                            Email Id is required.
+                                          </p>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.Email_ID?.touched &&
+                                              formdetails.controls.Email_ID.errors?.pattern 
+                                             
+                                            "
+                                          >
+                                            Email Id is not valid.
+                                          </p>
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Email ID 1 </label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Plantcode"
+                                            placeholder="Type here.."
+                                            formControlName="emailId1"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                              this.formdetails.controls.emailId1?.touched &&
+                                              formdetails.controls.emailId1.errors?.pattern
+                                            "
+                                          >
+                                            Email Id is not valid.
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Email ID 2 </label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Plantcode"
+                                            placeholder="Type here.."
+                                            formControlName="emailId2"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                              this.formdetails.controls.emailId2?.touched &&
+                                              formdetails.controls.emailId2.errors?.pattern
+                                            "
+                                          >
+                                            Email Id is not valid.
+                                          </p>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Email ID 3 </label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Plantcode"
+                                            placeholder="Type here.."
+                                            formControlName="emailId3"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                              this.formdetails.controls.emailId3?.touched &&
+                                              formdetails.controls.emailId3.errors?.pattern
+                                            "
+                                          >
+                                            Email Id is not valid.
+                                          </p>
+                                        </div>
+                                        
+                                      </div>
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Email ID 4 </label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Plantcode"
+                                            placeholder="Type here.."
+                                            formControlName="emailId4"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                              this.formdetails.controls.emailId4?.touched &&
+                                              formdetails.controls.emailId4.errors?.pattern
+                                            "
+                                          >
+                                            Email Id is not valid.
+                                          </p>
+                                        </div>
+                                      </div> -->
+                
+                                      <div class="checboxcontent">
+                                        <input
+                                          type="checkbox"
+                                          class="checkBox"
+                                          id="Infotech1"
+                                          formControlName="GeneralData"
+                                          (change)="onCheckboxChange('GeneralData')"
+                                        />
+                                        <label for="Infotech1"
+                                          >Please confirm that all the information provided is
+                                          accurate and complete. Check the box if the details
+                                          are correct.<sup class="imp">*</sup></label
+                                        >
+                                      </div>
+                                      <p
+                                        class="imp"
+                                        *ngIf="
+                                          formdetails.controls.GeneralData.errors?.required &&
+                                          this.formdetails.controls.GeneralData?.touched
+                                        "
+                                      >
+                                        please check the box to confirm the details are correct.
+                                      </p>
+                
+                                      <div class="imp" *ngIf="ganeralData">
+                                        All the <sup class="imp">*</sup> Marked field are
+                                        required.
+                                      </div>
+                                    </div>
+                
+                                    <div class="buttonWrapper mt-4" *ngIf="TypeNo != 'reopen'">
+                                      <div class="row">
+                                        <div class="col-lg-12 text-center">
+                                         
+                                          <button
+                                            type="submit"
+                                            class="btn submitButton"
+                                            (click)="Back('generalData')"
+                                          >
+                                            
+                                            Previous
+                                          </button>
+                                          <button
+                                            type="submit"
+                                            class="btn submitButton"
+                                            (click)="GONext('PAN')"
+                                          >
+                                            
+                                            Next
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!-- <h1>Cheque Details</h1> -->
+                                  <div *ngIf="showCheque">
+                                    <!-- <div class="formData"> -->
+                                    <div class="filedpd">
+                                     
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Bank Account No.</label>
+                                          <sup class="imp">*</sup>
+                
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="AccNumber"
+                                            maxlength="18"
+                                          />
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.AccNumber?.touched &&  
+                                            formdetails.controls.AccNumber.errors?.required  
+                                            "
+                                          >
+                                            Bank Account No is required.
+                                          </p>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            this.formdetails.controls.AccNumber?.touched &&
+                                              formdetails.controls.AccNumber.errors?.pattern 
+                                            "
+                                          >
+                                          Bank Account No is not valid.
+                                          </p>
+                
+                                          <!-- disabled -->
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Swift Code</label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Plantcode"
+                                            placeholder="Type here.."
+                                            formControlName="swift_code"
+                                            maxlength="11"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Bank Name</label>
+                                          <span class="imp">*</span>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="bankname"
+                                            placeholder="Type here.."
+                                            formControlName="BankNAme"
+                                            maxlength="100"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                          <p
+                                          class="imp"
+                                          *ngIf="
+                                            formdetails.controls.BankNAme?.touched &&
+                                            formdetails.controls.BankNAme.errors?.required
+                                          "
+                                        >
+                                         Bank Name  is required.
+                                        </p>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Branch Name</label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="bankBrach"
+                                            placeholder="Type here.."
+                                            formControlName="bankBrach"
+                                            maxlength="100"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Account Holder Name </label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="AccHolderName"
+                                            placeholder="Type here.."
+                                            formControlName="AccHolderName"
+                                            maxlength="100"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">IFSC Code</label>
+                                          <sup class="imp">*</sup>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="IFSCCODE"
+                                            maxlength="20"
+                                           
+                                          />
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                              formdetails.controls.IFSCCODE.touched &&
+                                              formdetails.controls.IFSCCODE?.errors?.required
+                                            "
+                                          >
+                                            IFSC Code is required.
+                                          </p>
+                                          <!-- disabled -->
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+
+                                      </div>
+                                     
+                                      
+                                      <div class="row">
+                                      
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">GST Number</label>
+                                          <!-- <sup class="imp">*</sup> -->
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="GSTNumber"
+                                            (change)="checkPan()"
+                                            (input)="showGSTDocument()"
+                                            appUppercase
+                                            
+                                          />
+                                          <p
+                                          class="imp"
+                                          *ngIf="
+                                          this.formdetails.controls.GSTNumber?.touched &&
+                                          formdetails.controls.GSTNumber.errors?.pattern  
+                                          "
+                                        >
+                                          Please Enter Valid GST Number.
+                                        </p>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                              formdetails.controls.GSTNumber?.touched &&
+                                              formdetails.controls.GSTNumber.errors?.required
+                                            "
+                                          >
+                                            GST Number is required.
+                                          </p>
+                                          <!-- disabled -->
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                        <!-- <div class="row" > -->
+                                          <div class="form-group col-md-6" *ngIf="showGSTUpload">
+                                            <div class="text-center submitUploadCard" style="width: 100%;">
+                                              <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                                                  <div class="add-file-input">
+                                                      <label for="input-file2" class="file-input submitUploadCardContent">
+                                                          <div style="display: flex; gap: 10px;">
+                                                              <div class="submitUploadTitle">Upload GST Certificate <sup class="imp">*</sup></div>
+                                                              <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                                          </div>
+                                                          
+                                                          <span class="submitUploadDesc">(upto 4MB with no special characters)</span>
+                                                      </label>
+                                                      <input type="file" id="input-file2" class="d-none" accept="image/*"
+                                                          formControlName="GSTattachments" (change)="onFileSelectEvent($event,'GST')">
+                      
+                                                  </div>
+                                                  <p class="imp"
+                                                  *ngIf="UploadDocument.controls?.GSTattachments.touched && UploadDocument.controls.GSTattachments.errors?.required">
+                                                      Please upload GST.</p>
+                                                  <div class="CloseDocument">
+                                                      <p class="imp">{{GSTfilename}}</p>
+                                                      <div *ngIf="GSTfilename!=null && GSTfilename!=''">
+                                                          <i class="fa fa-close fileCrossIcon" aria-hidden="true" (click)="close('GST')"></i>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                            
+                                          </div>
+                                          
+                                        <!-- </div> -->
+                                      </div>
+                                     
+                                    
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel" for="MSMEStatus">MSME Status</label>
+                                          <!-- <sup class="imp">*</sup> -->
+                                          <select
+                                            id="MSMEStatus"
+                                            class="form-control wizard-required submitInputBox"
+                                            formControlName="MSMEStatus"
+                                            (change)="onOptionsSelected($event.target.value)"
+                                          >
+                                            >
+                                            <option value="" disabled selected>
+                                              Select MSME Status
+                                            </option>
+                                            <option
+                                              *ngFor="let status of MSMEStatusdrop"
+                                              [value]="status?.value"
+                                            >
+                                              {{ status?.value }}
+                                            </option>
+                                          </select>
+                                          <div>
+                                            <p
+                                              class="imp"
+                                              *ngIf="
+                                                formdetails.controls.MSMEStatus.errors
+                                                  ?.required &&
+                                                this.formdetails.controls.MSMEStatus?.touched
+                                              "
+                                            >
+                                              MSME Status is required.
+                                            </p>
+                                          </div>
+                                        </div>
+                
+                                        
+                                        <div class="wizard-form-error"></div>
+                                        <!-- </div> -->
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">MSME No.</label>
+                                          <sup *ngIf="msmeflage" class="imp">*</sup>
+                
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="MSMENO"
+                                            (input)="MSMENOVlaue($event)"
+                                          />
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                              formdetails.controls.MSMENO.errors?.required &&
+                                              formdetails.controls.MSMENO?.touched
+                                            "
+                                          >
+                                            MSME No is required.
+                                          </p>
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div>
+                                      <div class="row" *ngIf="showMSME">
+                                        <div class="form-group col-md-6">
+                                          <div class="text-center submitUploadCard" style="width: 100%;">
+                                            <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                                              <div class="add-file-input">
+                                                <label for="input-file4" class="file-input submitUploadCardContent">
+                                                  <div style="display: flex; gap: 10px;">
+                                                      <div class="submitUploadTitle">Upload MSME. <sup class="imp">*</sup></div>
+                                                      <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                                  </div>
+                                                  
+                                                  <span class="submitUploadDesc">(upto 4MB with no special characters)</span>
+                                              </label>
+                                              <!-- <input type="file" id="input-file4" class="d-none" accept="image/*"
+                                                  formControlName="MSMEAtt" (change)="onFileSelectEvent($event,'MSME')"> -->
+                                                  <input type="file" id="input-file4" class="d-none" accept="image/*"
+                                                  formControlName="MSMEAtt" (change)="onFileSelectEvent($event,'MSME')">
+                                                
+                                              </div>
+                                              <p class="imp"
+                                                      *ngIf="UploadDocument.controls?.MSMEAtt.touched && UploadDocument.controls.MSMEAtt.errors?.required">
+                                                      Please upload MSME .</p>
+                                                      <div class="CloseDocument"><p class="imp">{{MSMEDocu}}</p>
+                                                          <div *ngIf="MSMEDocu!=null && MSMEDocu!=''">
+                                                              <i class="fa fa-close fileCrossIcon" aria-hidden="true" (click)="close('MSME')"></i></div>
+                                                  </div> 
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">TDS Exemption No.</label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="TDSEXMP"
+                                            (input)="ShowTDS($event)"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">TDS Exemption %</label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="TDSEXMPPer"
+                                            maxlength="10"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div>
+                                      <div class="row" *ngIf="showTDS">
+                                        <div class="form-group col-md-6">
+                                        
+                                        
+                                          <div class="text-center submitUploadCard" style="width: 100%;">
+                                            <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                                              <div class="add-file-input">
+                                                <label for="input-file5" class="file-input submitUploadCardContent">
+                                                  <div style="display: flex; gap: 10px;">
+                                                      <div class="submitUploadTitle">Upload TSD Exemption Certificate <sup class="imp">*</sup></div>
+                                                      <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                                  </div>
+                                                  
+                                                  <span class="submitUploadDesc">(upto 4MB with no special characters)</span>
+                                              </label>
+                                              <!-- <input type="file" id="input-file4" class="d-none" accept="image/*"
+                                                  formControlName="MSMEAtt" (change)="onFileSelectEvent($event,'MSME')"> -->
+                                                  <input type="file" id="input-file5" class="d-none" accept="image/*"
+                                                  formControlName="TDSatt" (change)="onFileSelectEvent($event,'TDSatt')">
+                                                
+                                              </div>
+                                              <p class="imp"
+                                                      *ngIf="UploadDocument.controls?.TDSatt.touched && UploadDocument.controls.TDSatt.errors?.required">
+                                                      Please upload TSD Exemption Certificate .</p>
+                                                      <div class="CloseDocument"><p class="imp">{{TDSDocu}}</p>
+                                                          <div *ngIf="TDSDocu!=null && TDSDocu!=''">
+                                                              <i class="fa fa-close fileCrossIcon" aria-hidden="true" (click)="close('TDSatt')"></i></div>
+                                                  </div> 
+                                            </div>
+                                          
+                                        </div>
+                                      </div>
+                                      
+                                      </div>
+                                     
+                                      <!-- <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">TDS Exemption From</label>
+                                          <input
+                                            type="date"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="TDSEXMPFrom"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">TDS Exemption To</label>
+                                          <input
+                                            type="date"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="TDSEXMPTO"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div> -->
+
+                                      <div class="row">                                       
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">TDS Exemption From</label>
+                                          <mat-form-field appearance="outline">
+                                            <mat-label>TDS Exemption From</mat-label>
+                                            <input
+                                              matInput
+                                              class="form-control wizard-required submitInputBox"
+                                              [matDatepicker]="fromPicker"
+                                              formControlName="TDSEXMPFrom"
+                                              readonly
+                                              (click)="fromPicker.open()"
+                                              placeholder="Select date"
+                                            />
+                                            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                                            <mat-datepicker #fromPicker></mat-datepicker>
+                                            
+                                          </mat-form-field>
+                                          <!-- <mat-error *ngIf="row.get('ExcepFrom')?.touched && row.get('ExcepFrom')?.errors?.required">
+                                            Exemption From is required
+                                          </mat-error> -->
+                                        </div>
+                                        
+                                    
+                                        
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">TDS Exemption To</label>
+                                          <mat-form-field appearance="outline">
+                                            <mat-label>TDS Exemption To</mat-label>
+                                            <input
+                                              matInput
+                                              class="form-control wizard-required submitInputBox"
+                                              [matDatepicker]="toPicker"
+                                              formControlName="TDSEXMPTO"
+                                              readonly
+                                              (click)="toPicker.open()"
+                                              placeholder="Select date"
+                                            />
+                                            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                                            <mat-datepicker #toPicker></mat-datepicker>
+                                            
+                                          </mat-form-field>
+                                          <!-- <mat-error *ngIf="row.get('ExcepTo')?.touched && row.get('ExcepTo')?.errors?.required">
+                                            Exemption To is required
+                                          </mat-error> -->
+                                          <mat-error *ngIf=" this.formdetails.controls.TDSEXMPTO.errors?.dateInvalid">
+                                            Exemption From must be earlier than Exemption To.
+                                          </mat-error>
+                                          
+                                        </div>
+                                      </div>
+                                    
+                                      <!-- <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">PF Registration No.</label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="PFRegNo"
+                                            maxlength="30"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">ESI Registration No.</label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            placeholder="Type here.."
+                                            formControlName="ESIRegNo"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div> -->
+                                      <div class="checboxcontent">
+                                        <input
+                                          type="checkbox"
+                                          class="checkBox"
+                                          id="Infotech2"
+                                          formControlName="BuissinessDataCheck"
+                                          (change)="onCheckboxChange('BuissinessDataCheck')"
+                                        />
+                                        <label for="Infotech2"
+                                          >Please confirm that all the information provided is
+                                          accurate and complete. Check the box if the details
+                                          are correct .<sup class="imp">*</sup></label
+                                        >
+                                      </div>
+                                      <p
+                                        class="imp"
+                                        *ngIf="
+                                          formdetails.controls.BuissinessDataCheck.errors
+                                            ?.required &&
+                                          this.formdetails.controls.BuissinessDataCheck?.touched
+                                        "
+                                      >
+                                        please check the box to confirm the details are correct.
+                                      </p>
+                                      <div class="imp" *ngIf="bankingData">
+                                        All the <sup class="imp">*</sup> Marked field are
+                                        required.
+                                      </div>
+                                    </div>
+                                    <div class="buttonWrapper mt-4" *ngIf="TypeNo != 'reopen'">
+                                      <div class="row">
+                                        <div class="col-lg-12 text-center">
+                                                                 <button
+                                            type="submit"
+                                            class="btn submitButton"
+                                            (click)="Back('businessData')"
+                                          >
+                                           
+                                            Previous
+                                          </button>
+                                          <button
+                                            type="submit"
+                                            class="btn submitButton"
+                                            (click)="GONext('Cheque')"
+                                          >
+                                            
+                                            Next
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div *ngIf="showGST">
+                                    <div class="filedpd">
+                                     
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel" for="TypeOfbuisiness">Type of Business</label>
+                                          <!-- <sup class="imp">*</sup> -->
+                                          <!-- <select
+                                            id="TypeOfbuisiness"
+                                            class="form-control wizard-required submitInputBox"
+                                            formControlName="TypeOfbuisiness"
+                                            maxlength="30"
+                                          >
+                                            <option value="" disabled selected>
+                                              Select Type of Business
+                                            </option>
+                                            <option
+                                              *ngFor="let status of dropdownLists.BusinessType"
+                                              [value]="status?.id"
+                                            >
+                                              {{ status?.value }}
+                                            </option>
+                                          </select> -->
+                                          <ng-select
+      id="TypeOfbuisiness"
+      class="form-control wizard-required submitInputBox"
+      [items]="dropdownLists.BusinessType"
+      bindLabel="value"
+      bindValue="id"
+      formControlName="TypeOfbuisiness"
+      [searchable]="true"
+      [clearable]="true"
+      [ngClass]="{ 'ng-invalid': formdetails.controls['TypeOfbuisiness'].invalid && formdetails.controls['TypeOfbuisiness'].touched }"
+    >
+    </ng-select>
+                                        </div>
+                
+                                        <div class="form-group col-md-6">
+                                          <label class="submitInputLabel" for="TypeOfIndustory">Type of Industry</label>
+                                          <sup class="imp">*</sup>
+                                          <!-- <select
+                                            id="TypeOfIndustory"
+                                            class="form-control wizard-required submitInputBox"
+                                            formControlName="TypeOfIndustory"
+                                            maxlength="30"
+                                          >
+                                            <option value="" disabled selected>
+                                              Select Type of Industry
+                                            </option>
+                                            <option
+                                              *ngFor="let status of dropdownLists.typeOfindustr"
+                                              [value]="status?.value"
+                                            >
+                                              {{ status?.value }}
+                                            </option>
+                                          </select> -->
+                                          <ng-select
+                                          id="TypeOfIndustory"
+                                          class="form-control wizard-required submitInputBox"
+                                          [items]="dropdownLists.typeOfindustr"
+                                          bindLabel="value"
+                                          bindValue="id"
+                                          formControlName="TypeOfIndustory"
+                                          [searchable]="true"
+                                          [clearable]="true"
+                                          [ngClass]="{ 'ng-invalid': formdetails.controls['TypeOfIndustory'].invalid && formdetails.controls['TypeOfIndustory'].touched }"
+                                        >
+                                        </ng-select>
+                                          <p
+                                            class="imp"
+                                            *ngIf="
+                                            formdetails.controls.TypeOfIndustory?.touched &&  
+                                            formdetails.controls.TypeOfIndustory.errors?.required
+                                            "
+                                          >
+                                            Type of Industry is required.
+                                          </p>
+                                          <div class="wizard-form-error"></div>
+                                        </div>
+                                      </div>
+                                      
+                                      <div class="row">
+                                        <!-- <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Promoters</label>
+                                          <input
+                                            type="text"
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            maxlength="20"
+                                            placeholder="Type here.."
+                                            formControlName="Promoters"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div> -->
+                
+                                        <div class="form-group col-md-6">
+                                          
+                                          <div class="wizard-form-error"></div>
+                                          <div formArrayName="clients">
+                                            <div
+                                              *ngFor="
+                                                let CilentsControl of CilentsControls;
+                                                let j = index
+                                              "
+                                              class="email-input"
+                                            >
+                                              <label class="submitInputLabel">Top 5 Clients</label>
+                                              <div class="input-container">
+                                                <input
+                                                  type="text"
+                                                  class="form-control wizard-required submitInputBox"
+                                                  [formControlName]="j"
+                                                  placeholder="Type here.."
+                                                  #clientsInout
+                                                />
+                                                <button
+                                                  class="add-button"
+                                                  (click)="removeclient(j)"
+                                                  *ngIf="j > 0"
+                                                >
+                                                  <span class="plus-sign"> - </span>
+                                                </button>
+                                                <button
+                                                  class="add-button"
+                                                  *ngIf="j === 0"
+                                                  (click)="addclient(clientsInout.value)"
+                                                >
+                                                  <span class="plus-sign">+</span>
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                          <div>
+                                            <label class="submitInputLabel">Turnover (Lakhs)</label>
+                                            <!-- <select
+                                            class="form-control wizard-required submitInputBox"
+                                              aria-label="Default select example"
+                                              formControlName="Turnover"
+                                            >
+                                              <option value="" disabled selected>
+                                                Select Turnover
+                                              </option>
+                                              <option
+                                                selected
+                                                *ngFor="let status of Turnover"
+                                                [value]="status?.id"
+                                              >
+                                                {{ status?.value }}
+                                              </option>
+                                            </select> -->
+                                            <ng-select
+    class="form-control wizard-required submitInputBox"
+    [items]="Turnover"
+    bindLabel="value"
+    bindValue="id"
+    formControlName="Turnover"
+    [searchable]="true"
+    [clearable]="true"
+    [ngClass]="{ 'ng-invalid': formdetails.controls['Turnover'].invalid && formdetails.controls['Turnover'].touched }"
+  >
+  </ng-select>
+                                          </div>
+                                        </div>
+                                        
+                                      </div>
+                                      <div class="row">
+                                        <!-- <div class="form-group col-md-6">
+                                          
+                                          <div class="wizard-form-error"></div>
+                                          <div formArrayName="clients">
+                                            <div
+                                              *ngFor="
+                                                let CilentsControl of CilentsControls;
+                                                let j = index
+                                              "
+                                              class="email-input"
+                                            >
+                                              <label class="submitInputLabel">Top 5 Clients</label>
+                                              <div class="input-container">
+                                                <input
+                                                  type="text"
+                                                  class="form-control wizard-required submitInputBox"
+                                                  [formControlName]="j"
+                                                  placeholder="Type here.."
+                                                  #clientsInout
+                                                />
+                                                <button
+                                                  class="add-button"
+                                                  (click)="removeclient(j)"
+                                                  *ngIf="j > 0"
+                                                >
+                                                  <span class="plus-sign"> - </span>
+                                                </button>
+                                                <button
+                                                  class="add-button"
+                                                  *ngIf="j === 0"
+                                                  (click)="addclient(clientsInout.value)"
+                                                >
+                                                  <span class="plus-sign">+</span>
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div> -->
+                                        <!-- <div class="form-group col-md-6">
+                                          <label class="submitInputLabel">Clients References</label>
+                                          <input
+                                            type="text"
+                                            placeholder="Type here.."
+                                            class="form-control wizard-required submitInputBox"
+                                            id="Infotech"
+                                            formControlName="clientRef"
+                                          />
+                                          <div class="wizard-form-error"></div>
+                                        </div> -->
+                                      </div>
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <div class="FileUploadIconWrap" style="width: 100%">
+                                            <div
+                                              class="add-file-input pdfFileListing"
+                                              style="align-items: baseline"
+                                            >
+                                              <span class="approval__headings"
+                                                >Add supporting docs</span
+                                              ><span
+                                                style="margin-left: 5px"
+                                                class="InvStatus__date"
+                                                >(Filename can have spaces but no special
+                                                characters)</span
+                                              >
+                
+                                              <div>
+                                                <input
+                                                  type="file"
+                                                  id="input-file3"
+                                                  class="d-none"
+                                                  multiple="multiple"
+                                                  (change)="onFileChanged($event)"
+                                                  onclick="value = null"
+                                                />
+                                              </div>
+                                            </div>
+                                            <div>
+                                              <label for="input-file3" class="file-input">
+                                                <span *ngIf="usertype != 'manager'"
+                                                  ><img
+                                                    src="./assets/img/cloud-computing.png"
+                                                    style="
+                                                      cursor: pointer;
+                                                      margin-left: 10px;
+                                                      max-width: 40px;
+                                                    "
+                                                /></span>
+                                                <!-- BCCL Supporting Docs -->
+                                              </label>
+                                            </div>
+                                          </div>
+                                          <ul
+                                            class="listFiles"
+                                            style="height: auto; overflow-y: auto"
+                                          >
+                                            <li
+                                              *ngFor="
+                                                let selected of ArrayOfSelectedFilename;
+                                                let i = index
+                                              "
+                                              class="fileUploadSingle"
+                                            >
+                                              {{ selected }}
+                                              <i
+                                                class="fa fa-close fileCrossIcon fileCrossIcon"
+                                                aria-hidden="true"
+                                                (click)="removeitem(i)"
+                                              ></i>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </div>
+                
+                                    
+                                    </div>
+                                    <div class="buttonWrapper mt-4" *ngIf="TypeNo != 'reopen'">
+                                      <div class="row">
+                                        <div class="col-lg-12 text-center">
+                                          
+                                          <button
+                                            type="submit"
+                                            class="btn submitButton"
+                                            (click)="Back('BankingData')"
+                                          >
+                                            Previous
+                                          </button>
+                                          <button
+                                            type="submit"
+                                            class="btn submitButton"
+                                            (click)="submit1()"
+                                          >
+                                            Submit
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!-- </div> -->
+                                </div>
+                              </form>
+        
+                            </div>
+                            <!-- </div> -->
+                        </div>
+                    </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        <!-- <p class="confirmation-para text-right" style=" color: #066cda;;" *ngIf="!showfeilds">
+          Kindly fill in the mandatory fields to proceed With the Partner
+          Registration.<sup class="imp">*</sup>
+        </p> -->
+        <!-- <p
+          style="color: rgb(166, 166, 243); font-weight: bold; text-align: end"
+          *ngIf="showfeilds"
+        >
+          Kindly upload the required documents
+        </p> -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- [disabled]=" invoiceForm.invalid || disable ? true : null || overallAmount == 0 -->
+  

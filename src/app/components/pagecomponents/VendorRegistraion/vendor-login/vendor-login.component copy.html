@@ -1,0 +1,111 @@
+
+<!-- <div class="main-content margin-top">
+    <div class="container dashboardpt">
+        <div class="inv-page-container">
+            <div class="inv-page-wrapper container">
+                <form [formGroup]="VendorLogin">
+                    <div class="inv-form-inputs" style="width: 100% !important">
+                        <div class="formData">
+                            <div class="invInputWicon">
+                                <mat-label class="Lable">Enter Partner Company Mail ID</mat-label><sup
+                                    class="imp">*</sup>
+                                <mat-form-field appearance="none" class="formInput">
+                                    <mat-label style="margin-left: 8px; font-size: larger">Enter Partner Company Mail ID
+                                    </mat-label>
+                                    <input matInput formControlName="Email" placeholder="Please Enter Mail ID" />
+                                </mat-form-field>
+                                <div *ngIf="VendorLogin.controls?.Email.touched && VendorLogin.controls.Email.errors?.required">
+                                    Email ID required.
+                                </div>
+                                <div *ngIf=" VendorLogin.controls?.Email.touched && VendorLogin.controls.Email.errors?.email">
+                                    Please Enter Valid email ID.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 text-center">
+                            <button type="submit" class="btn button-primary" (click)="Submit()">
+                                <img src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                    class="activeImg arrowIcon" />
+                                <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                    class="disabledImg arrowIcon" />
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="bg-img">
+    <div class="container">
+        <div class="login-text">
+            <p>Vendor Registration.</p>
+        </div>
+        <div class="container">
+            <div class="login-flexRight">
+                <div class="loginFormWrapper text-center pan-dm">
+                    <label style="color: red;" *ngIf="emailmessage !='otpsuccess'">{{loginMessage}}</label>
+                    <label style="color: #000000" *ngIf="emailmessage =='otpsuccess'">{{loginMessage}} </label>
+                    <br> {{otp}}
+                <form [formGroup]="loginForm">
+                        <div class="frm-sec-1" *ngIf="div1" class="form-group" class="form">
+                            <input type="text" name="text" class="" id="Email" formControlName="Email" autocomplete="off" placeholder="Enter email id" required (keyup)="ValidateEmail($event)">
+                            <div class="ErrorWrapper">
+                                <div class="error" *ngIf="loginForm.controls['Email'].hasError('required')
+                                && submitted">Please enter valid emailid !!</div>
+                               </div>
+                            <button type="submit" name="submit" class="btn button-primary" style="margin-top: 60px;" [disabled]="f.Email.errors || submitted" (click)="sendemailid(loginForm.controls['Email'].value)">
+                            <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                            <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon" 
+                                class="disabledImg arrowIcon">
+                            Send OTP</button>
+                        </div>
+
+                        <div class="frm-sec-2" *ngIf="div2" class="form-group" class="form">
+                            <input type="text" name="text" class="" id="Email" formControlName="Email" placeholder="FZw2222276543" disabled>
+                            
+                            <p *ngIf="timerFlag" style="color: red;" class="text-right"> Resend OTP after {{ timeDifference }} seconds</p>
+                            <div *ngIf="div3">
+                                <div class="resend-linkWrapper text-right">
+                                    <a href="javascript:;" *ngIf="timeDifference==0" (click)="sendemailid(loginForm.controls['Email'].value); clearform()" class="resendLink">Resend OTP</a>
+                                </div>
+
+                                <input type="text" name="text" class="" id="OTP" formControlName="OTP" autocomplete="off" placeholder="OTP" style="text-transform: capitalize;" required maxlength="6" OnlyNumber="true">
+
+                                <div class="error" *ngIf="loginForm.controls['OTP'].hasError('required')
+                            && loginForm.controls['OTP'].touched">Enter OTP </div>
+                                <div class="error error1" *ngIf="f.OTP.errors?.pattern">Enter 6 digit OTP.</div>
+                                <div class="error error1" *ngIf="f.OTP.errors?.maxlength" style="margin-left: 15px;">*OTP should be 6 digit Long </div>
+                                <div class="error error1" *ngIf="invalid">{{invalidmessage}}</div>
+                                <div class="error error1" *ngIf="wrongotp">Invalid OTP</div>
+
+                      <!-- FOR NO RE-CAPTCHA Comment code / FOR RE-CAPTCHA Uncomment code-->
+                               <!-- <div class="g-recaptcha" data-sitekey=""></div>
+                                <div class="captcha">
+                                    <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" formControlName="recaptcha">
+                                    </ngx-recaptcha2>
+                                </div>  -->
+                                <div style="margin-top: 12px">
+                                    <!-- FOR NO RE-CAPTCHA -->
+                                    <!-- <button type="button" name="" class="btn button-primary "[disabled]="(!loginForm.controls['OTP'].valid) || wrongotp" (click)="login()">  -->
+                                        <!--  FOR RE-CAPTCHA-->
+                                   <button type="button" name="" class="btn button-primary " [disabled]="(!loginForm.controls['OTP'].valid) 
+                                    || (loginForm.invalid) 
+                                    || wrongotp" (click)="login()">  
+                                    <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                        class="disabledImg arrowIcon">
+                                    Login</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

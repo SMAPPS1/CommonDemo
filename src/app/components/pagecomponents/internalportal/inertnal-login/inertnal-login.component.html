@@ -1,0 +1,128 @@
+<!-- Section: Split screen -->
+<section class="">
+
+    <div class="container-fluid px-0">
+      <div class="row g-0 containerHeight">
+  
+        <!-- First column -->
+        <div class="col-lg-6 d-flex align-items-center justify-content-center firstDiv">
+            <!-- <img class="" src="./assets/img/Frame.png" alt=""> -->
+            <!-- <img class="" src="./assets/img/K12Logo.png" alt=""> -->
+            <img class="" src="./assets/img/MainFrame1.jpeg" alt="">
+
+            <!-- <img class="shadowImage" src="./assets/img/Path_Copy.png" alt=""> -->
+            
+        </div>
+        <!-- First column -->
+  
+        <!-- Second column -->
+        <div class="col-lg-6  d-flex justify-content-center flex-column mx-auto secondDiv">
+            <div class="container">
+                <img class="sourceLogo" src="./assets/img/sourcecode.png" alt="">
+            </div>
+            <img class="vimaLogo" src="./assets/img/VIMA_Source.png" alt="">
+            <!-- <img class="mainLogo" src="./assets/img/main-logo.jfif" alt=""> -->
+            <!-- <div class="mainHeading">
+                Simplifying Businesses             </div> -->
+            <div class="mainDescription">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem sit voluptatum quod
+                minima earum ut voluptatibus quaerat perferendis ipsa ab! Rem aliquam neque laborum soluta possimus tempora, 
+                perferendis illum fuga!
+             </div>
+            
+            <label class="mb-0 mt-4" style="color: #cc0000;" *ngIf="emailmessage !='otpsuccess'">{{loginMessage}}</label>
+            <label class="mb-0 mt-4" style="color: var(--main-text-color)" *ngIf="emailmessage =='otpsuccess'">{{loginMessage}} </label>
+            <!-- <div>
+                <label for="email">Email Id</label> <br>
+                <input type="email" style="width: fit-content;">
+            </div>
+            <button class="btn btn-primary" style="width: fit-content;">Send OTP</button> -->
+            <!-- <label style="color: red;" *ngIf="emailmessage !='otpsuccess'">{{loginMessage}}</label>
+            <label style="color: #000000" *ngIf="emailmessage =='otpsuccess'">{{loginMessage}} </label> -->
+
+            <form [formGroup]="loginForm" class="mainForm">
+                <div *ngIf="div1" class="form-group d-flex flex-column loginDiv" style="width: fit-content;">
+                    <!-- <p>c-ritesh.patil@timesgroup.com</p> -->
+                    <label for="Email" class="inputLabel">Email Id*</label>
+                    <input type="text" name="text" class="inputBox" id="Email" formControlName="Email" autocomplete="off" placeholder="Enter email id" required (keyup)="ValidateEmail($event)">
+                    <div class="ErrorWrapper">
+                        <div class="error" *ngIf="loginForm.controls['Email'].hasError('required')
+                        && submitted">* Please enter valid emailid !!</div>
+                        <!-- <div class="error error1" *ngIf="f.PAN.errors?.pattern">*PAN must have first 5 alphabets , next 4 numbers and last single alphabet </div> -->
+                        <!-- <div class="error error1" *ngIf="f.PAN.errors?.maxlength" style="margin-left: 15px;">*PAN should be 10 digit Long </div> -->
+                    </div>
+
+                    <button type="submit" name="submit" class="btn submitButton submitButtonCustom" [disabled]="f.Email.errors || submitted" (click)="sendemailid(loginForm.controls['Email'].value)">
+                    <!-- <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon" 
+                        class="disabledImg arrowIcon"> -->
+                    Send OTP
+                </button>
+                </div>
+
+                <div class="frm-sec-2" *ngIf="div2" class="form form-group">
+                    <!-- <input type="text" name="text" class="inputBox" id="Email" formControlName="Email" placeholder="FZw2222276543" disabled> -->
+                    <!-- <p *ngIf="timerFlag" style="color: red;" class="text-right"> Resend OTP after {{ timeDifference }} seconds</p> -->
+
+                    <div *ngIf="div3" class="div3">
+                        <div> {{otpOnly}}</div>
+                        <input type="text" name="text" class="inputBox" id="OTP" formControlName="OTP" autocomplete="off" placeholder="Enter OTP" style="text-transform: capitalize;" required maxlength="6" OnlyNumber="true" (keyup)="checkotp($event)">
+
+                        
+                        <div class="error mt-2" *ngIf="loginForm.controls['OTP'].hasError('required')
+                    && loginForm.controls['OTP'].touched">Enter OTP</div>
+                        <div class="error error1 mt-2" *ngIf="f.OTP.errors?.pattern">Enter 6 digit OTP.</div>
+                        <div class="error error1 mt-2" *ngIf="f.OTP.errors?.maxlength" style="margin-left: 15px;">*OTP should be 6 digit Long </div>
+                        <div class="error error1 mt-2" *ngIf="invalid">{{invalidmessage}}</div>
+                        <div class="error error1 mt-2" *ngIf="wrongotp">Invalid OTP</div>
+
+                       <!-- <div class="g-recaptcha" data-sitekey="" style="margin-top: 30px;"></div> -->
+                        <!-- <div class="captcha">
+                            <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" formControlName="recaptcha">
+                            </ngx-recaptcha2>
+                        </div>  -->
+
+                        <div class="resendButtons">
+
+                            <button *ngIf="timerFlag" type="button" name="submit" class="btn submitButton submitButtonCustom" disabled>
+                                <!-- <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon" 
+                                    class="disabledImg arrowIcon"> -->
+                                    Resend OTP (in {{  timeDifference  }} sec)
+                            </button>
+
+                            <button *ngIf="timeDifference==0" type="button" (click)="sendemailid(loginForm.controls['Email'].value); clearform()" 
+                                name="submit" class="btn submitButton submitButtonCustom">
+                                <!-- <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon" 
+                                    class="disabledImg arrowIcon"> -->
+                                    Resend OTP
+                            </button>
+
+                            <button type="button" name="submit" class="btn submitButton submitButtonCustom" [disabled]="(!loginForm.controls['OTP'].valid) 
+                             || (loginForm.invalid) 
+                            || wrongotp" (click)="login()">
+                                <!-- <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon" 
+                                    class="disabledImg arrowIcon"> -->
+                                Submit
+                            </button>
+                           <!-- <button type="button" name="" class="btn button-primary " [disabled]="(!loginForm.controls['OTP'].valid) 
+                            || (!loginForm.controls['recaptcha'].value) || (loginForm.invalid) 
+                            || wrongotp" (click)="login()">  
+                            Login</button> -->
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+        <!-- Second column -->
+  
+      </div>
+    </div>
+  
+  </section>
+  <!-- Section: Split screen -->

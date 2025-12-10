@@ -1,0 +1,1463 @@
+<div class="main-content margin-top">
+    <div class="container dashboardpt">
+        <div class="">
+            <div class="formWrapper">
+                <div class="">
+                    <div class="formWrapper__box">
+                        <div class="formWrapper__heading"
+                            *ngIf="TypeNo != 'part' && TypeNo != 'resubmit' && TypeNo != 'reopen'">
+                            <!-- <div class="formWrapperHead_img" [routerLink]="['/purchaseOrdersList']"> -->
+                            <div class="formWrapperHead_img" [routerLink]="['/purchaseOrdersList']">
+                                <img src="./assets/img/arrow_icon_grey_prev.png" class="left-arrow">
+                            </div> PO No : {{ponumber}} - Full Invoice
+                            <div class="error" style="margin: auto;" *ngIf="totalBalQty==0"> {{errormessage}}</div>
+                        </div>
+
+                        <div class="formWrapper__heading" *ngIf="TypeNo == 'part'">
+                            <div class="formWrapperHead_img" (click)="backButtonForPart()">
+                                <img src="./assets/img/arrow_icon_grey_prev.png" class="left-arrow">
+                            </div> PO No : {{ponumber}} - Invoice multiple PO's
+                            <div class="error" style="margin: auto;" *ngIf="totalBalQty==0"> {{errormessage}}</div>
+                        </div>
+                        <div class="formWrapper__heading" *ngIf="TypeNo == 'resubmit'">
+                            <!-- <div class="formWrapperHead_img" [routerLink]="['/purchaseOrdersList']"> -->
+                            <div class="formWrapperHead_img" [routerLink]="['/purchaseOrdersList']">
+                                <img src="./assets/img/arrow_icon_grey_prev.png" class="left-arrow">
+                            </div> PO No : {{ponumber}} - Invoice multiple PO's
+                            <div class="error" style="margin: auto;" *ngIf="totalBalQty==0"> {{errormessage}}</div>
+                        </div>
+
+                        <div class="formWrapper__heading" *ngIf="TypeNo == 'reopen'">
+                            <!-- <div class="formWrapperHead_img" [routerLink]="['/purchaseOrdersList']"> -->
+                            <div class="formWrapperHead_img" [routerLink]="['/purchaseOrdersList']">
+                                <img src="./assets/img/arrow_icon_grey_prev.png" class="left-arrow">
+                            </div> PO No : {{ponumber}} -Reopened Invoice with multiple PO's for correction
+                            <!-- <div class="error" style="margin: auto;" *ngIf="totalBalQty==0"> {{errormessage}}</div> -->
+                        </div>
+                        <!-- <div *ngIf = "nogrnpresnt == true"> -->
+
+                        <!-- formWrapper__content -->
+                        <!-- <form novalidate (ngSubmit)="f1.form.valid" #f1="ngForm" novalidate> -->
+                        <!-- <div *ngIf = "grnpresnt == false"> -->
+                        <div class="formWrapper__content">
+                            <div *ngIf="grninvoicepresent == true">
+                                <div class="container">
+                                    <div class="partInvWrapper">
+                                        <div class="table-responsive">
+                                            <table class="table customTableStripped tobeinvoicetable">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">
+                                                            <div style="width: 294px;">List of Confirmed Deliveries
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div style="width: 200px;"> <button type="submit"
+                                                                    class="btn button-primary"
+                                                                    (click)="toinvoice(ponumber,'','special')"
+                                                                    [disabled]='checkedList.length ==0'>
+                                                                    <img _ngcontent-cpo-c320=""
+                                                                        src="./assets/img/arrow_icon_red.png"
+                                                                        alt="arrow icon" class="activeImg arrowIcon">
+                                                                    <img src="./assets/img/arrow_icon_light_grey.png"
+                                                                        alt="arrow icon" class="disabledImg arrowIcon">
+                                                                    to be invoiced
+                                                                </button></div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div style="width: 320px;"> <button type="submit"
+                                                                    class="btn button-primary"
+                                                                    (click)="toinvoice(ponumber,'','usual')"
+                                                                    [disabled]='checkedList.length !=0'>
+                                                                    <img _ngcontent-cpo-c320=""
+                                                                        src="./assets/img/arrow_icon_red.png"
+                                                                        alt="arrow icon" class="activeImg arrowIcon">
+
+                                                                    <img src="./assets/img/arrow_icon_light_grey.png"
+                                                                        alt="arrow icon" class="disabledImg arrowIcon">
+                                                                    invoice remaining quantity
+                                                                </button></div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <!-- tr start  -->
+                                                    <tr class="tobeInvoiceRow"
+                                                        *ngFor="let subordinate of tobeinvoicelist; let i = index">
+                                                        <td class="preventClick">
+                                                            <div style="width: 294px;">
+                                                                <a class="card-title">
+                                                                    {{subordinate.ponumber}} - {{subordinate.DCNUMBER}}
+                                                                    <!-- | {{subordinate.INVOICEDATE | date:'dd-MMM-yyyy'}}  -->
+
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+
+                                                            <div class="text-center" style="width: 200px;">
+                                                                <div class="customCheckbox">
+                                                                    <input type="checkbox" id="acceptcheck{{i}}"
+                                                                        name="acceptcheck"
+                                                                        value="{{subordinate.ponumber}},{{subordinate.DCNUMBER}}"
+                                                                        (change)="onCheckboxChange(subordinate.ponumber,subordinate.DCNUMBER,$event)">
+                                                                    <label for="acceptcheck{{i}}">
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="">
+                                                                &nbsp;
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">
+
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div>
+                                                                <button type="submit" class="btn button-primary"
+                                                                    (click)="toinvoice(ponumber,DCNUMBER,'special' )"
+                                                                    [disabled]='checkedList.length ==0'>
+                                                                    <img _ngcontent-cpo-c320=""
+                                                                        src="./assets/img/arrow_icon_red.png"
+                                                                        alt="arrow icon" class="activeImg arrowIcon">
+                                                                    <img src="./assets/img/arrow_icon_light_grey.png"
+                                                                        alt="arrow icon" class="disabledImg arrowIcon">
+                                                                    to be invoiced
+                                                                </button>
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div>
+                                                                <button type="submit" class="btn button-primary"
+                                                                    (click)="toinvoice(ponumber,'','usual')"
+                                                                    [disabled]='checkedList.length !=0'>
+                                                                    <img _ngcontent-cpo-c320=""
+                                                                        src="./assets/img/arrow_icon_red.png"
+                                                                        alt="arrow icon" class="activeImg arrowIcon">
+                                                                    <img src="./assets/img/arrow_icon_light_grey.png"
+                                                                        alt="arrow icon" class="disabledImg arrowIcon">
+                                                                    invoice remaining quantity
+                                                                </button>
+                                                            </div>
+                                                        </th>
+
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="grninvoicepresent == false ||TypeNo == 'resubmit'">
+                                <form [formGroup]="invoiceForm">
+
+
+
+                                    <div class="invoice-form submissionForm" style="padding-left: 0px; padding-right: 0px; padding-top: 0;
+                                                 padding-bottom: 0;">
+
+                                        <div class="inv-form-inputs mb-mt">
+                                            <div class="radioWrapper radioInline"
+                                                *ngIf="  TypeNo=='resubmit' && irnNumber == null  "
+                                                (change)="checkInvoice($event)">
+                                                <p>
+                                                    <!-- test 3 -->
+                                                    <input type="radio" id="cpinvoice" value="Invoice" name="itrfield"
+                                                        checked="" />
+                                                    <label for="cpinvoice" class="inv-wrapper active">Invoice</label>
+                                                </p>
+                                                <p>
+                                                    <input type="radio" id="cpEinvoice" value="Einvoice"
+                                                        name="itrfield" />
+                                                    <label for="cpEinvoice" class="inv-wrapper ">E-Invoice</label>
+                                                </p>
+                                                <!-- <p>
+                                            <input type="radio" id="Tobeinvoice" value="Tobeinvoice"
+                                             name="itrfield" />
+                                            <label for="Tobeinvoice" class="inv-wrapper ">To be invoice</label>
+                                        </p> -->
+                                            </div>
+                                            <div class="radioWrapper radioInline"
+                                                *ngIf="  TypeNo=='resubmit' && irnNumber != null  "
+                                                (change)="checkInvoice($event)">
+                                                <p>
+                                                    <!-- test 4 -->
+                                                    <input type="radio" id="cpinvoice" value="Invoice"
+                                                        name="itrfield" />
+                                                    <label for="cpinvoice" class="inv-wrapper">Invoice</label>
+                                                </p>
+                                                <p>
+                                                    <input type="radio" id="cpEinvoice" value="Einvoice" checked=""
+                                                        name="itrfield" />
+                                                    <label for="cpEinvoice" class="inv-wrapper active">E-Invoice</label>
+                                                </p>
+
+                                            </div>
+                                            <div class="radioWrapper radioInline"
+                                                *ngIf=" TypeNo =='part' || TypeNo =='full'"
+                                                (change)="checkInvoice($event)">
+                                                <!-- test 1 -->
+                                                <!-- <p>
+                                               <input type="radio" id="deliverypending" value="Invoice" name="itrfield"
+                                              checked  />
+                                            <label for="deliverypending" class="inv-wrapper active">Delivery pending to be invoice</label>
+                                        </p> -->
+
+                                                <p>
+
+                                                    <input type="radio" id="cpinvoice" value="Invoice" name="itrfield"
+                                                        checked="" style="cursor: default !important;" />
+                                                    <label for="cpinvoice" class="inv-wrapper ">Invoice</label>
+                                                </p>
+                                                <p>
+                                                    <input type="radio" id="cpEinvoice" value="Einvoice"
+                                                        name="itrfield" />
+                                                    <label for="cpEinvoice" class="inv-wrapper ">E-Invoice</label>
+                                                </p>
+
+                                            </div>
+                                            <div class="radioWrapper radioInline" id="showonresubmit"
+                                                *ngIf=" TypeNo =='reopen' && irnNumber == null "
+                                                style="cursor: default !important;">
+                                                <p>
+                                                    <!-- 1 -->
+                                                    <input type="radio" id="cpinvoice" value="Invoice" name="itrfield"
+                                                        checked="" style="cursor: default !important;" />
+                                                    <label for="cpinvoice" class="inv-wrapper active">Invoice</label>
+                                                </p>
+                                                <p>
+                                                    <input type="radio" id="cpEinvoice" value="Einvoice" name="itrfield"
+                                                        disabled readonly style="cursor: default !important;" />
+                                                    <label for="cpEinvoice" class="inv-wrapper">E-Invoice</label>
+                                                </p>
+                                            </div>
+                                            <div class="radioWrapper radioInline"
+                                                *ngIf="irnNumber != null &&  TypeNo =='reopen' && TypeNo !='resubmit'"
+                                                style="cursor: default !important;">
+                                                <p>
+                                                    <!-- 2 -->
+                                                    <input type="radio" id="cpinvoice" value="Invoice" name="itrfield"
+                                                        disabled readonly style="cursor: default !important;" />
+                                                    <label for="cpinvoice" class="inv-wrapper ">Invoice</label>
+                                                </p>
+                                                <p>
+                                                    <input type="radio" id="cpEinvoice" value="Einvoice" checked=""
+                                                        name="itrfield" style="cursor: default !important;" />
+                                                    <label for="cpEinvoice" class="inv-wrapper active">E-Invoice</label>
+                                                </p>
+                                            </div>
+
+
+                                            <div class="radioWrapper radioInline"
+                                                *ngIf="TypeNo!='part' && TypeNo!='reopen' && TypeNo!='resubmit'"
+                                                (change)="checkInvoice($event)">
+                                                <p>
+                                                    <!-- test 5 -->
+                                                    <input type="radio" id="cpinvoice" value="Invoice" name="itrfield"
+                                                        checked style="cursor: default !important;" />
+                                                    <label for="cpinvoice" class="inv-wrapper active">Invoice</label>
+                                                </p>
+                                                <p>
+                                                    <input type="radio" id="cpEinvoice" value="Einvoice" name="itrfield"
+                                                        style="cursor: default !important;" />
+                                                    <label for="cpEinvoice" class="inv-wrapper ">E-Invoice</label>
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+                                        <!-- *ngIf="fileupload != 'norefileupload' -->
+                                        <div class="inv-form-inputs mb-mt">
+                                            <div class="add-file-input">
+                                                <label for="input-file2" class="file-input">
+                                                    <img src="./assets/img/cloud-computing.png"
+                                                        style="cursor: pointer;" />Upload PDF Invoice <sup
+                                                        class="imp">*</sup>
+                                                    <span style="margin-left: 5px;" class="InvStatus__date">(upto 4MB
+                                                        with no special characters)</span>
+                                                </label>
+                                                <input type="file" id="input-file2" class="d-none"
+                                                    accept="application/pdf" formControlName="attachments"
+                                                    (change)="onFileSelectEvent($event,'invoice')"
+                                                    onclick="value = null">
+
+                                            </div>
+                                            <!-- <p class="input-subtitle">Upload Other Supporting documents</p> -->
+                                            <p class="input-subtitle"></p>
+                                            <div class="uploadedFiles">
+                                                <div class="uploadedFiles__name">{{viewAttachmentName}}</div>
+                                                <div *ngIf="viewAttachmentName!=null && viewAttachmentName!=''"
+                                                    class="fileCrossIcon">
+                                                    <i class="fa fa-close fileCrossIcon" aria-hidden="true"
+                                                        (click)="close()"></i>
+                                                </div>
+                                            </div>
+                                            <p class="input-subtitle" style="color: red;" *ngIf="invoice">
+                                                <!-- Please send the physical invoice as per process -->
+                                            </p>
+
+                                        </div>
+                                        <div class="inv-form-inputs mb-mt" *ngIf="irndetail || irnNumber!=null">
+                                            <div class="invInputWicon" *ngIf="freshinvoice==true || irnNumber!=null">
+                                                <mat-label>IRN No</mat-label><sup class="imp">*</sup>
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Enter IRN No</mat-label>
+                                                    <input matInput placeholder="IRN No" type="text"
+                                                        (keypress)="keyPressAlphanumericWOSChar($event)" maxlength="64"
+                                                        formControlName="irnNo" value="">
+
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="invInputWicon" *ngIf="freshinvoice==false && irnNumber==null">
+                                                <mat-label>IRN No</mat-label><sup class="imp">*</sup>
+                                                <mat-form-field appearance="none" style="background-color: #e9ecef;">
+                                                    <mat-label>Enter IRN No</mat-label>
+                                                    <input matInput placeholder="IRN No" type="text"
+                                                        (keypress)="keyPressAlphanumericWOSChar($event)" maxlength="64"
+                                                        formControlName="irnNo" value="" readonly>
+                                                </mat-form-field>
+                                            </div>
+
+                                        </div>
+                                        <div class="inv-form-inputs mb-mt" *ngIf="irndetail || irnNumber!=null">
+                                            <div class="invInputWicon" *ngIf="freshinvoice==true || irnNumber!=null">
+                                                <mat-label>IRN Date</mat-label><sup class="imp">*</sup>
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Select IRN Date</mat-label>
+                                                    <input matInput [matDatepicker]="picker" formControlName="irnDate"
+                                                        readonly>
+                                                    <mat-datepicker-toggle matSuffix [for]="picker">
+                                                    </mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="invInputWicon" *ngIf="freshinvoice==false && irnNumber==null">
+                                                <mat-label>IRN Date</mat-label><sup class="imp">*</sup>
+                                                <mat-form-field appearance="none" style="background-color: #e9ecef;">
+                                                    <mat-label>Select IRN Date</mat-label>
+
+                                                    <input matInput [matDatepicker]="picker" formControlName="irnDate"
+                                                        readonly>
+
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="inv-form-inputs">
+                                            <div class="invInputWicon" *ngIf="freshinvoice==true && grnnumber == null">
+                                                <mat-label>Invoice Number</mat-label><sup class="imp">*</sup>
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Enter Invoice Number</mat-label>
+                                                    <input matInput placeholder="Enter Invoice Number"
+                                                        (keypress)="keyPressAlphanumeric($event)" type="text"
+                                                        maxlength="16" formControlName="invoiceNo" value="">
+
+
+                                                </mat-form-field>
+
+                                            </div>
+                                            <div class="invInputWicon" *ngIf="freshinvoice==false || grnnumber != null">
+                                                <mat-label>Invoice Number</mat-label><sup class="imp">*</sup>
+                                                <mat-form-field appearance="none" style="background-color: #e9ecef;">
+                                                    <mat-label>Enter Invoice Number</mat-label>
+
+                                                    <input matInput placeholder="Enter Invoice Number"
+                                                        (keypress)="keyPressAlphanumeric($event)" type="text"
+                                                        maxlength="16" formControlName="invoiceNo" value="" readonly>
+                                                </mat-form-field>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- <div *ngIf="freshinvoice==true"> -->
+                                        <div class="inv-form-inputs">
+
+                                            <div>
+                                                <mat-label for="">Bill Of Lading Date </mat-label>
+                                                <!-- <sup class="imp">*</sup> -->
+
+                                                <div class="invInputWicon"
+                                                    *ngIf="freshinvoice==true && TypeNo != 'reopen' ">
+                                                    <mat-form-field appearance="none">
+                                                        <mat-label>Bill Of Lading Date </mat-label>
+                                                        <input matInput [max]="maxdate" [min]="mindate"
+                                                            [matDatepicker]="billofladingdate"
+                                                            formControlName="billofladingdate" readonly />
+                                                        <mat-datepicker-toggle matSuffix [for]="billofladingdate">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #billofladingdate></mat-datepicker>
+
+
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="invInputWicon" *ngIf="freshinvoice==true && TypeNo == 'reopen'">
+                                                    <mat-form-field appearance="none"
+                                                        style="background-color: #e9ecef;">
+                                                        <mat-label>Bill Of Lading Date </mat-label>
+
+
+                                                        <input matInput [max]="maxdate" [min]="mindate"
+                                                            [matDatepicker]="billofladingdate"
+                                                            formControlName="billofladingdate"/>
+                                                            <mat-datepicker #billofladingdate disabled></mat-datepicker>
+
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="invInputWicon disablecolor"
+                                                    *ngIf="freshinvoice==true && TypeNo == 'reopen' ">
+                                                    <mat-form-field appearance="none">
+                                                        <mat-label>Bill Of Lading Date </mat-label>
+                                                        <input matInput [max]="maxdate" [min]="mindate"
+                                                            [matDatepicker]="billofladingdate"
+                                                            formControlName="billofladingdate" readonly />
+                                                        <mat-datepicker-toggle matSuffix [for]="billofladingdate">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #billofladingdate disabled></mat-datepicker>
+
+
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- </div> -->
+
+                                    </div>
+
+
+                                    <div class="sectionBorder">
+                                        <div class="invoice-form " style="padding-left: 0px; padding-right: 0px; padding-top: 0;
+                                padding-bottom: 0;">
+
+
+
+                                            <!-- <div class="inv-form-inputs" >
+                                            <div class="invInputWicon">
+                                                <mat-label>Invoice Number</mat-label><sup class="imp">*</sup>
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Enter Invoice Number</mat-label>
+                                                    <input matInput placeholder="Enter Invoice Number"
+                                                        (keypress)="keyPressAlphanumeric($event)" type="text"
+                                                        maxlength="16" formControlName="invoiceNo" value="">
+                                                </mat-form-field>
+                                                
+                                            </div>
+                                        </div> -->
+
+
+
+                                            <div class="inv-form-inputs">
+
+                                                <div>
+                                                    <mat-label for="">Invoice Date </mat-label><sup class="imp">*</sup>
+
+                                                    <span>
+                                                        <div class="invInputWicon"
+                                                            *ngIf="freshinvoice==false || grnnumber != null">
+                                                            <mat-form-field appearance="none"
+                                                                style="background-color: #e9ecef;">
+                                                                <mat-label>Invoice Date </mat-label>
+                                                                <span *ngIf="freshinvoice==false || grnnumber != null">
+                                                                    <input matInput [matDatepicker]="InvoiceDate"
+                                                                        formControlName="invoiceDate" readonly />
+                                                                </span>
+                                                            </mat-form-field>
+
+                                                        </div>
+                                                        <!-- <span>{{errormessage}}</span> -->
+                                                        <div class="invInputWicon"
+                                                            *ngIf="freshinvoice==true && grnnumber == null">
+                                                            <mat-form-field appearance="none">
+                                                                <mat-label>Invoice Date </mat-label>
+                                                                <input matInput [max]="maxdate" [min]="mindate"
+                                                                    [matDatepicker]="InvoiceDate"
+                                                                    formControlName="invoiceDate" readonly />
+                                                                <mat-datepicker-toggle matSuffix [for]="InvoiceDate">
+                                                                </mat-datepicker-toggle>
+                                                                <mat-datepicker #InvoiceDate></mat-datepicker>
+
+
+                                                            </mat-form-field>
+
+                                                        </div>
+
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                    <mat-accordion
+                                        *ngIf="TypeNo != 'resubmit' && TypeNo !='reopen' && tobeinvoiced==false">
+
+                                        <mat-expansion-panel (opened)="panelOpenState = true"
+                                            (closed)="panelOpenState = false" [expanded]="true" hideToggle>
+
+                                            <mat-expansion-panel-header class="mataccordian">
+                                                <mat-panel-title>
+                                                    <h3 class="mb-0 font-weight-bold">Items List - {{ponumber}}</h3>
+                                                </mat-panel-title>
+                                                <mat-panel-description>
+                                                    <mat-icon *ngIf="!panelOpenState"
+                                                        style="font-size: 35px;">arrow_right</mat-icon>
+                                                    <mat-icon *ngIf="panelOpenState"
+                                                        style="font-size: 35px;">arrow_drop_up</mat-icon>
+                                                </mat-panel-description>
+
+                                            </mat-expansion-panel-header>
+                                            <div class="grey-box">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col" *ngIf="grntobeinvoicelist.length!= 0">DC
+                                                                    Number</th>
+                                                                <th scope="col">Items</th>
+                                                                <th scope="col"
+                                                                    *ngIf="part || (full && grntobeinvoicelist.length!= 0) ">
+                                                                    Bal Qty/ PO Quantity</th>
+                                                                <th scope="col">Quantity</th>
+                                                                <th scope="col">
+                                                                    <div class="text-right"> Amount(INR)</div>
+                                                                </th>
+                                                                <th scope="col"></th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngFor="let poitem of uniquelineitems; let i=index"
+                                                            style=" border-top: 1px solid #c2c4c6; border-bottom: 1px solid #000;">
+                                                            <tr>
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="grntobeinvoicelist.length!= 0">
+                                                                    {{poitem.DCNUMBER}}
+                                                                </td>
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="tobeinvoiced">
+                                                                    {{poitem.TOINVOICELINEITEMNUMBER}} -
+                                                                    {{poitem.TOINVOICELINEITEMTEXT}}
+                                                                </td>
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="tobeinvoiced == false">
+                                                                    {{poitem.LINEITEMNUMBER}} - {{poitem.LINEITEMTEXT}}
+                                                                </td>
+
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="part || (full && grntobeinvoicelist.length!= 0)">
+                                                                    {{poitem.BALANCE_QTY |
+                                                                    number:'1.3-3'}}/{{poitem.QUANTITY
+                                                                    | number:'1.3-3'}}
+
+                                                                    <!-- <input type="text" (keypress)="numberOnly($event,i,j)" (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i,j)" id="DeliveryQtyId{{i}}{{j}}" /> -->
+                                                                </td>
+
+
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="part && TypeNo != 'reopen'"><input
+                                                                        type="text" class="readonlyQuantity"
+                                                                        placeholder="0" value="0"
+                                                                        style="width:60px; border: 1px solid #dce1e4;"
+                                                                        maxlength="10" id="inputQty{{i}}"
+                                                                        formControlName="orderValue{{i}}"
+                                                                        (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i) ; calculate(i,poitem.RATEPERQTY);calculateTax()"
+                                                                        [readOnly]="poitem.FORECLOSESTATUSCHECK == 'X'"
+                                                                        valThreeDecimal>
+
+                                                                    <!-- <input type="text" (keypress)="numberOnly($event,i,j)" (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i,j)" id="DeliveryQtyId{{i}}{{j}}" /> -->
+                                                                    <p class="exceededMsg" id="exceeded{{i}}"
+                                                                        style="display: none;">
+                                                                        Delivery Quantity exceeded.
+                                                                    </p>
+                                                                </td>
+
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="part && TypeNo == 'reopen'"><input
+                                                                        type="text" class="readonlyQuantity"
+                                                                        placeholder="0" value="0" readonly disabled
+                                                                        style="width:60px; border: 1px solid #dce1e4;"
+                                                                        maxlength="10" id="inputQty{{i}}"
+                                                                        formControlName="orderValue{{i}}"
+                                                                        (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i) ; calculate(i,poitem.RATEPERQTY);calculateTax()"
+                                                                        [readOnly]="poitem.FORECLOSESTATUSCHECK == 'X'"
+                                                                        valThreeDecimal>
+
+                                                                    <p class="exceededMsg" id="exceeded{{i}}"
+                                                                        style="display: none;">
+                                                                        Delivery Quantity exceeded.
+                                                                    </p>
+                                                                </td>
+
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="full && grntobeinvoicelist.length != 0">
+                                                                    {{poitem.GRNQTY | number:'1.3-3'}}
+                                                                </td>
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="full && grntobeinvoicelist.length == 0">
+                                                                    {{poitem.BALANCE_QTY | number:'1.3-3'}}
+                                                                </td>
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="full">
+                                                                    <div class="text-right">
+                                                                        {{poitem.TOTALAMOUNT | currency}}
+                                                                    </div>
+                                                                </td>
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="part">
+                                                                    <div class="text-right">
+                                                                        <input id="oldsimpo"
+                                                                            formControlName="calRealtime{{i}}"
+                                                                            [value]="invoiceForm.get('calRealtime'+i).value | currency : 'symbol' : '1.2-2' "
+                                                                            placeholder="0" style="width: 100px; background: transparent;
+                                                            border: none; text-align: right" readonly>
+                                                                    </div>
+                                                                </td>
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="part">
+                                                                    <div class="">
+                                                                        <div class="commentDiv text-center">
+                                                                            <div class="commentIcon"
+                                                                                *ngIf="poitem.FORECLOSESTATUSCHECK == 'X'">
+                                                                                <span class="text-left"
+                                                                                    style="cursor: pointer;"
+                                                                                    tooltip="Foreclosed" placement="top"
+                                                                                    showDelay="300">
+                                                                                    <img src="./assets/img/foreclosed.png"
+                                                                                        style="max-width: 30px; cursor: pointer;" />
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="full">
+
+                                                                </td>
+
+                                                                <!-- {{calculatedAmount}} -->
+                                                            </tr>
+                                                            <!--      <tr>
+                                                <td>20 Consultancy Charges</td>
+                                                <td><input type="number" value="3" width="50">/10</td>
+                                                <td>20,500</td>
+    
+                                            </tr>
+                                             <tr>
+                                                <td>30 Consultancy Charges</td>
+                                                <td><input type="number" value="2" width="50">/10</td>
+                                                <td>10,000</td>
+    
+                                            </tr>-->
+                                                        </tbody>
+                                                        <tbody style="border-top: 1px solid #000;">
+                                                            <tr class="total">
+                                                                <th></th>
+                                                                <th
+                                                                    *ngIf="part ||(full && grntobeinvoicelist.length!= 0)">
+                                                                </th>
+                                                                <th *ngIf="grntobeinvoicelist.length!= 0">
+                                                                </th>
+                                                                <th scope="row"  class="text-row">Total Quantity</th>
+                                                                <th scope="row">
+                                                                    <div class="text-right text-row"
+                                                                        >Total Amount
+                                                                        (Excl Taxes)
+                                                                        <!-- style="width:166px !important; -->
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td *ngIf="part || grntobeinvoicelist.length != 0"></td>
+                                                                <td *ngIf="grntobeinvoicelist.length != 0"></td>
+                                                                <td *ngIf="full">{{totalBalQty | number:'1.3-3'}}</td>
+
+                                                                <td *ngIf="part">
+                                                                    <span>{{inputBalanceQuantity |
+                                                                        number:'1.3-3'}}</span>
+                                                                </td>
+
+                                                                <td *ngIf="part">
+                                                                    <div class="text-right">
+                                                                        {{overallAmount | currency:'INR' : 'symbol' :
+                                                                        '1.2-2' }}
+                                                                    </div>
+                                                                </td>
+                                                                <td *ngIf="full">
+                                                                    <div class="text-right">
+                                                                        {{overallAmount | currency:'INR' : 'symbol' :
+                                                                        '1.2-2' }}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                    <!-- Mataccordian -->
+                                    <div *ngIf="TypeNo != 'resubmit' && TypeNo !='reopen'">
+
+                                        <mat-accordion *ngFor="let poitem of grntobeinvoicelist; let i=index;">
+
+                                            <mat-expansion-panel (opened)="panel = true" (closed)="panel = false"
+                                                [expanded]="true" hideToggle style="margin-top: 15px;"
+                                                (click)="openapprovalTobeInvoice(i,panel)">
+
+                                                <mat-expansion-panel-header class="mataccordian1">
+                                                    <mat-panel-title>
+                                                        <h3 class="mb-0 font-weight-bold">Items List - {{poitem.PONUMBER
+                                                            }}</h3>
+                                                    </mat-panel-title>
+                                                    <mat-panel-description>
+                                                        <mat-icon id="closeArrowAddPo{{i}}"
+                                                            style="font-size: 35px; display:none;">arrow_right</mat-icon>
+                                                        <mat-icon id="openArrowAddPo{{i}}"
+                                                            style="font-size: 35px; display:block;">arrow_drop_up</mat-icon>
+                                                    </mat-panel-description>
+
+                                                </mat-expansion-panel-header>
+                                                <div class="grey-box">
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col"
+                                                                        *ngIf="grntobeinvoicelist.length!= 0">
+                                                                        DC Number
+                                                                    </th>
+                                                                    <th scope="col" class="col-header">Items</th>
+                                                                    <th scope="col"
+                                                                        *ngIf="part || (full && grntobeinvoicelist.length!= 0) ">
+                                                                        Bal Qty/ PO Quantity</th>
+                                                                    <th scope="col">Quantity</th>
+                                                                    <th scope="col">
+                                                                        <div class="text-right"> Amount(INR)</div>
+                                                                    </th>
+                                                                    <th scope="col"></th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody *ngFor="let data of poitem.LINEITEMS; let z=index;"
+                                                                style=" border-top: 1px solid #c2c4c6; border-bottom: 1px solid #000;">
+                                                                <tr>
+
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="grntobeinvoicelist.length!= 0">
+                                                                        {{data.DCNUMBER}}
+
+                                                                    </td>
+
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="tobeinvoiced">
+                                                                        {{data.LINEITEMNO}} -
+                                                                        {{data.lineitemtext}}
+                                                                    </td>
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="tobeinvoiced == false">
+                                                                        {{poitem.LINEITEMNUMBER}} -
+                                                                        {{poitem.LINEITEMTEXT}}
+                                                                    </td>
+                                                                    <!-- <td  style=" border-top: 1px solid #c2c4c6;" *ngIf="tobeinvoiced">{{data.GRNQTY}}</td> -->
+
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="part || (full && grntobeinvoicelist.length!= 0 )">
+                                                                        {{data.balance_qty |
+                                                                        number:'1.3-3'}}/{{data.quantity
+                                                                        | number:'1.3-3'}}
+
+                                                                        <!-- <input type="text" (keypress)="numberOnly($event,i,j)" (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i,j)" id="DeliveryQtyId{{i}}{{j}}" /> -->
+                                                                    </td>
+
+
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="part && TypeNo != 'reopen' && tobeinvoiced == false">
+                                                                        <input type="text" class="readonlyQuantity"
+                                                                            placeholder="0" value="0"
+                                                                            style="width:60px; border: 1px solid #dce1e4;"
+                                                                            maxlength="10" id="inputQty{{i}}"
+                                                                            formControlName="orderValue{{i}}"
+                                                                            (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i) ; calculate(i,poitem.RATEPERQTY);calculateTax()"
+                                                                            [readOnly]="poitem.FORECLOSESTATUSCHECK == 'X'"
+                                                                            valThreeDecimal>
+
+                                                                        <!-- <input type="text" (keypress)="numberOnly($event,i,j)" (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i,j)" id="DeliveryQtyId{{i}}{{j}}" /> -->
+                                                                        <p class="exceededMsg" id="exceeded{{i}}"
+                                                                            style="display: none;">
+                                                                            Delivery Quantity exceeded.
+                                                                        </p>
+                                                                    </td>
+
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="part && TypeNo == 'reopen' && tobeinvoiced == false">
+                                                                        <input type="text" class="readonlyQuantity"
+                                                                            placeholder="0" value="0" readonly disabled
+                                                                            style="width:60px; border: 1px solid #dce1e4;"
+                                                                            maxlength="10" id="inputQty{{i}}"
+                                                                            formControlName="orderValue{{i}}"
+                                                                            (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i) ; calculate(i,poitem.RATEPERQTY);calculateTax()"
+                                                                            [readOnly]="poitem.FORECLOSESTATUSCHECK == 'X'"
+                                                                            valThreeDecimal>
+
+                                                                        <p class="exceededMsg" id="exceeded{{i}}"
+                                                                            style="display: none;">
+                                                                            Delivery Quantity exceeded.
+                                                                        </p>
+                                                                    </td>
+
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="full && grntobeinvoicelist.length != 0">
+                                                                        {{poitem.GRNQTY | number:'1.3-3'}}
+                                                                    </td>
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="part && grntobeinvoicelist.length != 0">
+                                                                        {{data.GRNQTY | number:'1.3-3'}}
+                                                                    </td>
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="full && grntobeinvoicelist.length == 0">
+                                                                        {{data.balance_qty | number:'1.3-3'}}
+                                                                    </td>
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="full">
+                                                                        <div class="text-right">
+                                                                            dd {{item.TOTALAMOUNT | currency}}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="part && tobeinvoiced ==false">
+                                                                        <div class="text-right">
+                                                                            <input id="oldsimpo"
+                                                                                formControlName="calRealtime{{i}}"
+                                                                                [value]="invoiceForm.get('calRealtime'+i).value | currency : 'symbol' : '1.2-2' "
+                                                                                placeholder="0" style="width: 100px; background: transparent;
+                                                            border: none; text-align: right" readonly>
+
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style=" border-top: 1px solid #c2c4c6 !important; width: 100px; background: transparent;
+                                                                border: none; text-align: right;"
+                                                                        *ngIf="part  &&  grntobeinvoicelist.length != 0">
+                                                                        {{data.AMOUNT | currency}}
+                                                                    </td>
+
+
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="part">
+                                                                        <div class="">
+                                                                            <div class="commentDiv text-center">
+                                                                                <div class="commentIcon"
+                                                                                    *ngIf="poitem.FORECLOSESTATUSCHECK == 'X'">
+                                                                                    <span class="text-left"
+                                                                                        style="cursor: pointer;"
+                                                                                        tooltip="Foreclosed"
+                                                                                        placement="top" showDelay="300">
+                                                                                        <img src="./assets/img/foreclosed.png"
+                                                                                            style="max-width: 30px; cursor: pointer;" />
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style=" border-top: 1px solid #c2c4c6;"
+                                                                        *ngIf="full">
+
+                                                                    </td>
+
+                                                                    <!-- {{calculatedAmount}} -->
+                                                                </tr>
+                                                            </tbody>
+                                                            <tbody style="border-top: 1px solid #000;">
+                                                                <tr class="total">
+                                                                    <th></th>
+                                                                    <th
+                                                                        *ngIf="part ||(full && grntobeinvoicelist.length!= 0)">
+                                                                    </th>
+                                                                    <th *ngIf="grntobeinvoicelist.length!= 0">
+                                                                    </th>
+                                                                    <th scope="row">Total Quantity</th>
+                                                                    <th scope="row">
+                                                                        <div class="text-right"
+                                                                            >Total Amount
+                                                                            (Excl Taxes)
+                                                                        </div>
+                                                                        <!-- style="width:166px !important;" -->
+                                                                    </th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td *ngIf="part || grntobeinvoicelist.length != 0">
+                                                                    </td>
+                                                                    <td *ngIf="grntobeinvoicelist.length != 0"></td>
+                                                                    <td *ngIf="full">{{totalBalQty | number:'1.3-3'}}
+                                                                    </td>
+
+
+                                                                    <td *ngIf="part && tobeinvoiced==false">
+                                                                        <span>{{inputBalanceQuantity |
+                                                                            number:'1.3-3'}}</span>
+                                                                    </td>
+                                                                    <td *ngIf="part || grntobeinvoicelist.length != 0">
+                                                                        <span>{{poitem.TotalQtyOfItems |
+                                                                            number:'1.3-3'}}</span>
+                                                                    </td>
+                                                                    <td *ngIf="part  || grntobeinvoicelist.length != 0">
+                                                                        <div class="text-right">
+                                                                            {{poitem.TotalQtyAmountitem | currency:'INR'
+                                                                            : 'symbol' : '1.2-2' }}
+                                                                        </div>
+                                                                    </td>
+
+                                                                    <td *ngIf="part && grntobeinvoicelist.length == 0">
+                                                                        <div class="text-right">
+                                                                            {{poitem.Totalfinalamount }}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td *ngIf="full">
+                                                                        <div class="text-right">
+                                                                            {{overallAmount | currency:'INR' : 'symbol'
+                                                                            : '1.2-2' }}
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </mat-expansion-panel>
+                                        </mat-accordion>
+                                    </div>
+
+                                    <!-- <div class="finalTotalAmount" *ngIf="full  && tobeinvoiced == false && TypeNo != 'resubmit' && TypeNo !='reopen'">
+                                   </div> -->
+                                    <mat-accordion *ngFor="let povalue of simpoSelectedPo; let i = index">
+
+
+                                        <mat-expansion-panel (opened)="panelOpen = true" (closed)="panelOpen = false"
+                                            [expanded]="true" hideToggle style="margin-top: 15px;"
+                                            (click)="openapprovalAddPo(i,panelOpen)">
+                                            <!--<img src="./assets/img/removepo.png" style="max-width: 20px;float: inline-end;cursor: pointer;" alt="pdf image"
+                                            (click)="removepo(i,povalue)" />-->
+                                            <mat-expansion-panel-header class="mataccordian">
+                                                <mat-panel-title>
+
+                                                    <h3 class="mb-0 font-weight-bold" style="padding-top: 8px;">Items
+                                                        List - {{povalue}}</h3>
+                                                </mat-panel-title>
+                                                <!--<img src="./assets/img/removepo.png" style="max-width: 40px;float: inline-end;cursor: pointer;height: 23px;margin-top: 10px;" alt="pdf image"
+                                            (click)="removepo(i,povalue)" />-->
+
+                                                <mat-panel-description>
+                                                    <mat-icon id="closeArrowAddPo{{i}}"
+                                                        style="font-size: 35px;display:none;">arrow_right</mat-icon>
+                                                    <mat-icon id="openArrowAddPo{{i}}"
+                                                        style="font-size: 35px;display:block;">arrow_drop_up</mat-icon>
+                                                </mat-panel-description>
+
+
+                                            </mat-expansion-panel-header>
+                                            <div class="grey-box" id="approvalBoxAddPo{{i}}">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <!-- <th scope="col"></th> -->
+                                                                <th scope="col">Items</th>
+                                                                <th scope="col" class=ng-star-inserted style>
+
+                                                                    Bal Qty/ PO Quantity</th>
+                                                                <th scope="col">Quantity</th>
+                                                                <th scope="col">
+                                                                    <div class="text-right"> Amount(INR)</div>
+                                                                </th>
+                                                                <th scope="col"></th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngFor="let povitemvalue of posimponewList; let j=index"
+                                                            style=" border-top: 1px solid #c2c4c6; border-bottom: 1px solid #000;">
+                                                            <tr *ngIf="povalue == povitemvalue.PO_NUMBER"
+                                                                id="lineitem{{i}}{{j}}">
+                                                                <td style=" border-top: 1px solid #c2c4c6;">
+                                                                    {{povitemvalue.LINEITEMNUMBER}} -
+                                                                    {{povitemvalue.LINEITEMTEXT}}
+                                                                </td>
+
+
+                                                                <td style=" border-top: 1px solid #c2c4c6;">
+                                                                    {{povitemvalue.BALANCE_QTY |
+                                                                    number:'1.3-3'}}/{{povitemvalue.QUANTITY
+                                                                    | number:'1.3-3'}}
+
+                                                                    <!-- <input type="text" (keypress)="numberOnly($event,i,j)" (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i,j)" id="DeliveryQtyId{{i}}{{j}}" /> -->
+                                                                </td>
+
+                                                                <!-- (input)="checkBalanceQty($event, poitem.BALANCE_QTY,j) ; calculate(j,poitem.RATEPERQTY);calculateTax()"
+                                                                [readOnly]="poitem.FORECLOSESTATUSCHECK == 'X'"   formControlName="orderValue{{j}}"-->
+                                                                <td *ngIf="TypeNo != 'reopen'"
+                                                                    style=" border-top: 1px solid #c2c4c6;"><input
+                                                                        type="text" class="readonlyQuantity"
+                                                                        placeholder="0" value="0"
+                                                                        style="width:60px; border: 1px solid #dce1e4;"
+                                                                        maxlength="10" id="inputQtysimpo{{i}}{{j}}"
+                                                                        formControlName="orderValuesimpo{{i}}{{j}}"
+                                                                        (input)="checkBalanceQtysimpo($event, povitemvalue.BALANCE_QTY,i,j) ; calculatesimpo(i,j,povitemvalue.RATEPERQTY); onchangeresubmit($event)"
+                                                                        [readOnly]="povitemvalue.FORECLOSESTATUSCHECK == 'X'"
+                                                                        valThreeDecimal>
+
+                                                                    <!-- <input type="text" (keypress)="numberOnly($event,i,j)" (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i,j)" id="DeliveryQtyId{{i}}{{j}}" /> -->
+                                                                    <p class="exceededMsg"
+                                                                        id="exceededmsgSimpo{{i}}{{j}}"
+                                                                        style="display: none;">
+                                                                        Delivery Quantity exceeded.
+                                                                    </p>
+                                                                </td>
+
+                                                                <td *ngIf="TypeNo == 'reopen' "
+                                                                    style=" border-top: 1px solid #c2c4c6;"><input
+                                                                        type="text" class="readonlyQuantity"
+                                                                        placeholder="0" value="0" readonly disabled
+                                                                        style="width:60px; border: 1px solid #dce1e4;"
+                                                                        maxlength="10" id="inputQtysimpo{{i}}{{j}}"
+                                                                        formControlName="orderValuesimpo{{i}}{{j}}"
+                                                                        (input)="checkBalanceQtysimpo($event, povitemvalue.BALANCE_QTY,i,j) ; calculatesimpo(i,j,povitemvalue.RATEPERQTY); onchangeresubmit($event)"
+                                                                        [readOnly]="povitemvalue.FORECLOSESTATUSCHECK == 'X'"
+                                                                        valThreeDecimal>
+
+                                                                    <!-- <input type="text" (keypress)="numberOnly($event,i,j)" (input)="checkBalanceQty($event, poitem.BALANCE_QTY,i,j)" id="DeliveryQtyId{{i}}{{j}}" /> -->
+                                                                    <p class="exceededMsg"
+                                                                        id="exceededmsgSimpo{{i}}{{j}}"
+                                                                        style="display: none;">
+                                                                        Delivery Quantity exceeded.
+                                                                    </p>
+                                                                </td>
+
+
+                                                                <!-- <td style=" border-top: 1px solid #c2c4c6;">
+                                                                  
+                                                                    {{povitemvalue.BALANCE_QTY | number:'1.3-3'}}
+                                                                </td>  -->
+                                                                <!-- <td style=" border-top: 1px solid #c2c4c6;"
+                                                                   >
+                                                                    <div class="text-right">
+                                                                        {{povitemvalue.TOTALAMOUNTSIMPO | currency}}
+                                                                    </div>
+                                                                </td>   -->
+                                                                <td style=" border-top: 1px solid #c2c4c6;">
+                                                                    <div class="text-right">
+                                                                        <input
+                                                                            formControlName="calRealtimesimpo{{i}}{{j}}"
+                                                                            [value]="invoiceForm.get('calRealtimesimpo'+i +j).value | currency : 'symbol' : '1.2-2' "
+                                                                            placeholder="0" style="width: 100px; background: transparent;
+                                                                            border: none; text-align: right" readonly>
+                                                                    </div>
+                                                                </td>
+                                                                <td style=" border-top: 1px solid #c2c4c6;"
+                                                                    *ngIf="part">
+                                                                    <div class="">
+                                                                        <div class="commentDiv text-center">
+                                                                            <div class="commentIcon"
+                                                                                *ngIf="povitemvalue.FORECLOSESTATUSCHECK == 'X'">
+                                                                                <span class="text-left"
+                                                                                    style="cursor: pointer;"
+                                                                                    tooltip="Foreclosed" placement="top"
+                                                                                    showDelay="300">
+                                                                                    <img src="./assets/img/foreclosed.png"
+                                                                                        style="max-width: 30px; cursor: pointer;" />
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <!-- <td style=" border-top: 1px solid #c2c4c6;"
+                                                                *ngIf="part">
+                                                                <div class="text-right">
+                                                                    <input id="simpo" formControlName="calRealtimesimpo{{i}}"
+                                                                        [value]="invoiceForm.get('calRealtimesimpo'+i).value | currency : 'symbol' : '1.2-2' "
+                                                                        placeholder="0" style="width: 100px; background: transparent;
+                                                        border: none; text-align: right" readonly>
+                                                                </div>
+                                                            </td> -->
+
+                                                            </tr>
+
+                                                        </tbody>
+                                                        <tbody style="border-top: 1px solid #000;">
+                                                            <tr class="total">
+                                                                <!-- <th></th> -->
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th scope="row">Total Quantity</th>
+                                                                <th scope="row">
+                                                                    <div class="text-right">Total Amount (Excl Taxes)
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td *ngIf="part || grntobeinvoicelist.length != 0"></td>
+                                                                <td *ngIf="grntobeinvoicelist.length != 0"></td>
+                                                                <td></td>
+                                                                <!-- <td *ngIf="full">{{totalBalQty | number:'1.3-3'}}</td> -->
+                                                                <td *ngIf="part">
+                                                                    <!-- <span>{{inputBalanceQuantitysimpo |
+                                                                        number:'1.3-3'}}</span>
+                                                                     -->
+                                                                    <!--  -->
+                                                                    <input
+                                                                        formControlName="inputBalanceQuantitysimpo{{i}}"
+                                                                        [value]="invoiceForm.get('inputBalanceQuantitysimpo'+i).value | number:'1.3-3'"
+                                                                        placeholder="0" style="width: 100px; background: transparent;
+                                                                            border: none;" readonly>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="text-right">
+                                                                        <!-- {{overallAmountsimpo | currency:'INR' : 'symbol' : '1.2-2' }} -->
+                                                                        <!--  [value]="invoiceForm.get('overallsimpoAmount'+i).value | currency:'INR' : 'symbol' : '1.2-2' " -->
+                                                                        <input formControlName="overallsimpoAmount{{i}}"
+                                                                            id="overallsimpAmount{{i}}"
+                                                                            [value]="invoiceForm.get('overallsimpoAmount'+i).value | currency:'INR' : 'symbol' : '1.2-2' "
+                                                                            placeholder="0" style="width: 100px; background: transparent;
+                                                                            border: none; text-align: right" readonly>
+                                                                    </div>
+                                                                </td>
+                                                                <!-- <td>
+                                                                    <div class="text-right">
+                                                                        {{overallAmount | currency:'INR' : 'symbol' :
+                                                                        '1.2-2' }}
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="text-right">
+                                                                        {{overallAmount | currency:'INR' : 'symbol' :
+                                                                        '1.2-2' }}
+                                                                    </div>
+                                                                </td> -->
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+
+                                    <div class="finalTotalAmount" *ngIf="part  || grntobeinvoicelist.length != 0">
+                                        <h3 class="mb-0 font-weight-bold">Final Total Amount (Excl Taxes) : {{
+                                            finalTotalAmount | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                                        <h3 class="mb-0 font-weight-bold"
+                                            *ngIf="tobeinvoiced == false && full && grntobeinvoicelist.length == 0">
+                                            Final Total Amount (Excl Taxes) : {{finalTotalAmount | currency:'INR' :
+                                            'symbol' : '1.2-2' }}</h3>
+
+                                    </div>
+                                    <div class="finalTotalAmount" *ngIf="TypeNo == 'reopen' && TypeNo == 'resubmit'">
+                                        <h3 class="mb-0 font-weight-bold">Final Total Amount (Excl Taxes) :
+                                            {{finalTotalAmount | currency:'INR' : 'symbol' : '1.2-2' }}</h3>
+                                    </div>
+                                    <!--copy lisy -------------------------------------- -->
+
+                                    <div style="padding-top:20px;" *ngIf="showAddPoButton == true">
+                                        <a style="color:#cc0000;text-underline-position: below" (click)="showPopup()">
+                                            <img src="./assets/img/add_po_icon.png"
+                                                style="width:35px;margin-right:6px;cursor: pointer;">
+                                            <span
+                                                style="text-decoration:underline;font-weight: 600;cursor: pointer;">Add
+                                                PO</span>
+                                        </a>
+                                    </div>
+
+                                    <div class="invoice-form " style="padding-left: 0px; padding-right: 0px;">
+                                        <div class="inv-form-inputs mb-mt">
+                                            <div class="invInputWicon mb-3" *ngIf="TypeNo != 'reopen'">
+                                                <mat-label>Description</mat-label>
+                                                <sup class="imp">*</sup>
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Description</mat-label>
+                                                    <!-- <input matInput placeholder="Enter Invoice Number" type="text" formControlName="invoiceNo" value=""> -->
+                                                    <textarea matInput placeholder="Enter Description"
+                                                        formControlName="description" maxlength="500" value="" autofocus
+                                                        maxlength="160" (input)="checklength('description')"></textarea>
+                                                </mat-form-field>
+                                                <mat-label style="font-size: 10px;">{{descripionlength}} characters out
+                                                    of 160</mat-label>
+                                                <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="Description"
+                                            placement="left" showDelay="300"></span> -->
+                                            </div>
+
+                                            <!-- <mat-error *ngIf="hasError('invoiceNo', 'required') && invoiceForm.controls['invoiceNo'].touched">*Name is required
+                                             </mat-error> -->
+                                            <div class="invInputWicon mb-3 " *ngIf="TypeNo == 'reopen'">
+                                                <mat-label>Description</mat-label>
+                                                <sup class="imp">*</sup>
+                                                <mat-form-field appearance="none" class="disablecolor">
+                                                    <mat-label>Description</mat-label>
+                                                    <!-- <input matInput placeholder="Enter Invoice Number" type="text" formControlName="invoiceNo" value=""> -->
+                                                    <textarea matInput placeholder="Enter Description"
+                                                        class="disablecolor" formControlName="description"
+                                                        maxlength="500" value="" maxlength="160"
+                                                        (input)="checklength('description')" disabled
+                                                        readonly></textarea>
+                                                </mat-form-field>
+                                                <mat-label style="font-size: 10px;">{{descripionlength}} characters out
+                                                    of 160</mat-label>
+                                                <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="Description"
+                                            placement="left" showDelay="300"></span> -->
+                                            </div>
+
+                                            <div class="invInputWicon mb-3">
+                                                <mat-label>Remarks</mat-label>
+                                                <sup class="imp">*</sup>
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Remarks</mat-label>
+                                                    <!-- <input matInput placeholder="Enter Invoice Number" type="text" formControlName="invoiceNo" value=""> -->
+                                                    <textarea matInput placeholder="Enter Remark"
+                                                        formControlName="remarks" maxlength="160" value=""
+                                                        (input)="checklength('remark')"></textarea>
+                                                </mat-form-field>
+                                                <mat-label style="font-size: 10px;">{{remarklength}} characters out of
+                                                    160</mat-label>
+                                                <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="Description"
+                                            placement="left" showDelay="300"></span> -->
+                                            </div>
+                                        </div>
+                                        <!-- <div class="inv-form-inputs mb-mt">
+                                            <div class="invInputWicon mb-3">
+                                                <mat-label>Final Total Amount (Excl Taxes)</mat-label>
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Final Total Amount</mat-label>
+                                                    <input matInput type="text" value="{{finalTotalAmount}}" valDecimal readonly>
+                                                </mat-form-field>
+                                                <mat-error *ngIf="negativeFlag"> Tax amount can't be negative.
+                                                </mat-error>  
+                                            </div>
+                                            </div> -->
+                                        <div class="inv-form-inputs mb-mt">
+                                            <div class="invInputWicon mb-3">
+                                                <mat-label>Total Amount (Incl Taxes)</mat-label>
+                                                <sup class="imp">*</sup>
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Total Amount</mat-label>
+                                                    <input matInput type="text" id="total"
+                                                        formControlName="TotalinctaxAmount" (blur)="calculateTaxSimpo()"
+                                                        valDecimal>
+                                                </mat-form-field>
+
+                                            </div>
+                                            <div class="invInputWicon mb-3">
+
+                                                <mat-label>Tax Amount</mat-label>
+                                                <sup class="imp">*</sup>
+                                                <!-- <input type="checkbox" (click)="checked()"> editing: {{editing}} -->
+
+
+                                                <!-- style="background-color: #e9ecef;" -->
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Tax Amount</mat-label>
+                                                    <!-- <div *ngIf="!editing">
+                                                        <input matInput type="text" formControlName="taxAmount" id="taxAmount" [value]="invoiceForm.get('taxAmount').value | currency" readonly>
+                                                         </div> -->
+                                                    <!-- <div *ngIf="editing"> -->
+                                                    <input matInput type="text" formControlName="taxAmount"
+                                                        id="taxAmount" valDecimal readonly>
+                                                    <!-- (blur)="calculateAmount()"  use only if required by client-->
+
+                                                    <!-- [value]="invoiceForm.get('taxAmount').value | currency:'INR'" -->
+                                                    <!-- </div> -->
+                                                    <!-- formControlName="TotalItemAmount" -->
+                                                </mat-form-field>
+                                                <mat-error *ngIf="negativeFlag"> Tax amount can't be
+                                                    negative.</mat-error>
+                                                <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="Total Amount"
+                                                     placement="left" showDelay="300"></span> -->
+
+                                            </div>
+
+                                            <div class="invInputWicon">
+                                                <mat-label>Notify End User (Optional)</mat-label>
+                                                <mat-form-field appearance="none">
+                                                    <mat-label>Notify End User</mat-label>
+                                                    <input matInput type="text" formControlName="endUser"
+                                                        id="endUser" >
+                                                </mat-form-field>
+                                                <mat-error *ngIf="invoiceForm.controls.endUser?.touched && invoiceForm.controls.endUser?.errors?.pattern"> Only Times Group email IDs are valid.
+                                                </mat-error>
+                                            </div>
+                                            <!-- <mat-error *ngIf="hasError('invoiceNo', 'required') && invoiceForm.controls['invoiceNo'].touched">*Name is required
+                                                 </mat-error> -->
+                                        </div>
+                                        <!-- <div class="inv-form-inputs">
+                                    <mat-form-field appearance="none">
+                                        <mat-label for="cptotalamt">Total Amount <sup class="imp">*</sup></mat-label>
+                                        <input matInput type="text" readonly class="form-control" id="cptotalamt"
+                                            formControlName="TotalItemAmount" aria-describedby="cptotalamt"
+                                            placeholder="Total Amount">
+                                    </mat-form-field>
+                                </div> -->
+                                        <div class="inv-form-inputs mb-mt">
+                                            <div class=" FileUploadIconWrap" style="width: 100%;">
+                                                <div class="add-file-input pdfFileListing">
+                                                    <!-- <label for="input-file3" class="file-input" *ngIf="viewAttachmentNames==null || viewAttachmentNames==''"> -->
+                                                    <label for="input-file3" class="file-input"
+                                                        style="display: flex;flex-wrap: wrap;align-items: center;">
+                                                        <img src="./assets/img/cloud-computing.png"
+                                                            style="cursor: pointer; " /> Supporting Docs<span
+                                                            style="margin-left: 5px;" class="InvStatus__date">(no
+                                                            special characters in the file name)</span>
+                                                    </label>
+
+                                                    <input type="file" id="input-file3" class="d-none"
+                                                        accept=".jpeg,.png,.doc,.docx,.xls,.xlsx,.csv,.pdf,.jpg"
+                                                        multiple="multiple" (change)="onFileChanged($event)"
+                                                        onclick="value = null">
+
+
+                                                </div>
+                                                <ul class="listFiles">
+                                                    <!-- <div *ngIf="viewAttachmentName!=null && viewAttachmentName!=''">
+                                                        <i class="fa fa-close fileCrossIcon" aria-hidden="true" (click)="close()"></i>
+                                                    </div> -->
+                                                    <li *ngFor="let selected of ArrayOfSelectedFilename;let i=index"
+                                                        class="fileUploadSingle">
+                                                        {{selected}} <i class="fa fa-close fileCrossIcon fileCrossIcon"
+                                                            aria-hidden="true" (click)="removeitem(i)"></i>
+                                                    </li>
+
+                                                    <!-- <i class="fa fa-close fileCrossIcon"  (click)="removeSelectedFile(i)"></i> -->
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                        <!-- <div class="inv-form-inputs mb-mt">
+                                            
+
+                                             <mat-error *ngIf="hasError('invoiceNo', 'required') && invoiceForm.controls['invoiceNo'].touched">*Name is required
+                                    </mat-error> 
+                                        </div> -->
+                                    </div>
+
+                                    <div class="buttonWrapper mt-4" *ngIf="TypeNo != 'reopen' && tobeinvoiced ==false">
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center">
+
+                                                <button type="submit" class="btn button-primary"
+                                                    (click)="newsubmitinvoice()"
+                                                    [disabled]="invoiceForm.invalid || disable? true : null ">
+                                                    <!-- || overallAmount == 0 -->
+                                                    <img src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                                        class="activeImg arrowIcon">
+                                                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                                        class="disabledImg arrowIcon">
+                                                    Submit Invoice
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="buttonWrapper mt-4" *ngIf="TypeNo == 'reopen' && tobeinvoiced ==false">
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center">
+
+                                                <button type="submit" class="btn button-primary"
+                                                    (click)="reopenSimpoSubmitInvoice()"
+                                                    [disabled]="invoiceForm.invalid || disable? true : null ">
+                                                    <!-- || overallAmount == 0 -->
+                                                    <img src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                                        class="activeImg arrowIcon">
+                                                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                                        class="disabledImg arrowIcon">
+                                                    Submit Invoice
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="buttonWrapper mt-4" *ngIf="TypeNo != 'reopen' && tobeinvoiced ==true">
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center">
+
+                                                <button type="submit" class="btn button-primary"
+                                                    (click)="newsubmittobeinvoice()"
+                                                    [disabled]="invoiceForm.invalid || disable? true : null ">
+                                                    <!-- || overallAmount == 0 -->
+                                                    <img src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                                        class="activeImg arrowIcon">
+                                                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                                        class="disabledImg arrowIcon">
+                                                    Submit Invoice
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+
+                            </div>
+
+
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="popup2" class="overlay">
+        <div class="popup confirmationPopup">
+            <a class="close" (click)="closePopup()">&times;</a><br />
+            <div class="container">
+                <!-- <div class="confirmationpopup mb-2">
+                    <div class="confirmation-title">Confirmation</div>
+                    <p class="confirmation-para">
+                        Kindly confirm you want to proceed with this Purchase Order
+                    </p>
+                   
+                </div> -->
+                <div>
+                    <h3 class="font-weight-bold;text-left">Select PO numbers</h3>
+                    <ng-multiselect-dropdown [placeholder]="'Select PO numbers'" [settings]="dropdownSettings"
+                        [data]="dropdownList" [(ngModel)]="selectedDropdownPO">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="buttonWrapper mt-4">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+
+                            <button class="btn button-primary" (click)="submitpono()">
+
+                                Submit
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<app-dialog-model></app-dialog-model>

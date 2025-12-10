@@ -1,0 +1,48 @@
+::ng-deep .tooltip-feedback {
+    background-color: red !important;
+}
+
+::ng-deep .tooltip-feedback .arrow::before {
+    border-bottom-color: red !important;
+    /* Red */
+}
+
+::ng-deep .tooltip-feedback::before {
+    border-bottom-color: red !important;
+    /* Red */
+}
+
+
+
+.inv-wrapper.active {
+    color: var(--main-text-color) !important;
+    font-weight: bolder;
+  }
+  
+  .inv-wrapper.active::after {
+    color: var(--main-text-color) !important;
+    font-weight: bolder;
+  }
+
+  [type="radio"]:checked+label, [type="radio"]:not(:checked)+label {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    display: inline-block;
+    color: var(--sub-text-color);
+    font-weight: 700;
+    line-height: 21px; /* 150% */
+    font-size: 14px;
+  }
+  [type="radio"][_ngcontent-sbw-c314]:checked + label[_ngcontent-sbw-c314], [type="radio"][_ngcontent-sbw-c314]:not(:checked) + label[_ngcontent-sbw-c314] {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    display: inline-block;
+    color: #8181A5;
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 21px; /* 150% */
+  }

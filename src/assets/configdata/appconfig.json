@@ -1,0 +1,5 @@
+{
+    "baseURL": "http://vimademo.4cplus.in:8080/DxProject",  
+    "headerDisplay": "prod",
+    "dashboardURL": "https://vendorconnect.letseduvate.com/dxdashboard"
+}

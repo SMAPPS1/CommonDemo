@@ -1,0 +1,467 @@
+<div class="allNavWrapper">
+    <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
+        <div class="container">
+            <div class="navbar-wrapper">
+                <div class="logo">
+                    <a href="javascript:void(0)" class="simple-text">
+                        <div class="logo-img">
+                            <img src="./assets/img/TOIlogo_partnerdx_02.png" />
+                          <!-- ./assets/img/logo.png -->
+                        </div>
+                    </a>
+                </div>
+                <!-- <h1 class="login-head" *ngIf="!(isLoggedIn$ | async)">K12 BusinessConnect</h1> -->
+                                 <h1 class="login-head" *ngIf="!(isLoggedIn$ | async)">VIMA</h1>
+
+                <div class="logo-img" style="margin-top:2%">
+                    <!-- <span *ngIf="isLoggedIn$ | async" class="Home-head" >K12 BusinessConnect</span> -->
+                                         <span *ngIf="isLoggedIn$ | async" class="Home-head" >VIMA</span>
+
+                </div>
+            </div>
+
+            <button mat-raised-button class="navbar-toggler" type="button" *ngIf="isLoggedIn$ | async" (click)="sidebarToggle()">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+        </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navigation" *ngIf="isLoggedIn$ | async">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" (click)="hideseachbox()" href="javascript:void(0)" [routerLink]="['/dashboard']" routerLinkActive="active">
+                        Home
+                    </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" (click)="hideseachbox1()" href="javascript:void(0)" [routerLink]="['/purchaseOrdersList']" routerLinkActive="active">
+                        Purchase orders
+                        <span class="imgWithNotification__div" *ngIf="poItemCount != undefined">{{poItemCount}}</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"  href="javascript:void(0)" (click)="submitInvoicePopup()" routerLinkActive="active">
+                        Submit Invoices
+                    </a>
+                    </li>
+                    
+                     <li class="nav-item">
+                     <a class="nav-link" href="javascript:void(0)" [routerLink]="['/InvalidInvoices']" routerLinkActive="active">Invalid Invoices
+                        <span class="imgWithNotification__div" *ngIf="InvoiceItemCount != 0">{{InvoiceItemCount}}</span>
+                    </a>
+                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" (click)="hideseachbox2()" href="javascript:void(0)" [routerLink]="['/trackInvoiceList']" routerLinkActive="active">
+                        Track Invoices
+                    </a>
+                    </li>
+
+                  
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top vendortop" *ngIf="(isLoggedIn$ | async) && vendorPortal==true">
+        <div class="navbarSecOne">
+            <div class="container">
+                <div class="navbar-wrapper">
+                    <a class="navbar-brand secondaryNavBrand" href="javascript:void(0)">  {{todaysDate | date:'EE, MMM d, y'}}, {{currcity | uppercase}}</a>
+                </div>
+
+                <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                    <ul class="navbar-nav">
+                        <li ngbDropdown class="nav-item">
+                            <a ngbDropdownToggle class="nav-link " href="javascript:void(0)" id="dropdownBasic1">
+                                <span class="HeaderlargeText" style="color: #000000;">Welcome {{bussinesspartnertext}} </span>
+                                <!-- - {{bid}} -->
+                                <i class="material-icons personic">person</i><span class="material-icons">
+                                    arrow_drop_down
+                                    </span>
+                            </a>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right ">
+                                <a ngbDropdownItem href="javascript:void(0)" (click)="editProfile()"><i class="material-icons"> manage_accounts </i>My Profile </a>
+                                <a ngbDropdownItem href="javascript:void(0)" (click)="logOut()"><i class="material-icons"> lock </i> Logout </a>
+                                <!-- <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right"> -->
+
+                                    <!-- <a ngbDropdownItem href="javascript:void(0)" (click)="UploadDocument()"><i class="material-icons"> lock </i> Send Registration link </a> -->
+
+                                <!-- </div> -->
+                            </div>
+                        </li>
+
+                        <li ngbDropdown class="nav-item">
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right">
+                                <a ngbDropdownItem href="javascript:void(0)">You have 5 new tasks</a>
+                                <a ngbDropdownItem href="javascript:void(0)">You're now friend with Andrew</a>
+                                <a ngbDropdownItem href="javascript:void(0)">Another Notification</a>
+                                <a ngbDropdownItem href="javascript:void(0)">Another One</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbarSecTwo">
+            <div class="container">
+                <div class="secondaryNav__content">
+                    <form [formGroup]="POOrderList">
+
+                        <div class="invInDx__common__row">
+                            <div class="invInDx__common invInDx-wrapper__right">
+                                <div class="invInDx-wrapper">
+
+                                        <mat-label class="invInDx-wrapper__single"><b style="font-size: larger;">Company :</b></mat-label>
+                                        <select style="width: 312px; border: none; margin-right: 45px; font-size: medium;" class="form-control form-select noDataBase heightandsize" formControlName="companyCode" aria-label="Default select example" (change)="OnSelChangeCompanyCode($event)" [(ngModel)]="tempCompanyCode">                                       
+                                            <option *ngFor="let company of partnergroup let i = index" 
+                                             [ngValue]="company?.COMPANYCODE"
+                                             [selected]="company.COMPANYCODE == tempCompanyCode" >
+                                            {{company?.COMPANYNAME}} 
+                                        </option>
+                                       
+                                         </select>
+                                         <!-- {{tempCompanyName}} -->
+                                         <!-- <mat-form-field>
+                                         <mat-label class="invInDx-wrapper__single"><b style="font-size: larger;">GST/PAN:</b></mat-label>
+                                            <mat-label> {{currgstvalue}}</mat-label>
+                                            <select matNativeControl class="form-control" formControlName="gst" (change)="getpincode($event)">
+                                              <option  *ngFor="let gstpincode of gstpinlist let i = index"  [value]="gstpincode?.ATTRIBUTEVALUE" [attr.selected]="i == 'currgstvalue' ? true : null"
+                                                >{{gstpincode?.ATTRIBUTEVALUE}}</option>
+                                            </select>
+                                          </mat-form-field> -->
+                                    
+                                        <mat-label class="invInDx-wrapper__single"><b style="font-size: larger;">GST/PAN:</b></mat-label>
+                                        <!-- {{gstpinlist|json}} -->
+                                        <select style="width: 175px; border: none; margin-right: 32px; font-size: medium;" class="form-control form-select noDataBase heightandsize" formControlName="gst" aria-label="Default select example" (change)="OnSelChangeGST($event)">
+                                            <option *ngFor="let gstpincode of gstpinlist let i = index"  [attr.selected]="gstpincode?.ATTRIBUTEVALUE == tempGST ? true : null">
+                                            {{gstpincode?.ATTRIBUTEVALUE}} 
+                                           
+                                        </option>
+                                        </select>
+                                        <!-- {{tempGST}} -->
+
+                                     <mat-label class="invInDx-wrapper__single" ><b style="font-size: larger;">Pincode :</b></mat-label>
+                                     <!-- <option [value]="currpincode">{{currpincode}}</option> -->
+                                     <!-- {{pinlist1|json}} -->
+                                        <select style="width: 145px; border: none; margin-right: 32px; font-size: medium;" class="form-control form-select noDataBase heightandsize" formControlName="pincode" aria-label="Default select example" (change)="OnSelChangePincode($event)" [(ngModel)]="bid">
+                                        <option *ngFor="let pincode of pinlist1 let i = index"
+                                        [value]="pincode?.BUSINESSPARTNEROID"
+                                        [selected]="pincode?.BUSINESSPARTNEROID == bid ? true : null">
+                                            {{pincode?.PINCODE}}  
+                                        </option>
+                                         <!-- <option [value]="currpincode">{{currpincode}}</option> -->
+                                    </select>
+
+                                    <div *ngIf="!disableBtn" class="gobutton">
+                                        <!-- [disabled]="(!POOrderList.controls['partnergrp'].valid)" -->
+                                        <button type="submit" class="btn button-primaryBefor" [disabled]="!disableBtn" (click)="getAllOtherPageData()"
+>
+                                        <!-- <button type="submit" class="btn button-primary" [disabled]="!(tempCompanyCode && tempGST && tempPincode)" (click)="getAllOtherPageData()" >  -->
+                                        <!-- <img  _ngcontent-dnd-c329=""  src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                            class="activeImg arrowIcon"> -->
+                                        <img ngcontent-dnd-c329=""   src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                            class="activeImg arrowIcon"> 
+                                            Go
+                                    </button>
+                                    
+                                    </div>
+                                    <div *ngIf="disableBtn" class="gobutton">
+                                        <!-- [disabled]="(!POOrderList.controls['partnergrp'].valid)" -->
+                                        <button type="submit" class="btn button-primary" (click)="getAllOtherPageData()"
+>
+                                        <!-- <button type="submit" class="btn button-primary" [disabled]="!(tempCompanyCode && tempGST && tempPincode)" (click)="getAllOtherPageData()" >  -->
+                                        <img  _ngcontent-dnd-c329=""  src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                            class="activeImg arrowIcon">
+                                        <!-- <img ngcontent-dnd-c329=""   src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                            class="disabledImg arrowIcon">  -->
+                                            Go
+                                    </button>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                                
+                                <!-- <div class="invText">
+                                    <span>GST/PAN:</span> {{currgstvalue}}
+                                </div>
+                                <div class="invText">
+                                    <span> Pincode:</span> {{currpincode}}
+                                </div>
+                                <div class="invText">
+                                    <span> City:</span> {{currcity | uppercase}}
+                                </div> -->
+
+                           
+
+
+                            <!--Dashboard Page Search Start 02-01-2023 -->
+                            <!-- <div class="row" id="searchdiv"> -->
+                                <!-- <div class="col-lg-12"> -->
+                                    <!-- <div class="card DashboardPageSearch__card" style="margin-top: 0"> -->
+                                    <!-- <div class="card-body"> -->
+                                        <!-- Search Bar In Line Start 07-11-2022 -->
+                                        <!-- <div class="example" >
+                                            <input _ngcontent-rlb-c126="" type="text" value=""
+                                                (input)="getalldata($event.target.value)" [(ngModel)]="searchKey"
+                                                (keydown.enter)="searchData(searchKey)"
+                                                placeholder="Search by PO Number or Invoice Number"
+                                                class="form-control" />
+                                            <button type="submit" (click)="searchData(searchKey)"><i
+                                                    class="fa fa-search"></i></button>
+                                        </div> -->
+                                    <!-- </div> -->
+                                    <!-- </div> -->
+                                <!-- </div> -->
+                            <!-- </div> -->
+                            <!-- Dashboard Page Search Start End 02-01-2023 -->
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+    <!-- ----------------------------------------------internal portal start --------------------------------- -->
+
+    <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top" *ngIf="(isLoggedIn$ | async) && vendorPortal == false">
+        <div class="container">
+            <div class="navbar-wrapper">
+                <div class="logo">
+                    <a href="javascript:void(0)" class="simple-text">
+                        <div class="logo-img">
+                            <img src="./assets/img/TOIlogo_partnerdx_02.png" />
+                           <!-- ./assets/img/logo.png  -->
+                        </div>
+                    </a>
+                </div>
+                <!-- <div class="logo-img" style="margin-top:2%">
+                    <span *ngIf="isLoggedIn$ | async" style="margin-left: 14px;
+                    font-size: 18px;
+                    color: #666666 !important;
+                    font-weight: 600;">  {{todaysDate | date:'EE, MMM d, y'}}</span>
+                </div> -->
+            </div>
+            <div class="navbar-wrapper" *ngIf="!(isLoggedIn$ | async)">
+                <div class="logo">
+                    <a href="javascript:void(0)" class="simple-text">
+                        <div class="logo-img logoright-img">
+                            <img src="./assets/img/homeicon.png" />
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <button mat-raised-button class="navbar-toggler" type="button" *ngIf="isLoggedIn$ | async" (click)="sidebarToggle()">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+        </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                <ul class="navbar-nav">
+                <li class="nav-item" *ngIf="ispayee || functionaldirector">
+                    <a class="nav-link" href="javascript:void(0)" (click)="goToUrl()" routerLinkActive="active">
+                        dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item" *ngIf ="type == 'payerportal' && hideNavbar == false">
+                    <a class="nav-link" href="javascript:void(0)" [routerLink]="['/internalportal']" routerLinkActive="active" >
+                        Adv Search
+                    </a>
+                </li>
+                   
+                    <li class="nav-item" *ngIf="!internalbcclportal  && hideNavbar == false">
+                        <!-- [routerLink]="['/internalTrackPO']" -->
+                        <a class="nav-link" href="javascript:void(0)" (click)="TrackPO()" [routerLink]="['/internalTrackPO']" routerLinkActive="active">
+                        Purchase Orders
+                        <span class="imgWithNotification__div" *ngIf="poItemCount1 != undefined">{{poItemCount1}}</span>
+                    </a>
+                    </li>
+
+                    <!-- *ngIf="isenduser || ispayee" -->
+                    <li class="nav-item" *ngIf="!internalbcclportal  && hideNavbar == false">
+                        <a class="nav-link" href="javascript:void(0)" [routerLink]="['/internalinvoicelist']" routerLinkActive="active">
+                       view Invoices
+                    </a>
+                    </li>
+                    <li class="nav-item" *ngIf="internalbcclportal  && hideNavbar == false">
+                        <!-- [routerLink]="['/internalTrackPO']" -->
+                        <a class="nav-link" href="javascript:void(0)" [routerLink]="['/internalTrackPO']" routerLinkActive="active">
+                        Purchase Orders
+                    </a>
+                    </li>
+                    <li class="nav-item" *ngIf="!functionaldirector">
+                        <a class="nav-link" href="javascript:void(0)" [routerLink]="['/InternalInvalidInvoice']" routerLinkActive="active">
+                            <span class="imgWithNotification__div" *ngIf="InvoiceItemCountinvalid != 0">{{InvoiceItemCountinvalid}}</span>  Invalid Invoices  </a>
+                    </li>
+
+                    <!-- *ngIf="isenduser || ispayee" -->
+                    <li class="nav-item" *ngIf="internalbcclportal  && hideNavbar == false">
+                        <a class="nav-link" href="javascript:void(0)">
+                       view Invoices
+                    </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" [routerLink]="['/internaltrackInvoiceList']" routerLinkActive="active">
+                        Approve Invoices
+                    </a>
+                    </li>
+
+                    <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top vendortop">
+                        <div class="navbarSecOne">
+                            <div class="container">
+                                <div class="navbar-wrapper">
+                                    <a class="navbar-brand secondaryNavBrand" href="javascript:void(0)" *ngIf="isLoggedIn$ | async">  {{todaysDate | date:'EE, MMM d, y'}}</a>
+                                </div>
+                
+                                <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                                    <ul class="navbar-nav">
+                                        <li ngbDropdown class="nav-item" *ngIf="(!isenduser || !isbuyer || !ispayee)">
+                                            <a ngbDropdownToggle class="nav-link" href="javascript:void(0)" id="dropdownBasic1">
+                    
+                                                <i class="material-icons personic">person</i><span class="material-icons">
+                                                    arrow_drop_down
+                                                    </span>
+                                            </a>
+                                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right">
+                                                <a ngbDropdownItem href="javascript:void(0)" (click)="UploadDocument()"><i class="material-icons"> lock </i> Send Registration link </a> 
+                                                <a ngbDropdownItem href="javascript:void(0)" (click)="logOut()"><i class="material-icons"> lock </i> Logout </a>
+                                            </div>
+                                        </li>
+                
+                                        <li ngbDropdown class="nav-item" *ngIf="(!isenduser || !isbuyer || !ispayee)">
+                                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right">
+                                                <a ngbDropdownItem href="javascript:void(0)">You have 5 new tasks</a>
+                                                <a ngbDropdownItem href="javascript:void(0)">You're now friend with Andrew</a>
+                                                <a ngbDropdownItem href="javascript:void(0)">Another Notification</a>
+                                                <a ngbDropdownItem href="javascript:void(0)">Another One</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                <!-- <ul class="navbar-nav">
+                    <li ngbDropdown class="nav-item" *ngIf="(!isenduser || !isbuyer || !ispayee)">
+                        <a ngbDropdownToggle class="nav-link" href="javascript:void(0)" id="dropdownBasic1">
+
+                            <i class="material-icons personic">person</i><span class="material-icons">
+                                arrow_drop_down
+                                </span>
+                        </a>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right">
+                            <a ngbDropdownItem href="javascript:void(0)" (click)="logOut()"><i class="material-icons"> lock </i> Logout </a>
+                        </div>
+                    </li>
+
+                    <li ngbDropdown class="nav-item" *ngIf="(!isenduser || !isbuyer || !ispayee)">
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right">
+                            <a ngbDropdownItem href="javascript:void(0)">You have 5 new tasks</a>
+                            <a ngbDropdownItem href="javascript:void(0)">You're now friend with Andrew</a>
+                            <a ngbDropdownItem href="javascript:void(0)">Another Notification</a>
+                            <a ngbDropdownItem href="javascript:void(0)">Another One</a>
+                        </div>
+                    </li>
+                </ul> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top vendortop" *ngIf="((isLoggedIn$ | async) && vendorPortal==false && !isenduser) && headerDisplay!='prod' && headerDisplay!='dev'">
+        <div class="container">
+            <div class="navbar-wrapper" *ngIf="(isLoggedIn$ | async) && isenduser==false  && ispayee==false && !internalbcclportal && type!=null">
+                <a class="navbar-brand secondaryNavBrand" href="javascript:void(0)">End User Portal</a>
+            </div>
+            <div class="navbar-wrapper" *ngIf="ispayee && type!=null">
+                <a class="navbar-brand secondaryNavBrand" href="javascript:void(0)">Payer Portal</a>
+            </div>
+
+            <div class="navbar-wrapper" *ngIf="(isLoggedIn$ | async) && isenduser==false  && ispayee==false && internalbcclportal && type!=null">
+                <a class="navbar-brand secondaryNavBrand" href="javascript:void(0)">Internal Portal</a>
+            </div>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                <ul class="navbar-nav">
+                    <li ngbDropdown class="nav-item">
+                        <a ngbDropdownToggle class="nav-link" href="javascript:void(0)" id="dropdownBasic1">
+                            <span style="color: #cc0000;">Welcome  {{username}}</span>
+                            <i class="material-icons personic">person</i><span class="material-icons">
+                                arrow_drop_down
+                                </span>
+                        </a>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right">
+                            <a ngbDropdownItem href="javascript:void(0)" (click)="UploadDocument()"><i class="material-icons"> lock </i> Send Registration link </a> 
+                            <a ngbDropdownItem href="javascript:void(0)" (click)="logOut()"><i class="material-icons"> lock </i> Logout </a>
+                        </div>
+                    </li>
+                    <li ngbDropdown class="nav-item">
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right">
+                            <a ngbDropdownItem href="javascript:void(0)">You have 5 new tasks</a>
+                            <a ngbDropdownItem href="javascript:void(0)">You're now friend with Andrew</a>
+                            <a ngbDropdownItem href="javascript:void(0)">Another Notification</a>
+                            <a ngbDropdownItem href="javascript:void(0)">Another One</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- --------------------------------------------------internal portal end ------------------------------------- -->
+
+    <!-- --------------------------------------------internal buyer portal start--------------------------------------------- -->
+    <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top vendortop" *ngIf="((isLoggedIn$ | async) && isenduser) && headerDisplay!='prod' && headerDisplay!='dev'">
+        <div class="container">
+            <div class="navbar-wrapper">
+                <a class="navbar-brand secondaryNavBrand" href="javascript:void(0)">Buyer Portal</a>
+            </div>
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                <ul class="navbar-nav">
+                    <li ngbDropdown class="nav-item">
+                        <a ngbDropdownToggle class="nav-link" href="javascript:void(0)" id="dropdownBasic1">
+                            <span style="color: #cc0000;">Welcome  {{username}}</span>
+                            <i class="material-icons personic">person</i> <span class="material-icons">
+                                arrow_drop_down
+                                </span>
+                        </a>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right">
+                            <a ngbDropdownItem href="javascript:void(0)" (click)="UploadDocument()"><i class="material-icons"> lock </i> Send Registration link </a> 
+                            <a ngbDropdownItem href="javascript:void(0)" (click)="logOut()"><i class="material-icons"> lock </i> Logout </a>
+                        </div>
+                    </li>
+                    <li ngbDropdown class="nav-item">
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-right">
+                            <a ngbDropdownItem href="javascript:void(0)">You have 5 new tasks</a>
+                            <a ngbDropdownItem href="javascript:void(0)">You're now friend with Andrew</a>
+                            <a ngbDropdownItem href="javascript:void(0)">Another Notification</a>
+                            <a ngbDropdownItem href="javascript:void(0)">Another One</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- --------------------------------------------internal buyer portal end -------------------------------------------- -->
+
+</div>
+<!-- <router-outlet></router-outlet> -->
+
+<app-dialog-model></app-dialog-model>

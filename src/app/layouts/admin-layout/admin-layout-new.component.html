@@ -1,0 +1,15 @@
+<div clickOutside class="">
+    <app-navbar></app-navbar>
+    <app-sidebar-new></app-sidebar-new>
+    <div *ngIf="isLoggedIn$ | async" class="faq-sticky">
+        <div class="how-to-navigate">
+            <a class="faq-icon" href="#" target="_blank">
+            <img src="./assets/img/faq-icon.png" alt="feature" width="18px" height="18px"></a>
+            <span class="faq-text">FAQ</span> 
+        </div>    
+    </div>
+    <router-outlet></router-outlet>
+    <div *ngIf="isMaps('maps')">
+        <app-footer></app-footer>
+    </div>
+</div>

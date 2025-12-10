@@ -1,0 +1,292 @@
+<div class="main-content margin-top">
+        <!-- <div class="inv-page-container" style="padding-top: 110px;"> -->
+        <div class="inv-page-container">
+            <div class="inv-page-wrapper container">
+                <div class="inv-page-header">
+                    <img class="left-arrow" style="cursor: pointer;" 
+                        src="./assets/img/arrow_icon_grey_prev.png"  />
+                    <p class="invoice-number">Registration Data</p>
+                </div>
+                <!-- <div class="invStatusMainWrapper"> -->
+                    <!-- <div class="invStatusRightWrap invStatusRightalign"> -->
+                        <div class="inv-status-wrapper">
+                            <div class="inv-wrapper" (click)="sortdata('ALL')">
+                                <span class="" style="position:relative">
+                                    <!-- <span class="badgeNum" style="top: -26px !important;">{{invoiceCountAsPerStatus?.ALL != null ? invoiceCountAsPerStatus?.ALL : 0}}</span> -->
+                                </span>
+                                <p class="status-title status-link" style=" cursor: pointer;">All
+                                </p>
+                            </div>
+                            <div class="inv-wrapper" (click)="sortdata('P')">
+                                <span class="status-color st-managerpending">
+
+                                </span>
+                                <p class="status-title status-link" style=" cursor: pointer;">Pending
+                                </p>
+                            </div>
+                            <!-- <div class="inv-wrapper" (click)="sortdata('P')">
+                                <span class="status-color st-pending"></span>
+                                <p class="status-title status-link">Pending</p>
+                            </div> -->
+                            <!-- <div class="inv-wrapper" id="stManagerpending" (click)="sortdata('L0')">
+                                <span class="status-color st-new">
+                                </span>
+                                <p class="status-title status-link" style=" cursor: pointer;">L0 -->
+                                    <!-- <span class="badgeNum">{{pendingPo}}</span> -->
+                                <!-- </p>
+                            </div> -->
+                           
+                            <div class="inv-wrapper" id="stManagerpending" (click)="sortdata('L1')">
+                                <span class="status-color st-hold">
+                                </span>
+                                <p class="status-title status-link" style=" cursor: pointer;">L1 Pending
+                                    <!-- <span class="badgeNum">{{pendingPo}}</span> -->
+                                </p>
+                            </div>
+                            <!-- <div class="inv-wrapper" (click)="sortdata('C')">
+                                <span class="status-color st-shortQuantity"></span>
+                                <p class="status-title status-link">Short Quantity</p>
+                            </div> -->
+                            <div class="inv-wrapper" (click)="sortdata('L2')">
+                                <span class="status-color st-transported">
+                                </span>
+                                <p class="status-title status-link" style=" cursor: pointer;" [ngClass]="{'st-transported':status=='L2'}">L2 Pending
+                                </p>
+                            </div>
+                            <div class="inv-wrapper" (click)="sortdata('L3')">
+                                <span class="status-color st-complete">
+                                </span>
+                                <p class="status-title status-link" style=" cursor: pointer;">L3 Pending
+                                    <!-- <span class="badgeNum">{{invoiceCountAsPerStatus?.O != null ?
+                                        invoiceCountAsPerStatus?.O : 0}}</span> -->
+                                </p>
+                            </div>
+                            <div class="inv-wrapper" (click)="sortdata('C')">
+                                <span class="status-color st-requestAproved">
+                                </span>
+                                <p class="status-title status-link" style=" cursor: pointer;">Approved
+                                </p>
+                            </div>
+                            <div class="inv-wrapper" (click)="sortdata('R')">
+                                <span class="status-color st-accepted">
+                                </span>
+                                <p class="status-title status-link" style=" cursor: pointer;">Registered
+                                    <!-- <span class="badgeNum">{{invoiceCountAsPerStatus?.A != null ?
+                                        invoiceCountAsPerStatus?.A : 0}}</span> -->
+                                </p>
+                            </div>
+                            <!-- <div class="inv-wrapper" (click)="sortdata('RO')">
+                                <span class="status-color st-accepted">
+                                    
+                                </span>
+                                <p class="status-title status-link">Approved
+                                        <span class="badgeNum">{{invoiceCountAsPerStatus?.RO != null ? invoiceCountAsPerStatus?.RO : 0}}</span>
+                                    </p>
+                            </div> -->
+                            <!-- <div class="inv-wrapper" (click)="sortdata('R')">
+                                <span class="status-color st-rejected"></span>
+                                <p class="status-title status-link">Rejected</p>
+                            </div> -->
+                            <!-- (click)="sortdata('PRO')" -->
+                            <!-- <div class="inv-wrapper" (click)="sortdata('PRO')">
+                                <span class="status-color st-transported">
+
+                                </span>
+                                <p class="status-title status-link">Processed
+                                    <span class="badgeNum">{{invoiceCountAsPerStatus?.PRO != null ?
+                                        invoiceCountAsPerStatus?.PRO : 0}}</span>
+                                </p>
+                            </div> -->
+                            <!-- (click)="sortdata('PP')" -->
+                            <!-- <div class="inv-wrapper" (click)="sortdata('PP')">
+                                <span style="position: relative; display: flex; align-items: center;">
+                                    <span class="status-color st-complete partialyLarge"
+                                        style="width: 17px; height: 20px;"></span>
+                                    <span class="status-color st-incomplete st-grey partialySmall"
+                                        style="width: 8px; height: 20px; background: #024aec;"></span>
+
+                                </span>
+                                <p class="status-title status-link">Partially Paid
+                                    <span class="badgeNum">{{invoiceCountAsPerStatus?.PP != null ?
+                                        invoiceCountAsPerStatus?.PP : 0}}</span>
+                                </p>
+                            </div> -->
+
+                            <!-- (click)="sortdata('PD')" -->
+                            <!-- <div class="inv-wrapper" (click)="sortdata('PD')">
+                                <span class="status-color st-complete">
+
+                                </span>
+                                <p class="status-title status-link">Paid
+                                    <span class="badgeNum">{{invoiceCountAsPerStatus?.PD != null ?
+                                        invoiceCountAsPerStatus?.PD : 0}}</span>
+                                </p>
+                            </div> -->
+                        </div>
+                    <!-- </div> -->
+                <!-- </div> -->
+                <div class="table-wrap-vendor-regn">
+                    <div class="inv-table-header">
+                        <p class="tbl-header-title">Vendor Registration List</p>
+                        <div class="tbl-options">
+                            <!-- <div class="nextpreviconWrapper">
+                                <div class="nextprevicoSingle" style="cursor: pointer;"
+                                    (click)="getPurOrderList('HOME');getmessageStatus()"
+                                    *ngIf="disableprevious ==false">
+                                    <img src="./assets/img/first_page_icon_option04.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Home" />
+                                </div>
+                                <div class="nextprevicoSingle" *ngIf="disableprevious ==true">
+                                    <img src="./assets/img/first_page_icon_disable02.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Home" />
+                                </div>
+                                <div class="nextprevicoSingle" style="cursor: pointer;"
+                                    (click)="getPurOrderList('PREV');getmessageStatus()"
+                                    *ngIf="disableprevious ==false">
+                                    <img src="./assets/img/first_page_icon_option03.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Previous" />
+                                </div>
+                                <div class="nextprevicoSingle" *ngIf="disableprevious ==true">
+                                    <img src="./assets/img/first_page_icon_disable01.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Previous" />
+                                </div>
+                                <div class="nextprevicoSingle" style="cursor: pointer;"
+                                    (click)="getPurOrderList('NEXT');getmessageStatus()"
+                                    *ngIf="disablenext ==false">
+                                    <img src="./assets/img/end_page_icon_option_03.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Next" />
+                                </div>
+                                <div class="nextprevicoSingle" *ngIf="disablenext ==true">
+                                    <img src="./assets/img/end_page_icon_disable_01.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Next" />
+                                </div>
+                                <div class="nextprevicoSingle" style="cursor: pointer;"
+                                    (click)="getPurOrderList('END');getmessageStatus()"
+                                    *ngIf="disablenext ==false">
+                                    <img src="./assets/img/end_page_icon_option_04.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="End" />
+                                </div>
+                                <div class="nextprevicoSingle" *ngIf="disablenext ==true">
+                                    <img src="./assets/img/end_page_icon_disable_02.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="End" />
+                                </div>
+                            </div> -->
+    
+                            <!-- <div class="tble-each-option" style="cursor: pointer;" (click)="downloadlist()">
+                                <img src="./assets/img/download.png" alt="download image" />
+                                <p>Download List</p>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table customTableStripped fixedTable" >
+                            <thead class="text-primary">
+                                <tr  >
+                                <!-- [ngClass]="{'item-aknowledge': status == 'P', 'item-transported': status == 'L0', 'item-inProgress': status == 'L1', 'item-complete': status == 'L2', 'item-new': poData.STATUS == 'L3', 'item-new': poData.STATUS == 'C'}"> -->
+                                    <th scope="col" class="text-left">
+                                        <div >
+                                            Request ID
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="text-left">
+                                        <div >
+                                            Request Date
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="text-left">
+                                        <div >
+                                            Vendor Name
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="text-left">
+                                        <div >
+                                            Location
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="text-left" style="width: 250px;" *ngIf="status == 'P' || status == 'ALL'">
+                                        <div >
+                                            Status
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            
+                            
+                            <tbody>
+                                <tr *ngIf="FinalData.length === 0">
+                                    <td colspan="5" class="text-center">No Data Found</td>
+                                </tr>
+                                <tr *ngFor="let data of FinalData; let i = index" 
+                                    [ngClass]="{
+                                        'item-managerpending': data.Status === 'P',
+                                        'item-managerpending': data.Status === 'L0',
+                                        'item-hold': data.Status === 'L1',
+                                        'item-transported': data.Status === 'L2',
+                                        'item-complete': data.Status === 'L3',
+                                        'item-aknowledge': data.Status === 'R',
+                                        'item-requestAproved': data.Status === 'C'
+                                    }">
+                                    <td>
+                                        <div class="text-left" style="cursor: pointer" 
+                                             (click)="status != 'P' && data.Status != 'C' && data.Status != 'R' ? resirectregistration('FromBuyer', data, true) : null">
+                                            {{ data.RequestID }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-left">
+                                            {{ data.RequestDate }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-left">
+                                            {{ data.VendorName }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-left">
+                                            {{ data.Location }}
+                                        </div>
+                                        
+                                    </td>
+                                    <td style="position: relative; width: 250px; height: 50px;">
+                                        <div *ngIf="status == 'P' || status == 'ALL'">
+                                            <button class="buttonCls" (click)="resirectregistration('FromBuyer', data, false)"
+                                                (mouseenter)="showEndUserTooltip[i] = true;"
+                                                (mouseleave)="showEndUserTooltip[i] = false;"
+                                                [disabled]="data.Status === 'C' || data.Status ==='R' || EmailID !== data.PendingApprover">
+                                                {{ 
+                                                    (data.Status === 'L0' || data.Status === 'L1' || data.Status === 'L2' || data.Status === 'L3') 
+                                                    ? 'In process' 
+                                                    : (data.Status === 'C' ? 'Approved': data.Status === 'RJ' ? 'Rejected' :data.Status ==="E" ? 'Error' : 'Registered') 
+                                                }}
+                                            </button>
+                                        </div>
+                                        <div *ngIf="showEndUserTooltip[i] && data.Status !== 'C' && data.Status !=='R'" style="visibility: visible; top: 18px; right: 65px; z-index: 100000; max-width: 280px; text-align: center;">
+                                            <div class="arrow-up"></div>
+                                            <div class="tooltip-inner tooltip-background">
+                                                <div class="tooltip-para">
+                                                    Approval awaited from:
+                                                    <br>{{data.Status}}
+                                                    <br> {{ data.PendingApprover }} 
+                                                    <!-- <div></div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            
+                        </table>
+                        <!-- <div *ngIf="poDataList.length==0"
+                            style="color: #777; font-size: 16px; font-weight: 600; text-align: center;">
+                            <p class="text-center w-100">No Data Found</p>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+</div>
+
+
+<!-- [disabled]=" invoiceForm.invalid || disable ? true : null || overallAmount == 0 -->

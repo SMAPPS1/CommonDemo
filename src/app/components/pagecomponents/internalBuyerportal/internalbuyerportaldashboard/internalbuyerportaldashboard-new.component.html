@@ -1,0 +1,368 @@
+<!-- formWrapper Quicks Links -->
+<div class="main-content my-4">
+    <div class="container internalpt">
+        <!--Quick Links Start-->
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 p-0">
+                <div class="card card-stats mt-0 mb-4" style="border: none; box-shadow: none;">
+                    <div class="card-header card-header-danger card-header-icon" style="background-color: var(--Bg-Primary);">
+                        <h3 class="card-title">Quick Links</h3>
+                    </div>
+                    <div class="card-body Quick-main">
+
+                        <div class="row justify-content-center">
+                            <div class="col-lg-3 col-md-3 col-sm-3 vendorQuickLink" [routerLink]="['/vendorList']">
+                                <div class="icon-img">
+                                    <img src="./assets/img/po_icon_grey_circle.png" />
+                                </div>
+                                <div class="content-text">
+                                    <h2 class="mb-1">Vendor List</h2>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 vendorQuickLink" [routerLink]="['/internalpurchaseorderlist']">
+                                <div class="icon-img">
+                                    <img src="./assets/img/track_po.png" />
+                                </div>
+                                <div class="content-text">
+                                    <h2 class="mb-1">Purchase Orders</h2>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 vendorQuickLink" [routerLink]="['/internalinvoicelist']">
+                                <div class="icon-img">
+                                    <img src="./assets/img/track_po.png" />
+                                </div>
+                                <div class="content-text">
+                                    <h2 class="mb-1">View Invoices</h2>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 vendorQuickLink" [routerLink]="['/buyerpurchaseorderlist']">
+                                <div class="icon-img">
+                                    <img src="./assets/img/track_payment_icon_grey.png" />
+                                </div>
+                                <div class="content-text">
+                                    <h2 class="mb-1">Approve Invoices</h2>
+                                </div>
+                            </div>
+                            <!-- <div class="col-lg-3 col-md-3 col-sm-3" [routerLink]="['/invoice-list']">
+                              <div class="icon-img">
+                                  <img src="./assets/img/my_invoices_grey_circle.png"/>
+                              </div>
+                              <div class="content-text">
+                                  <h2>My Invoices</h2>
+                                  <p>SearchInvoices</p>
+                              </div>
+                           </div> -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Quick Links End-->
+        <!--Dashboard Page Search Start-->
+        <div class="row">
+            <div class="col-lg-12 p-0">
+                <div class="card DashboardPageSearch__card mt-0 mb-4" style="border: none; box-shadow: none;">
+                    <div class="card-body" style="padding: 10px !important;">
+                        <div class="DashboardPageSearch__Wrapper">
+                            <div class="DashboardPageSearch__inputWrap">
+                                <!-- <input _ngcontent-rlb-c126="" type="text" value="" (input)="getalldata(searchKey)" [(ngModel)]="searchKey" (keydown.enter)="searchData(searchKey)" placeholder="Search by PO Number and Invoice Number" class="form-control" /> -->
+                            </div>
+                            <div class="DashboardPageSearch__buttonWrap">
+                                <button type="submit" class="btn submitButton">
+                                        Search
+                                    </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Dashboard Page Search Start End-->
+
+    </div>
+
+
+    <!-- formWrapperNotification List -->
+<div class="formWrapper">
+    <div class="container p-0">
+        <div class="dashboardCardHeader">Notification List </div>
+
+        <div class="formWrapper__box my-4" style="border: none; box-shadow: none;">
+
+            <!-- formWrapper__content -->
+            <div class="formWrapper__content">
+                <div class="notificationList">
+                    <div class="notificationList__single" style="box-shadow: none; border-bottom: 1px solid #ECECF2;">
+                        <div class="invoiceTableHeading">Purchase Order Notification <span class="invoiceTableHeading">02.07.2021</span></div>
+                        <div class="dashboardSubNotification">Vendor 01 has updated PO Tracking</div>
+                    </div>
+                    <div class="notificationList__single" style="box-shadow: none; border-bottom: 1px solid #ECECF2;">
+                        <div class="invoiceTableHeading">Profile Notification <span class="invoiceTableHeading">02.07.2021</span></div>
+                        <div class="dashboardSubNotification">Vendor 02 has updated Profile Details</div>
+                    </div>
+                    <div class="notificationList__single" style="box-shadow: none; border-bottom: 1px solid #ECECF2;">
+                        <div class="invoiceTableHeading">Profile Notification <span class="invoiceTableHeading">02.07.2021</span></div>
+                        <div class="dashboardSubNotification">Vendor 03 has updated Profile Details</div>
+                    </div>
+                    <div class="notificationList__single" style="box-shadow: none; border-bottom: 1px solid #ECECF2; margin-bottom: 0;">
+                        <div class="invoiceTableHeading">Remark Notification <span class="invoiceTableHeading">02.07.2021</span></div>
+                        <div class="dashboardSubNotification">Vendor 04 has added remark for work</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- formWrapper purchase order List -->
+<div class="formWrapper">
+    <div class="container p-0">
+        <div class="dashboardCardHeader">Purchase order List</div>
+        <div class="formWrapper__box mt-4">
+            <!-- <div class="formWrapper__heading">Purchase order List</div> -->
+
+
+            <div style="padding: 30px 40px;">
+                <table class="table">
+                        <thead class="invoiceTableHead">
+
+                            <tr>
+                                <th scope="col" class="text-left invoiceTableHeading">
+                                    <div style="padding: 8px 0;">Vendor Name</div>
+                                </th>
+                                <th scope="col" class="text-left invoiceTableHeading">
+                                    <div style="padding: 8px 0;">PO No.</div>
+                                </th>
+                                <th scope="col" class="text-left invoiceTableHeading">
+                                    <div style="padding: 8px 0;">Date</div>
+                                </th>
+                                <th scope="col" class="text-left invoiceTableHeading">
+                                    <div style="padding: 8px 0;">Status</div>
+                                </th>
+                                <th scope="col" class="text-left invoiceTableHeading">
+                                    <div style="padding: 8px 0;">Amount</div>
+                                </th>
+                                <th scope="col" class="text-left invoiceTableHeading">
+                                    <div style="padding: 8px 0;">Query</div>
+                                </th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr class="">
+                                <td>
+                                    <div class="text-left tableBodyText">Vendor 01</div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        238765432362
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        22.10.2020
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        Initiating
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        20,00,000
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        UX Design is done
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td>
+                                    <div class="text-left tableBodyText">Vendor 02</div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        238765432362
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        22.10.2020
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        Initiating
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        20,00,000
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        UX Design is done
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td>
+                                    <div class="text-left tableBodyText">Vendor 03</div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        238765432362
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        22.10.2020
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        Initiating
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        20,00,000
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        UX Design is done
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td>
+                                    <div class="text-left tableBodyText">Vendor 04</div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        238765432362
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        22.10.2020
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        Initiating
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        20,00,000
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        UX Design is done
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td>
+                                    <div class="text-left tableBodyText">Vendor 05</div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        238765432362
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        22.10.2020
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        Initiating
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        20,00,000
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        UX Design is done
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                </table>
+            </div>
+
+           
+
+            <!-- button wrapper  -->
+            <div class="buttonWrapper pb-4">
+                <div class="row">
+                    <div class="col-lg-12 p-0 text-center">
+                        <button type="submit" class="btn submitButton">
+                            Show All PO List
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+<!-- <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+      // JQuery UI Datepicker Config
+      $(function () {
+        var d = new Date();
+        var currMonth = d.getMonth();
+        var currYear = d.getFullYear();
+        var startDate = new Date(currYear, currMonth, 18);
+
+        $("#gldob").datepicker({
+          dateFormat: "dd-mm-yy",
+          changeMonth: true,
+          changeYear: true,
+          showButtonPanel: false,
+        });
+        $("#gldob").datepicker("setDate", startDate);
+        $(".iconImg").click(function () {
+          $("#gldob").focus();
+        });
+      });
+
+      // file upload js
+      $("form").on("change", ".file-upload-field", function () {
+        $(this)
+          .parent(".file-upload-wrapper")
+          .attr(
+            "data-text",
+            $(this)
+              .val()
+              .replace(/.*(\/|\\)/, "")
+          );
+      });
+    </script> -->

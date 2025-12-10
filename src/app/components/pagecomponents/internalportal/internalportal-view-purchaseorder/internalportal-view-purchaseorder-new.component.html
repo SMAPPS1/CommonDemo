@@ -1,0 +1,156 @@
+<div class="main-content my-4">
+    <div class="container dashboardpt" style="padding: 0 !important;">
+        <div class="submitTopHeader">
+            <img src="./assets/img/left-arrow-button.png" alt="" [routerLink]="['/internalTrackPO']" style="cursor: pointer;">
+            <div class="submitTopHeaderText">PO No : {{poNumber}}</div>
+        </div>
+        <div style="margin-top: 20px;
+            border-radius: 10px;
+            background: #FFF; padding-bottom: 20px;">
+            <div class="invoice-form">
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Date : <span class="tableBodyText">{{Date | date:'dd-MMM-yyyy'}}</span></p>
+                </div>
+                <div class="inv-form-inputs" *ngIf="Status=='S'">
+                    <p class="submitDownloadTabTitle">Status : <span class="tableBodyText">Shipped</span></p>
+                </div>
+                <div class="inv-form-inputs" *ngIf="Status=='A'">
+                    <p class="submitDownloadTabTitle">Status : <span class="tableBodyText">Accepted</span></p>
+                </div>
+                <div class="inv-form-inputs" *ngIf="Status=='P'">
+                    <p class="submitDownloadTabTitle">Status : <span class="tableBodyText">Work In Progress</span></p>
+                </div>
+                <div class="inv-form-inputs" *ngIf="Status=='C'">
+                    <p class="submitDownloadTabTitle">Status : <span class="tableBodyText">Completed</span></p>
+                </div>
+                <div class="inv-form-inputs" *ngIf="Status!='C'|| Status!='P' || Status!='A' || Status!='S'">
+                    <p class="submitDownloadTabTitle">Status : <span class="tableBodyText">No Data Found</span></p>
+                </div>
+
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Amount: <span class="tableBodyText">Rs. {{Amount| number:'1.2-2'}}</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Message : <span class="tableBodyText">{{message}}</span></p>
+                </div>
+
+
+            </div>
+
+
+            <div class="mainTable">
+                <table class="table">
+                        <thead class="invoiceTableHead">
+                            <tr>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Line Item
+                                </div>
+    
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Material Code
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading columnWidth">
+                                <div style="padding: 8px 0;">
+                                    Order Qty
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading columnWidth">
+                                <div style="padding: 8px 0;">
+                                    Balance Qty
+                                </div>
+                            </th>
+    
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    UOM
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Rate
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Amount
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody *ngFor="let poitem of uniquelineitems; let j=index" id="lineitem{{i}}{{j}}">
+                            <tr [attr.data-accordion]="'poaccInner'+j">
+                                <td class="preventClick">
+                                    <div class="fixedPOnumber tableBodyText" class="text-left">
+                                        {{poitem.LINEITEMNUMBER}}
+
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{poitem.LINEITEMTEXT}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{poitem.QUANTITY}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{poitem.BALANCE_QTY}}
+                                    </div>
+                                </td>
+
+                                <!-- <td>
+                                <div class="text-center">
+                                    1
+                                </div>
+                            </td> -->
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{poitem.UNITOFMEASURE}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{poitem.RATEPERQTY | number:'1.2-2'}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{Number(poitem.RATEPERQTY ) * Number(poitem.QUANTITY) | number:'1.2-2'}}
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                        </tbody>
+                </table>
+
+
+                <div class="buttonWrapper" style="margin-top: 40px;">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <button type="submit" class="btn submitButton" [routerLink]="['/internalTrackPO']" routerLinkActive="router-link-active">
+                            View All PO's
+                        </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        
+
+        
+    </div>
+
+</div>
+
+

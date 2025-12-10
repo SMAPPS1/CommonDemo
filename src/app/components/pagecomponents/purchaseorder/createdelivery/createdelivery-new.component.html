@@ -1,0 +1,324 @@
+<div class="main-content my-4">
+    <div class="container dashboardpt" style="padding: 0 !important;">
+        <div class="submitTopHeader">
+            <img src="./assets/img/left-arrow-button.png" alt="" [routerLink]="['/purchaseOrdersList']" style="cursor: pointer;">
+            <div class="submitTopHeaderText">Create Delivery</div>
+        </div>
+        <div class="submitMainForm">
+            <form [formGroup]="createDelivery" style="margin-bottom: 0;">
+                <div class=" w-100" style="background-color: #FFF; padding: 0px 10px; display: flex; gap: 35px; flex-wrap: wrap; justify-content: space-between;">
+
+
+                    <div style="width: 30%;" >
+                        <div >
+                            <label for="PONumber" class="submitInputLabel">PO No.</label>
+                            <!-- <mat-label>PO No.</mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>PO No. 2300045237</mat-label> -->
+                                <input matInput placeholder="PO No. 2300045237" formControlName="PONumber" value="" readonly class="submitInputBox disabled"/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;">
+                        <div class="invInputWicon">
+                            <label for="lineItem" class="submitInputLabel">Item Number</label>
+                            <!-- <mat-label>Item Number</mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>00100</mat-label> -->
+                                <input matInput placeholder="Enter PO Number (e.g. 00100)" formControlName="lineItem" value="" readonly class="submitInputBox disabled"/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;" >
+                        <div class="invInputWicon">
+                            <label for="linItemText" class="submitInputLabel">Item Text</label>
+                            <!-- <mat-label>Item Text</mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Laptops</mat-label> -->
+                                <input matInput placeholder="Laptops" formControlName="linItemText" value="" readonly class="submitInputBox disabled"/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;" >
+                        <div class="invInputWicon">
+                            <label for="Totquantity" class="submitInputLabel">Total Quantity</label>
+                            <!-- <mat-label>Total Quantity</mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>3000 Laptops</mat-label> -->
+                                <input matInput placeholder="Total Quantity" formControlName="Totquantity" value="" readonly class="submitInputBox disabled"/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;" >
+                        <div class="invInputWicon">
+                            <label for="BalanceQty" class="submitInputLabel">Balance Quantity</label>
+                            <!-- <mat-label>Balance Quantity</mat-label> -->
+                            <mat-form-field appearance="none">
+                                <input matInput placeholder="Enter PO Number" formControlName="BalanceQty" value="" readonly class="submitInputBox disabled"/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;" >
+                        <div class="invInputWicon">
+                            <label for="ordernum" class="submitInputLabel">Delivery Order No <sup class="imp">*</sup></label>
+                            <mat-form-field appearance="none">
+                                <input matInput placeholder="Delivery Order No (e.g. ORDEL986784)" formControlName="ordernum" value="" class="submitInputBox"/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;" >
+                        <div class="invInputWicon">
+                            <label for="orderquantity" class="submitInputLabel">Quantity <sup class="imp">*</sup></label>
+                            <!-- <mat-label>Quantity <sup class="imp">*</sup></mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Enter Quantity</mat-label> -->
+                                <input matInput type="text" placeholder="Enter Quantity" class="submitInputBox" formControlName="orderquantity" (keypress)="numberOnly($event);" (ngModelChange)="balanceQuantity()" value="" numbersOnly/>
+                            </mat-form-field>
+                            <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip- tooltip="Quantity" placement="left" showDelay="300"></span> -->
+                        </div>
+
+                        <mat-error *ngIf="balQuantitys<0">
+                            {{errormessage}}</mat-error>
+                    </div>
+
+                    <div style="width: 30%;" >
+                        <div class="invInputWicon">
+                            <label for="delDate" class="submitInputLabel">Dispatch Date <sup class="imp">*</sup></label>
+                            <!-- <mat-label>Dispatch Date <sup class="imp">*</sup></mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Dispatch Date</mat-label> -->
+                                <input matInput placeholder="Dispatch Date" [matDatepicker]="delDate" formControlName="delDate" class="submitInputBox"/>
+                                <mat-datepicker-toggle matSuffix [for]="delDate"></mat-datepicker-toggle>
+                                <mat-datepicker #delDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;" >
+                        <div class="invInputWicon">
+                            <label for="delDate" class="submitInputLabel">Email ID of Contact Person <sup class="imp">*</sup></label>
+                            <!-- <mat-label>Email ID of Contact Person <sup class="imp">*</sup></mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Email ID of Contact Person</mat-label> -->
+                                <input matInput placeholder="Email ID of Contact Person" formControlName="emailId" value="" (keyup)="ValidateEmail($event)" class="submitInputBox"/>
+                            </mat-form-field>
+                            <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip- tooltip="Email ID of Contact Person" placement="left" showDelay="300"></span> -->
+                        </div>
+                        <mat-error *ngIf="disable">
+                            {{errormsg}}</mat-error>
+                    </div>
+
+                    <div style="width: 100%; display: flex; gap: 35px;">
+                        <div style="width: 48%;" >
+                            <div class="invInputWicon">
+                                <label for="delDate" class="submitInputLabel">Dispatch Address <sup class="imp">*</sup></label>
+                                <mat-form-field appearance="none">
+                                    <textarea matInput placeholder="Enter Dispatch Address" formControlName="dispatchAddress" value="" class="submitInputBox"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+    
+                        <div style="width: 48%;" >
+                            <div class="invInputWicon">
+                                <label for="delDate" class="submitInputLabel">Remark <sup class="imp">*</sup></label>
+                                <!-- <mat-label>Remark <sup class="imp">*</sup></mat-label> -->
+                                <mat-form-field appearance="none">
+                                    <!-- <mat-label>Enter Remark</mat-label> -->
+                                    <textarea matInput placeholder="Enter Remark" formControlName="Remark" value="" class="submitInputBox"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submitRadioButtons w-100" (change)="changeEvent($event)">
+                        <div style="margin-right: 34px;">
+                            <input type="radio" id="withPO" value="withPO" name="wpo" checked=""/>
+                            <label for="withPO" class="inv-wrapper active">Submit with invoice</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="WithoutPO" value="WithoutPO" name="wpo" />
+                            <label for="WithoutPO" class="inv-wrapper active">Submit without invoice</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="!WithoutPO" class="w-100" style="background-color: #FFF; padding: 10px 10px 0 10px; display: flex; gap: 35px; flex-wrap: wrap; justify-content: space-between;">
+                    <div class="submitRadioButtons w-100" (change)="checkInvoice($event)">
+                        <div style="margin-right: 34px;">
+                            <input type="radio" id="Invoice" value="Invoice" name="Invoice" checked=""/>
+                            <label for="Invoice" class="inv-wrapper active">Invoice</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="Einvoice" value="Einvoice" name="Invoice" />
+                            <label for="Einvoice" class="inv-wrapper active">E-invoice</label>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;" *ngIf="irndetail">
+                        <div class="invInputWicon">
+                            <label for="delDate" class="submitInputLabel">IRN No</label>
+                            <!-- <mat-label>IRN No</mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Enter IRN No</mat-label> -->
+                                <input matInput placeholder="IRN No" type="text" (keypress)="keyPressAlphanumeric($event)" maxlength="64" class="submitInputBox" formControlName="irnNo" value="">
+                            </mat-form-field>
+                            <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip- tooltip="IRN No"
+                                                placement="left" showDelay="300"></span> -->
+                        </div>
+                        <mat-error *ngIf="hasError('irnNo', 'required') && createDelivery.controls['irnNo'].touched">*IRN No is required
+                        </mat-error>
+                    </div>
+
+                    <div style="width: 30%;" *ngIf="irndetail">
+                        <div class="invInputWicon">
+                            <label for="delDate" class="submitInputLabel">IRN Date</label>
+                            <!-- <mat-label>IRN Date</mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Select IRN Date</mat-label> -->
+                                <input placeholder="Select IRN Date" matInput [matDatepicker]="irnDate" formControlName="irnDate" class="submitInputBox">
+                                <mat-datepicker-toggle matSuffix [for]="irnDate"></mat-datepicker-toggle>
+                                <mat-datepicker #irnDate></mat-datepicker>
+                            </mat-form-field>
+                            <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip- tooltip="IRN Date"
+                                                placement="left" showDelay="300"></span> -->
+                        </div>
+                        <mat-error *ngIf="hasError('irnDate', 'required') && createDelivery.controls['irnDate'].touched">
+                            *IRN Date is required</mat-error>
+                    </div>
+
+
+                    <div style="width: 30%;">
+                        <div class="invInputWicon">
+                            <label for="delDate" class="submitInputLabel">Invoice Number<sup class="imp">*</sup></label>
+                            <!-- <mat-label>Invoice Number<sup class="imp">*</sup></mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Enter Invoice Number</mat-label> -->
+                                <input matInput placeholder="Enter Invoice Number" class="submitInputBox" (keypress)="keyPressAlphanumeric($event)" formControlName="InvNumber" value="" maxlength="16"/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;">
+                        <div class="invInputWicon">
+                            <label for="delDate" class="submitInputLabel">Invoice Date<sup class="imp">*</sup></label>
+                            <!-- <mat-label>Invoice Date<sup class="imp">*</sup></mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Select Invoice Date</mat-label> -->
+                                <input placeholder="Select Invoice Date" class="submitInputBox" matInput [matDatepicker]="InvDate" formControlName="InvDate" />
+                                <mat-datepicker-toggle matSuffix [for]="InvDate"></mat-datepicker-toggle>
+                                <mat-datepicker #InvDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div style="width: 30%;">
+                        <div class="invInputWicon">
+                            <label for="delDate" class="submitInputLabel">Invoice Amount <sup class="imp">*</sup></label>
+                            <!-- <mat-label>Invoice Amount <sup class="imp">*</sup></mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Enter Invoice Amount</mat-label> -->
+                                <input matInput placeholder="Enter Invoice Amount" class="submitInputBox" formControlName="InvAmount" value="" (keyup)="totalingfunction($event,'')" OnlyNumber="true" readonly />
+                            </mat-form-field>
+                            <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip- tooltip="Invoice Amount" placement="left" showDelay="300"></span> -->
+                        </div>
+                    </div>
+
+
+                    <div style="width: 30%;">
+                        <div class="invInputWicon">
+                            <label for="delDate" class="submitInputLabel">Total Amount<sup class="imp">*</sup></label>
+                            <!-- <mat-label>Total Amount<sup class="imp">*</sup></mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Total Amount</mat-label> -->
+                                <input matInput placeholder="Enter Total Amount" class="submitInputBox" formControlName="TotAmount" value="" readonly/>
+                            </mat-form-field>
+                            <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip- tooltip="Total Amount" placement="left" showDelay="300"></span> -->
+                        </div>
+                    </div>
+
+
+                    <div style="width: 65%;">
+                        <div class="invInputWicon">
+                            <label for="delDate" class="submitInputLabel">Description <sup class="imp">*</sup></label>
+                            <!-- <mat-label>Description <sup class="imp">*</sup></mat-label> -->
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Description</mat-label> -->
+                                <textarea matInput placeholder="Enter Description" class="submitInputBox" formControlName="description" value="" maxlength="3500"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="w-100 text-center submitUploadCard">
+                        <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                            <div class="add-file-input">
+                                <label for="input-file" class="file-input submitUploadCardContent">
+                                    <div style="display: flex; gap: 10px;">
+                                        <div class="submitUploadTitle">Upload PDF Invoice <sup class="imp">*</sup></div>
+                                        <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                    </div>
+                                    <div class="submitUploadTitle" style="color: #cc0000;" *ngIf="invoice">Please send the physical invoice</div>
+                                    
+                                    <span class="submitUploadDesc">(upto 4MB with no special characters)</span>
+                                </label>
+                                <input type="file" id="input-file" class="d-none" accept="application/pdf"
+                                    formControlName="attachments"
+                                    (change)="onFileSelectEvent($event,'createdelivery')">
+
+                            </div>
+
+                            <div class="uploadedFiles" *ngIf="viewAttachmentName!=null && viewAttachmentName!=''">
+                                <div class="uploadedFiles__name">{{viewAttachmentName}}</div>
+                                <div *ngIf="viewAttachmentName!=null && viewAttachmentName!=''"
+                                    class="fileCrossIcon">
+                                    <i class="fa fa-close" aria-hidden="true"
+                                        (click)="close()"></i>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- <div class="inv-form-inputs">
+                        <div class="add-file-input">
+                            <label for="input-file" class="file-input">
+                            <img src="./assets/img/cloud-computing.png" />
+                            </label>
+                            <input type="file" id="input-file" class="d-none" accept="application/pdf" (change)="onFileSelectEvent($event,'createdelivery')" />
+                            <p class="input-title">{{viewAttachmentName}}</p>
+                            <div *ngIf="viewAttachmentName!=null && viewAttachmentName!=''">
+                                <i class="fa fa-close fileCrossIcon" aria-hidden="true" (click)="close()"></i>
+                            </div>
+                        </div>
+
+                        <p class="input-subtitle">
+                            Upload PDF file (file size upto 4 MB)
+                        </p>
+                        <p class="input-subtitle" style="color: red;" *ngIf="invoice">
+                            Please send the physical invoice
+                        </p>
+                    </div> -->
+
+
+                    <div class="w-100 text-center">
+                        <!-- [disabled]="disable? true : null" -->
+                        <!-- <button type="submit" class="btn button-primary" (click)="submitInvoice()" [disabled]="createDelivery.invalid || (disable? true : null && filepresent == false) || disable? true : null "> -->
+                        <button type="submit" class="btn submitButton" (click)="submitInvoice()" [disabled]="createDelivery.invalid  || disable? true : null || filepresent == false">
+                            Submit
+                        </button>
+                    </div>
+                </div>   
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<app-dialog-model></app-dialog-model>
+
+

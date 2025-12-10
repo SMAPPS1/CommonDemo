@@ -1,0 +1,109 @@
+<div class="main-content margin-top">
+    <div class="container dashboardpt">
+        <div class="inv-page-container">
+            <div class="inv-page-wrapper container">
+                <div class="inv-page-header">
+                    <p class="invoice-number">New Partner Registration</p>
+                </div>
+                <div class="row">
+                    <!-- <div class="col-md-12"> -->
+                    <!-- <div class="card" id="jumptoWizard"> -->
+                    <div class="card-body pd-0">
+                        <form [formGroup]="registarion_form">
+                            <!-- <div class="inv-form-inputs" style="width: 100% !important"> -->
+                                <div class="filedpd">
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label>Enter Partner Company Mail ID</label><sup
+                                            class="imp">*</sup>
+                                            <input type="text" class="form-control wizard-required noDataBase"
+                                                placeholder="Enter Partner Company Mail ID" id="Infotech"
+                                                formControlName="Email" />
+                                            <div class="wizard-form-error"></div>
+                                            <mat-error
+                                                *ngIf="registarion_form.controls?.Email.touched && registarion_form.controls.Email.errors?.required">
+                                                Email Id Required.</mat-error>
+                                            <mat-error
+                                                *ngIf="registarion_form.controls?.Email.touched && registarion_form.controls.Email.errors?.email">
+                                                Please Enter Valid Email Id.</mat-error>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Enter Partner Mobile No</label><sup
+                                            class="imp">*</sup>
+                                            <input type="text" class="form-control wizard-required" id="Plantcode"
+                                                placeholder="Enter Partner Mobile No" formControlName="Mobile_no"
+                                                numbersOnly />
+                                            <div class="wizard-form-error"></div>
+                                            <mat-error
+                                                *ngIf="registarion_form.controls?.Mobile_no.touched && registarion_form.controls.Mobile_no.errors?.required">
+                                                Mobile Number Required.</mat-error>
+                                            <mat-error
+                                                *ngIf="registarion_form.controls?.Mobile_no.touched && registarion_form.controls.Mobile_no.errors?.pattern">
+                                                Please Enter Valid Mobile Number.</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="col-lg-12 text-center">
+                                <button type="submit" class="btn button-primary" (click)="Submit()">
+                                    <img src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                        class="activeImg arrowIcon" />
+                                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                        class="disabledImg arrowIcon" />
+                                    Send Registration Link
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- </div> -->
+                    <!-- </div> -->
+
+
+                    <!-- <form [formGroup]="registarion_form">
+                        <div class="inv-form-inputs" style="width: 100% !important">
+                            <div class="formData">
+                                <div class="invInputWicon">
+                                    <mat-label class="Lable">Enter Partner Company Mail ID</mat-label><sup
+                                        class="imp">*</sup>
+                                    <mat-form-field appearance="none" class="formInput">
+                                        <mat-label style="margin-left: 8px; font-size: larger;">Enter Partner Company
+                                            Mail ID </mat-label>
+                                        <input matInput formControlName="Email" />
+                                    </mat-form-field>
+                                    <mat-error
+                                        *ngIf="registarion_form.controls?.Email.touched && registarion_form.controls.Email.errors?.required">
+                                        Email Id Required.</mat-error>
+                                    <mat-error
+                                        *ngIf="registarion_form.controls?.Email.touched && registarion_form.controls.Email.errors?.email">
+                                        Please Enter Valid Email Id.</mat-error>
+                                </div>
+                                <div class="invInputWicon">
+                                    <mat-label class="Lable">Enter Partner Mobile No</mat-label><sup class="imp">*</sup>
+                                    <mat-form-field appearance="none" class="formInput">
+                                        <mat-label style="margin-left: 8px; font-size: larger;">Enter Partner Mobile
+                                            No</mat-label>
+                                        <input matInput formControlName="Mobile_no" numbersOnly />
+                                    </mat-form-field>
+                                    <mat-error
+                                        *ngIf="registarion_form.controls?.Mobile_no.touched && registarion_form.controls.Mobile_no.errors?.required">
+                                        Mobile Number Required.</mat-error>
+                                    <mat-error
+                                        *ngIf="registarion_form.controls?.Mobile_no.touched && registarion_form.controls.Mobile_no.errors?.pattern">
+                                        Please Enter Valid Mobile Number.</mat-error>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12 text-center">
+                                <button type="submit" class="btn button-primary" (click)="Submit()">
+                                    <img src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                        class="activeImg arrowIcon" />
+                                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                        class="disabledImg arrowIcon" />
+                                    Send Registration Link
+                                </button>
+                            </div>
+                        </div>
+                    </form> -->
+                </div>
+            </div>
+        </div>
+    </div>

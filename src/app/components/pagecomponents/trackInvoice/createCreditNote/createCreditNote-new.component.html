@@ -1,0 +1,409 @@
+<div class="main-content my-4">
+    <div class="container dashboardpt" style="padding: 0 !important;">
+        <div class="submitTopHeader" *ngIf="pageName == 'trackInvoice'" >
+            <img src="./assets/img/left-arrow-button.png" style="cursor: pointer;" alt="" [routerLink]="['/trackInvoiceList']">
+            <div class="submitTopHeaderText">{{invoiceNumber}} : <span *ngIf="vendorPortal == true">&ensp;Credit Note</span><span *ngIf="vendorPortal != true">&ensp;Short Quantity</span></div>
+        </div>
+        <div class="submitTopHeader" *ngIf="pageName == 'ApproveInvoice'">
+            <img src="./assets/img/left-arrow-button.png" style="cursor: pointer;" alt="" [routerLink]="['/internaltrackInvoiceList']">
+            <div class="submitTopHeaderText">{{invoiceNumber}} : <span *ngIf="vendorPortal == true">&ensp;Credit Note</span><span *ngIf="vendorPortal != true">&ensp;Short Quantity</span></div>
+        </div>
+        <div class="submitTopHeader" *ngIf="pageName == 'ViewInvoice'">
+            <img src="./assets/img/left-arrow-button.png" style="cursor: pointer;" alt="" [routerLink]="['/internalinvoicelist']">
+            <div class="submitTopHeaderText">{{invoiceNumber}} : <span *ngIf="vendorPortal == true">&ensp;Credit Note</span><span *ngIf="vendorPortal != true">&ensp;Short Quantity</span></div>
+        </div>
+        <p *ngIf="vendorPortal == true && creditNoteNo == null then uploadBlock"></p>
+
+        <ng-template #uploadBlock>
+            <div class="submitMainForm">
+                <form [formGroup]="creditNoteList" style="margin-bottom: 0;">
+                    <div class="submitFormSection w-100">
+                        <div style="display: flex; gap: 35px; width: 100%; flex-wrap: wrap; justify-content: space-between;">
+                            <div style="width: 30%; display: flex; flex-direction: column;">
+                                <label for="amount" class="submitInputLabel">Base Value <sup class="imp">*</sup></label>
+                                <mat-form-field appearance="none">
+                                    <input matInput title="Base Value" id="amount"
+                                        (input)="exceededAmount()" class="submitInputBox" formControlName="amount"
+                                        value="" valDecimal placeholder="Enter Base Value" [for]="amount"/>
+    
+                                </mat-form-field>
+                            </div>
+
+                            <div style="width: 30%; display: flex; flex-direction: column;">
+                                <label for="amount" class="submitInputLabel">Tax Value <sup class="imp">*</sup></label>
+                                <mat-form-field appearance="none">
+                                    <input matInput title="Tax Value" 
+                                         class="submitInputBox"
+                                        value="" placeholder="Enter Tax Value" [for]="amount" id="tax" formControlName="tax" valDecimal readonly/>
+    
+                                </mat-form-field>
+                            </div>
+
+                            <div style="width: 30%; display: flex; flex-direction: column;">
+                                <label for="totalamt" class="submitInputLabel">Total Amount <sup class="imp">*</sup></label>
+                                <mat-form-field appearance="none">
+                                    <input matInput title="Total Amount" 
+                                         class="submitInputBox" (input)="exceededAmount();calculateTax()"
+                                        value="" placeholder="Enter Total Amount" [for]="totalamt" id="total" formControlName="totalamt" valDecimal />
+    
+                                </mat-form-field>
+                                <mat-error *ngIf="exceeded">
+                                    Total Amount Should be greater than Base Value</mat-error>
+                            </div>
+
+                            
+
+
+                            <div class="w-100 text-center submitUploadCard" style="height: 140px;">
+                                <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                                    <div class="add-file-input">
+                                        <label for="input-file2" class="file-input submitUploadCardContent">
+                                            <div style="display: flex; gap: 10px;">
+                                                <div class="submitUploadTitle">Upload Credit Note <sup class="imp">*</sup></div>
+                                                <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                            </div>
+                                            
+                                            <span class="submitUploadDesc">(Filename can have spaces but no special characters)</span>
+                                            <span class="submitUploadDesc">Upload files (file upto 2MB)</span>
+                                        </label>
+                                        <input type="file" id="input-file2" class="d-none" accept="application/pdf"
+                                            onclick="value = null"  formControlName="attachments"
+                                            (change)="onFileSelectEvent($event,'invoice')">
+        
+                                    </div>
+    
+                                    <div class="uploadedFiles" style="justify-content: center; margin-top: 5px;" *ngIf="viewAttachmentName!=null && viewAttachmentName!=''">
+                                        <div class="uploadedFiles__name">{{viewAttachmentName}}</div>
+                                        <div *ngIf="viewAttachmentName!=null && viewAttachmentName!=''"
+                                            class="fileCrossIcon">
+                                            <i class="fa fa-close" aria-hidden="true"
+                                                (click)="close()"></i>
+                                        </div>
+                                    </div>
+        
+                                </div>
+                            </div>
+
+
+                            <div class="formWrapper__content">
+                                <div class="buttonWrapper">
+                                    <div class="row">
+                                        <div class="col-lg-12 text-center">
+                                            <button type="submit" class="btn submitButton" [disabled]="creditNoteList.invalid || exceeded" (click)="createCreditNote()">
+                                                Submit Credit Note
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </ng-template>
+        <p *ngIf="vendorPortal == false && creditNoteNo != null then downloadBlock"></p>
+        <p *ngIf="vendorPortal == true && creditNoteNo != null then downloadBlock"></p>
+
+        <ng-template #downloadBlock>
+            <div class="submitMainForm">
+            <form [formGroup]="creditNoteDetails" style="margin-bottom: 0;">
+                <div class="submitFormSection w-100">
+                    <div style="display: flex; gap: 35px; width: 100%; flex-wrap: wrap; justify-content: space-between;">
+                        <div style="width: 48%; display: flex; flex-direction: column;">
+                            <label for="amount" class="submitInputLabel">Base Value <sup class="imp">*</sup></label>
+                            <mat-form-field appearance="none">
+                                <input matInput title="Base Value" id="amount"
+                                     class="submitInputBox" formControlName="amount"
+                                    value="" valDecimal readonly placeholder="Enter Base Value" [for]="amount"/>
+
+                            </mat-form-field>
+                        </div>
+
+                        <div style="width: 48%; display: flex; flex-direction: column;">
+                            <label for="tax" class="submitInputLabel">Tax Value <sup class="imp">*</sup></label>
+                            <mat-form-field appearance="none">
+                                <input matInput title="Tax Value" 
+                                     class="submitInputBox"
+                                    value="" placeholder="Enter Tax Value" [for]="tax" id="tax" formControlName="tax" valDecimal readonly/>
+                            </mat-form-field>
+                        </div>
+
+                        <div style="width: 48%; display: flex; flex-direction: column;">
+                            <label for="totalamt" class="submitInputLabel">Total Amount <sup class="imp">*</sup></label>
+                            <mat-form-field appearance="none">
+                                <input matInput title="Total Amount" 
+                                     class="submitInputBox" 
+                                    value="" placeholder="Enter Total Amount" [for]="totalamt" id="total" formControlName="totalamt" valDecimal readonly/>
+
+                            </mat-form-field>
+                        </div>
+
+                        <div class="inv-form-inputs" style="width: 48%;">
+                            <div class="invInputWicon">
+                                <div class="text-left fixedPOnumber" style="cursor: pointer">
+                                    <span><mat-label class="submitInputLabel">Credit Note:
+                                            <img src="./assets/img/AttachmentLogo.png" alt="pdf image" (click)="download()" />
+                                            <a class="linkTable" style="cursor: pointer;" (click)="download()"></a></mat-label></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </ng-template> 
+
+        <div class="submitMainForm">
+            <div class="mainTable" *ngIf="vendorPortal == true">
+                <table class="table">
+                        <thead class="invoiceTableHead">
+
+                            <tr>
+
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Item
+                                </div>
+
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;"> 
+                                    Item Description
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Invoiced Qty
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Accepted Qty
+                                </div>
+                            </th>
+
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Short Qty
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Rate Per Qty
+                                </div>
+                            </th>
+                            <th scope="col" class="text-rigth invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Short Amount
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let creditAdviceItem of creditAdviceList; let i=index">
+                                <td class="preventClick ">
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.LINEITEMNUMBER}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left upperDate tableBodyText">
+                                        {{creditAdviceItem.LINEITEMTEXT}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left upperDate tableBodyText">
+                                        {{creditAdviceItem.LINEITEMTOTALQUANTITY | number :'1.3-3'}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.ACCEPTEDQTY | number :'1.3-3'}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.SHORTQTY | number :'1.3-3'}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.RATEPERQTY | currency : 'INR'}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.SHORTAMOUNT | currency : 'INR'}}
+                                    </div>
+                                </td>
+
+                                
+                            </tr>
+                        </tbody>
+                        <tbody class="invoiceTableHead">
+                            <tr class="">
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th scope="row" class="invoiceTableHeading">
+                                    <div>
+                                        Total Amount
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr style="background: white; border-bottom: 1px solid #dee2e6;">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="text-lef ttableBodyText">
+                                        {{totalAmount | currency:'INR'}}
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="mainTable" *ngIf="vendorPortal != true">
+                <table class="table">
+                        <thead class="invoiceTableHead">
+
+                            <tr>
+
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Item
+                                </div>
+
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Item Description
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Invoiced Qty
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Accepted Qty
+                                </div>
+                            </th>
+
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Short Qty
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Rate Per Qty
+                                </div>
+                            </th>
+                            <th scope="col" class="text-left invoiceTableHeading">
+                                <div style="padding: 8px 0;">
+                                    Short Amount
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let creditAdviceItem of creditAdviceList; let i=index">
+                                <td class="preventClick ">
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.LINEITEMNUMBER}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left upperDate tableBodyText">
+                                        {{creditAdviceItem.LINEITEMTEXT}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left upperDate tableBodyText">
+                                        {{creditAdviceItem.LINEITEMTOTALQUANTITY | number :'1.3-3'}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.ACCEPTEDQTY | number :'1.3-3'}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.SHORTQTY | number :'1.3-3'}}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.RATEPERQTY |currency : 'INR' }}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{creditAdviceItem.SHORTAMOUNT | currency : 'INR'}}
+                                    </div>
+                                </td>
+
+                                
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr class="">
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th scope="col" class="invoiceTableHeading">
+                                    <div style="padding: 8px 0;">
+                                        Total Amount
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="text-left tableBodyText">
+                                        {{totalAmount | currency:'INR'}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-dialog-model></app-dialog-model>

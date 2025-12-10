@@ -1,0 +1,582 @@
+<div class="main-content my-4">
+    <div class="container dashboardpt">
+
+        <div class="row">
+            <div class="col-md-12" style="padding: 0 !important">
+                <!-- <div class="submitAdvanceSearch">
+                    <div class="submitSearchByPoHeader">Advance Search</div>
+                    <div class="" (click)="openAdavnceSearch()">
+                        <img src="./assets/img/close-arrow.png" alt="download image" id="closeArrow"
+                            style="display: none;" width="20px">
+                        <img src="./assets/img/open-arrow.png" alt="refresh image" id="openArrow" width="20px">
+                    </div>
+                </div> -->
+
+                <div class="p-0">
+                    <form style="border-radius: 10px; overflow: hidden;">
+
+                        <div class="" style="background-color: #FFF; padding: 26px; display: flex; gap: 35px; flex-wrap: wrap;">
+
+                            <div class="" style="width: 48%;">
+                                <label for="ponumber" class="submitInputLabel">Enter PO No.</label>
+                                <mat-form-field appearance="none">
+                                    <input matInput placeholder="Enter PO No." value="" class="submitInputBox">
+                                </mat-form-field>
+                            </div>
+                            <div class="" style="width: 48%;">
+                                <label for="duration" class="submitInputLabel">Select Duration</label>
+                                <mat-form-field appearance="none" class="submitInputBox">
+                                    <!-- <mat-label>Select Duration</mat-label> -->
+                                    <!-- formControlName="Status" -->
+                                    <!-- <mat-select>
+                                        <mat-option *ngFor="let status of Duration" [value]="status">
+                                            {{status}}
+                                        </mat-option>
+                                    </mat-select> -->
+                                </mat-form-field>
+                                <!-- <mat-error *ngIf="hasError('Status', 'required') && POOrderList.controls['Status'].touched">
+                                    *PO Status is required</mat-error> -->
+                            </div>
+                            <div class="" style="width: 48%;">
+                                <label for="fromDate" class="submitInputLabel">From</label>
+                                <mat-form-field appearance="none">
+                                    <!-- <mat-label>From</mat-label> -->
+                                    <!-- formControlName="fromDate" -->
+                                    <input placeholder="From" matInput [matDatepicker]="fromDate" class="submitInputBox">
+                                    <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #fromDate></mat-datepicker>
+                                </mat-form-field>
+                                <!-- <mat-error *ngIf="hasError('PODate', 'required') && POOrderList.controls['PODate'].touched">
+                                    *from Date is required</mat-error> -->
+                            </div>
+                            <div class="" style="width: 48%;">
+                                <label for="toDate" class="submitInputLabel">To</label>
+                                <mat-form-field appearance="none">
+                                    <!-- <mat-label>To</mat-label> -->
+                                    <!-- formControlName="toDate" -->
+                                    <input placeholder="To" matInput [matDatepicker]="toDate" class="submitInputBox">
+                                    <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #toDate></mat-datepicker>
+                                </mat-form-field>
+                                <!-- <mat-error *ngIf="hasError('pickerToDate', 'required') && POOrderList.controls['pickerToDate'].touched">
+                                    *to Date is required</mat-error> -->
+                            </div>
+
+                            <div class="w-100 text-center">
+                            <button class="btn submitButton">
+                                <span> Search PO's</span>
+                              </button>
+                            </div>
+                          
+
+                            <!-- <div class="w-100 text-center">
+                                <button type="submit" class="btn submitButton" (click)="trackPayment('','','');"
+                                    [disabled]="disable">
+                                    Search
+                                </button>&nbsp; &#160; &#160; &#160;<button type="submit" class="btn submitButton"
+                                    (click)="ResetData()">
+                                    Reset
+                                </button>
+                            </div> -->
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12" style="padding: 0 !important;">
+                <div class="mainInvoiceTable">
+                    <div class="tableTopHeader">
+                        <div class="tableTopHeaderTitle"> Purchase Order
+                        </div>  
+                        <div class="tableTopHeaderStatus">
+                            <div class="tableTopHeaderCard all-bg-status" (click)="sortData('ALL')">
+                                <!-- <span class="tableTopHeaderCardCircle pending-circle-status"></span> -->
+                                <div class="tableTopHeaderCardTitle">All PO</div>
+                            </div>
+
+                            <div class="tableTopHeaderCard accepted-bg-status" (click)="sortData('A')">
+                                <span class="tableTopHeaderCardCircle accepted-circle-status"></span>
+                                <div class="tableTopHeaderCardTitle">Accepted</div>
+                            </div>
+
+                            <div class="tableTopHeaderCard work-in-progress-bg-status" (click)="sortData('P')">
+                                <span class="tableTopHeaderCardCircle work-in-progress-circle-status"></span>
+                                <div class="tableTopHeaderCardTitle">Work In Progress</div>
+                            </div>
+
+                            <div class="tableTopHeaderCard shipped-bg-status" (click)="sortData('S')">
+                                <span class="tableTopHeaderCardCircle shipped-circle-status"></span>
+                                <div class="tableTopHeaderCardTitle">Shipped</div>
+                            </div>
+
+                            <div class="tableTopHeaderCard complete-bg-status" (click)="sortData('C')">
+                                <span class="tableTopHeaderCardCircle complete-circle-status"></span>
+                                <div class="tableTopHeaderCardTitle">Complete</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="submitDownloadTab">
+                        <div class="submitDownloadTabTitle">
+                            Purchase Orders List
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div (click)="downloadlist()" class="tble-each-option" style="cursor: pointer; display: flex; align-items: center;">
+                                <!-- <img src="./assets/img/download-arrow.png" alt="download image" width="20px" style="margin: 0 10px 0 10px;"/>
+                                <div class="submitDownloadTabTitle">Download List</div> -->
+                                <img src="./assets/img/download-list-icon.png" alt="download image">
+                            </div>
+                            <div class="tble-each-option" style="cursor: pointer; display: flex; align-items: center;">
+                                <img src="./assets/img/refresh.png" alt="refresh image" width="20px" style="margin: 0 10px 0 10px;"/>
+                                <div class="submitDownloadTabTitle">Refresh</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mainTable">
+                        <table class="table">
+                                <thead class="invoiceTableHead">
+                                    <tr>
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                PO No.
+                                            </div>
+                                        </th>
+                                        
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Date
+                                            </div>
+                                        </th>
+
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Amount
+                                            </div>
+                                        </th>
+
+                                        <th scope="col" style="min-width: 40px;" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Messages
+                                            </div>
+                                        </th>
+                
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Action
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let poData of poDataList  | 
+                                slice: (mPageNo-1) * pageSize : (mPageNo-1) * pageSize + pageSize; let i=index">
+                                    <tr [attr.data-accordion]="'poacc'+i" (click)="getPOitems(poData.PO_NUMBER);openAccordionTab($event)">
+
+
+                                        <td class="preventClick">
+                                            <div>
+                                                <div class="text-left" *ngIf="poData.STATUS =='N'">
+                                                    <div class="tableAttachmentLogo">
+                                                        <img src="./assets/img/AttachmentLogo.png"
+                                                        alt="pdf image"
+
+                                                        [ngClass]="{
+                                                            'approved-bg-status': poData.STATUS == 'A', 
+                                                            'shipped-bg-status': poData.STATUS == 'S', 
+                                                            'work-in-progress-bg-status': poData.STATUS == 'P', 
+                                                            'complete-bg-status': poData.STATUS == 'C', 
+                                                            'new-po-bg-status': poData.STATUS == 'N'}"
+
+                                                        style="padding: 13px; border-radius: 6px;"
+                                                        (click)="download(poData.PO_NUMBER,'singlepodownload')"/>
+                                                        <span class="tableAttachmentStatus" 
+
+                                                        [ngClass]="{
+                                                            'approved-circle-status': poData.STATUS == 'A', 
+                                                            'shipped-circle-status': poData.STATUS == 'S', 
+                                                            'work-in-progress-circle-status': poData.STATUS == 'P', 
+                                                            'complete-circle-status': poData.STATUS == 'C', 
+                                                            'new-po-circle-status': poData.STATUS == 'N'}"
+    
+                                                             style="width: 12px; height: 12px;"></span>
+                                                    </div>
+    
+                                                    <a style="cursor: pointer; margin-left: 16px; color: var(--Bg-Primary);
+                                                        font-family: Lato;
+                                                        font-size: 16px;
+                                                        font-style: normal;
+                                                        font-weight: 600;">
+                                                        {{poData.PO_NUMBER}}<sup class="starRed">*</sup>
+                                                    </a>
+                                                </div>
+                                                
+                                                <div class="text-left" *ngIf="poData.STATUS !='N'">
+                                                    <div class="tableAttachmentLogo">
+                                                        <img src="./assets/img/AttachmentLogo.png"
+                                                        alt="pdf image"
+    
+                                                        [ngClass]="{
+                                                            'approved-bg-status': poData.STATUS == 'A', 
+                                                            'shipped-bg-status': poData.STATUS == 'S', 
+                                                            'work-in-progress-bg-status': poData.STATUS == 'P', 
+                                                            'complete-bg-status': poData.STATUS == 'C', 
+                                                            'new-po-bg-status': poData.STATUS == 'N'}"
+                                                                
+    
+                                                        style="padding: 13px; border-radius: 6px;"
+                                                        (click)="download(poData.PO_NUMBER,'singlepodownload')" />
+                                                        <span class="tableAttachmentStatus" 
+    
+                                                        [ngClass]="{
+                                                            'approved-circle-status': poData.STATUS == 'A', 
+                                                            'shipped-circle-status': poData.STATUS == 'S', 
+                                                            'work-in-progress-circle-status': poData.STATUS == 'P', 
+                                                            'complete-circle-status': poData.STATUS == 'C', 
+                                                            'new-po-circle-status': poData.STATUS == 'N'}"
+    
+                                                             style="width: 12px; height: 12px;"></span>
+                                                    </div>
+    
+                                                    <a style="margin-left: 16px; color: var(--Bg-Primary);
+                                                        font-family: Lato;
+                                                        font-size: 16px;
+                                                        font-style: normal;
+                                                        font-weight: 600;"
+                                                        >
+                                                        {{poData.PO_NUMBER}}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="text-left upperDate tableBodyText">
+                                                {{poData.DATE | date:'dd-MMM-yyyy' }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-left tableBodyText">
+                                                {{poData.AMOUNT| number:'0.0-0'}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="">
+    
+                                                <div class="text-left" style="display: flex; align-items: center;">
+                                                    <!-- <div class="commentInputWrap editableFalse">
+                                                            <input type="text" class="form-control ellipsisInput" value="{{poData.QUERY}}" placeholder="pending...." readonly />
+                                                        </div> -->
+                                                    <div class="commentIcon" (click)="ShowpopupMessage(event);
+                                                         getQuerry(poData.PO_NUMBER, poData.CONTACTPERSONEMAILID);getStatusUpdate(poData.PO_NUMBER)" *ngIf="poData.STATUS != null">
+                                                        <!-- <i class="fa fa-comment" aria-hidden="true"></i> -->
+                                                        <img src="./assets/img/messageUnread.png" style="cursor: pointer; display: none; margin-left: -35px; margin-right: -35px;" id="green{{i}}" />
+                                                        <img src="./assets/img/messageReadBlink.gif" style="cursor: pointer;" id="white{{i}}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-left">
+                                            <div class="dropPmWrapper mr-0">
+                                                <div class="dropdown" *ngIf="poData.STATUS !='N'">
+                                                    <a href="javascript:void;" type="button" id="settingAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    
+                                                        <div class="settingIconWrapper">
+                                                            <div class="settingIcon">
+                                                                <img class="setting-icon" src="./assets/img/setting.png" />
+                                                            </div>
+                                                            <!-- <span class="fa fa-chevron-down downArrow"></span> -->
+                                                            <img class="down-icon" style="width: 16px; margin-left: 8px;" src="./assets/img/down-icon.png" />
+                                                        </div>
+                                                    </a>
+                                                    <div class="settingIconWrapper__dropdown dropdownSettingMenu dropdown-menu-right" aria-labelledby="settingAction">
+                                                        <!-- <a class="dropdown-item" >
+                                                        <img src="./assets/img/track_po.png" />
+                                                        <div class="settingIconDropdown">View</div>
+                                                    </a>
+                                                    <a class="dropdown-item" >
+                                                        <img src="./assets/img/po_icon_grey.png" />
+                                                        <div class="settingIconDropdown">Edit</div>
+                                                    </a> -->
+    
+    
+                                                        <!-- <a class="dropdown-item">
+                                                        <div class="settingIconDropdown" (click)="showPopup($event)">Confirmation</div>
+                                                    </a> -->
+                                                        <!-- <a class="dropdown-item" [routerLink]="['/createDelivery']">
+                                                            <img src="./assets/img/track_po.png" />
+                                                            <div class="settingIconDropdown">Create Delivery
+                                                            </div>
+                                                        </a> -->
+                                                        <a class="dropdown-item">
+                                                            <img src="./assets/img/view_icon.png" />
+                                                            <div class="settingIconDropdown" (click)="getPoDetails(poData.PO_NUMBER , poData.DATE, poData.AMOUNT, poData.QUERY, poData.STATUS )">View Details
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+    
+                                                <div class="dropdown" *ngIf="poData.STATUS=='N'">
+                                                    <a href="javascript:void;" class="" type="button" id="settingAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    
+                                                        <div class="settingIconWrapper" (click)="showPopup($event, poData.PO_NUMBER )">
+                                                            <div class="settingIcon">
+                                                                <img class="setting-icon" src="./assets/img/confirm_icon.png" />
+                                                            </div>
+                                                        </div>
+                                                    </a>
+    
+                                                </div>
+    
+    
+                                            </div>
+    
+                                        </td>
+                                        <td class="text-center">
+                                        </td>
+                                    </tr>
+                                    <tr class="tbl-accordion-content" id="poacc{{i}}">
+                                        <td colspan="6">
+                                            <div class="aNestedTblAccordion accordion-wrapper">
+    
+                                                <!-- atbl-container -->
+                                                <div class="atbl-container" *ngFor="let poitem of uniquelineitems ">
+                                                    <!-- <thead>
+                                                            <tr>
+                                                                <th>Item</th>
+                                                                <th>Material Code/HSN SAC Code</th>
+                                                                <th>Order Qty</th>
+                                                                <th>PER</th>
+                                                                <th>UOM</th>
+                                                            </tr>
+                                                        </thead> -->
+                                                    <!-- <tbody>
+                                                            <tr>
+                                                                <td>00010</td>
+                                                                <td>170000000210 / IT SOFTWARE RENEWAL SERVICES</td>
+                                                                <td>12</td>
+                                                                <td>1</td>
+                                                                <td>NO</td>
+                                                            </tr>
+                                                        </tbody> -->
+                                                    <div class="atbl-btn" (click)="openAccordionNestedTab($event,poitem.LINEITEMNUMBER,poData.PO_NUMBER)">{{poitem.LINEITEMNUMBER}} {{poitem.LINEITEMTEXT}}
+                                                        <div class="dropPmWrapper ">
+                                                            <div class="dropdown">
+                                                                <a href="javascript:void;" class="" type="button" id="settingAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    
+                                                                    <div class="settingIconWrapper">
+                                                                        <div class="settingIcon">
+                                                                            <img class="setting-icon" src="./assets/img/setting.png" />
+                                                                        </div>
+                                                                        <!-- <span class="fa fa-chevron-down downArrow"></span> -->
+                                                                        <img class="down-icon" style="width: 16px; margin-left: 8px;" src="./assets/img/down-icon.png" />
+                                                                    </div>
+                                                                </a>
+                                                                <div class="settingIconWrapper__dropdown dropdownSettingMenu dropdown-menu-right" aria-labelledby="settingAction">
+                                                                    <a class="dropdown-item" (click)="navigate2(poitem.LINEITEMNUMBER ,poitem.LINEITEMTEXT)">
+                                                                        <img src="./assets/img/track_po.png" />
+                                                                        <div class="settingIconDropdown">Create Delivery
+                                                                        </div>
+                                                                    </a>
+                                                                    <a class="dropdown-item" (click)="navigate('lineitem',poData.VENDORID,poData.CONTACTPERSONEMAILID)">
+                                                                        <img src="./assets/img/po_icon_grey.png" />
+                                                                        <div class="settingIconDropdown">Submit Invoice
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <span class="plusminusArrow"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="atbl-panel">
+                                                        <table class="table">
+                                                            <thead class="invoiceTableHead">
+                                                                <tr>
+                                                                    <th scope="col" class="text-left invoiceTableHeading">
+                                                                        <div style="padding: 8px 0;">Order Delivery</div>
+                                                                    </th>
+                                                                    <th scope="col" class="text-left invoiceTableHeading">
+                                                                        <div style="padding: 8px 0;">Dispatch Date</div>
+                                                                    </th>
+                                                                    <th scope="col" class="text-left invoiceTableHeading">
+                                                                        <div style="padding: 8px 0;">Quantity</div>
+                                                                    </th>
+                                                                    <th scope="col" class="text-left invoiceTableHeading">
+                                                                        <div style="padding: 8px 0;">Remark</div>
+                                                                    </th>
+                                                                    <th scope="col" class="text-left invoiceTableHeading">
+                                                                        <div style="padding: 8px 0;">Action</div>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+    
+                                                            <tbody *ngFor="let orderitem of orderlist">
+                                                                <tr>
+                                                                    <td class="text-left tableBodyText"><a (click)="orderDetails(orderitem.ORDERNUMBER, orderitem.DELIVERYDATE, orderitem.QUANTITY,orderitem.BUSINESSPARTNERTEXT, orderitem.LINEITEMNUMBER, orderitem.LINEITEMTEXT, orderitem.CONTACTPERSONEMAILID, orderitem.PO_NUMBER, orderitem.DELIVERYADDRESS1)"> {{orderitem.ORDERNUMBER}} </a></td>
+                                                                    <!-- <td><a (click)="orderDetails(orderitem)"> {{orderitem.ORDERNUMBER}} </a></td> -->
+                                                                    <td class="upperDate text-left tableBodyText">{{orderitem.CREATEDON | date:'dd-MMM-yyyy'}}</td>
+                                                                    <td class="text-left tableBodyText">{{orderitem.QUANTITY| number:'0.0-0'}}</td>
+                                                                    <td class="text-left tableBodyText">{{orderitem.BUSINESSPARTNERTEXT}}</td>
+                                                                    <td class="text-left tableBodyText">
+                                                                        <a _ngcontent-cxk-c236="" (click)="navigate('orderitem',poData.VENDORID,poData.CONTACTPERSONEMAILID)" class="button-submitInvoice"> <img src="./assets/img/arrow_icon_grey.png " alt="arrow icon " class="arrowIcon " /> Submit Invoice</a>
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- <tr *ngIf = "orderlist == null">
+                                                                        No Order Delivery Done Yet
+                                                                    </tr> -->
+                                                            </tbody>
+    
+                                                        </table>
+    
+    
+                                                    </div>
+                                                </div>
+                                                <!-- atbl-container -->
+    
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                      
+                    </div>
+                    <div class="paginationWrapper">
+                        <ngb-pagination [pageSize]="pageSize" [collectionSize]="totalItems" (pageChange)="getPurOrderList($event)" [(page)]="mPageNo" [maxSize]="10" aria-label="Default pagination">
+                            <ng-template ngbPaginationPrevious>Previous</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+                    </div>
+                    <!-- <div class="w-100 text-center">
+                        <button type="submit " class="btn submitButton submitButtonCustom" [routerLink]="[ '/trackInvoiceList'] ">
+                            View All Invoices
+                        </button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- bootstrap Modal -->
+<div class="modal fade customBootstrapModal" id="popupComment" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="popupCommentLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="message.value=' ';ClosepopupMessage($event)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+                <div class="confirmation-title text-center">Messages</div>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="confirmationpopup">
+                    <div class="invoice-form p-0 messageBoxbBottom">
+                        <div class="inv-form-inputs mb-mt mt-0">
+                            <div class="submitPopupInputLabel">Enter Your Message </div>
+                            <textarea class="form-control submitPopupInputBox" name="" id="messagetext" cols="30" rows="4" #message 
+                            (input)="checklength('remark')" maxlength="160" 
+                            placeholder="Type here..."></textarea>
+                            <div style="font-size: 10px;display: flex;">{{remarklength}} characters out of 160</div>
+                            <!-- (keyup)="Check(message)" -->
+                        </div>
+                    </div>
+                    <!-- <div class="btn btn-primary confirmationNo">
+                    <button [disabled]="validate" > <img src="./assets/img/arrow_icon_red.png" alt="arrow icon" class="arrowIcon" />Submit</button>
+                </div> -->
+                    <!-- data-dismiss="modal" -->
+                    <div class="text-center w-100"> <button [disabled]="validate" class="btn submitButton" (click)="sendMessage('N',message.value,'SubmitQuery', topic); message.value=''">
+                        <!-- ;ClosepopupMessage($event) -->
+                         Submit</button></div>
+                    <br>
+
+                    <!-- <a [routerLink]="['/poOrderView']"> -->
+                    <p class="ponum pb-3">PO No : {{topic}}</p>
+                    <!-- </a> -->
+                    <div class="messageChatWrapper">
+                        <!-- Commented on 20 oct 2021 Angaj -->
+                        <!-- <div *ngFor="let message of messageList.slice().reverse();let i=index"> -->
+                        <div *ngFor="let message of messageList;let i=index">
+                            <div class="chatboxWrapper">
+                                <div class="chat__single">
+                                    <div class="chat__head">
+                                        <span class="messengerName">{{message.SENDER}} </span>
+                                        <span class="chat__date">
+                                        <span class="upperDate">({{message.CREATEDON |
+                                            date:'dd-MMM-yyyy'}})</span></span>&nbsp;
+                                        <span class="chat-time">{{message.CREATEDON | date:'mediumTime'}}</span>
+                                    </div>
+                                    <div class="chat__desc">{{message.MESSAGETEXT}}</div>
+                                    <div *ngIf="messageList.length==0" style="color: #777; font-size: 16px; font-weight: 600; text-align: center;">
+                                        <p class="text-center w-100">No Data Found</p>
+                                    </div>
+                                </div>
+                                <!-- <div class="chat__single bgVendor" *ngIf="i%2==1">
+                                <div class="chat__head">
+                                    <span class="messengerName">Buyer Name- {{message.SENDER}}</span>
+                                    <span class="chat__date">
+                                <span class="chat-time">10:30AM</span>
+                                    <span class="upperDate">{{message.CREATEDON | date:'dd-MMM-yyyy'}}</span></span>
+                                </div>
+                                <div class="chat__desc">{{message.MESSAGETEXT}}</div>
+                            </div> -->
+                                <!-- <div class="chat__single">
+                        <div class="chat__head">
+                            <span class="messengerName">Buyer Name - General Manager</span>
+                            <span class="chat__date"><span class="chat-time">10:30AM</span>
+                            <span>15/03/2021</span></span>
+                        </div>
+                        <div class="chat__desc">
+                            When will you complete the development
+                        </div>
+                    </div>
+                    <div class="chat__single bgVendor">
+                        <div class="chat__head">
+                            <span class="messengerName">Vendor Name</span>
+                            <span class="chat__date"><span class="chat-time">10:30AM</span>
+                            <span>15/03/2021</span></span>
+                        </div>
+                        <div class="chat__desc">started working on UI design</div>
+                    </div>
+                    <div class="chat__single">
+                        <div class="chat__head">
+                            <span class="messengerName">Buyer Name - General Manager</span>
+                            <span class="chat__date"><span class="chat-time">10:30AM</span>
+                            <span>15/03/2021</span></span>
+                        </div>
+                        <div class="chat__desc">
+                            When will you complete the development
+                        </div>
+                    </div>
+                    <div class="chat__single bgVendor">
+                        <div class="chat__head">
+                            <span class="messengerName">Vendor Name</span>
+                            <span class="chat__date"><span class="chat-time">10:30AM</span>
+                            <span>15/03/2021</span></span>
+                        </div>
+                        <div class="chat__desc">started working on UX design</div>
+                    </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- <div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+  <button type="button" class="btn btn-primary">Understood</button>
+</div> -->
+        </div>
+    </div>
+</div>
+    
+

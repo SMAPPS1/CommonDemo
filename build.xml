@@ -1,0 +1,38 @@
+<project name="JavaBuild" default="moveWar" basedir=".">
+
+    <!-- Define source and build directories -->
+    <property name="src.dir" value="src/main/java"/>
+    <property name="lib.dir" value="src/main/webapp/WEB-INF/lib"/>
+    <property name="classes.dir" value="src/main/webapp/WEB-INF/classes"/>
+    <property name="war.dir" value="src/main/webapp"/>
+
+    <!-- Create directories if they don't exist test 1234-->
+    <target name="init">
+        <mkdir dir="${lib.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+    </target>
+
+    <!-- Compile task -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+            <classpath>
+                <fileset dir="${lib.dir}" includes="*.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- Package into WAR file -->
+    <target name="war" depends="compile">
+        <war destfile="${war.dir}/DxProject.war">
+            <fileset dir="${war.dir}"/>
+            <lib dir="${lib.dir}"/>
+            <classes dir="${classes.dir}"/>
+        </war>
+    </target>
+
+    <!-- Move WAR file to the root directory testing 1-->
+    <target name="moveWar" depends="war">
+        <move file="${war.dir}/DxProject.war" tofile="DxProject.war"/>
+    </target>
+
+</project>

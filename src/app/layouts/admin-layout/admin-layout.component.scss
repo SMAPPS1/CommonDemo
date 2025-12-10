@@ -1,0 +1,30 @@
+.faq-sticky{
+    position: fixed;
+    bottom: 36px;
+    right: 30px;
+    z-index: 22222;
+    transition: all 2s ease-in;
+}
+.faq-text{
+    /* display: none; */
+    opacity: 0;
+    transition: all 0.5s ease;
+    font-size: 0;
+    /* opacity: 0; */
+}
+.faq-sticky:hover{
+    .faq-text{
+        /* display: block; */
+        opacity: 1;
+        transition: all 0.5s ease;
+        font-size: 14px;
+        padding-left: 8px;
+        /* opacity: 1; */
+    }
+}
+.faq-icon{
+    display: flex;
+}
+.how-to-navigate{
+    background: var(--Bg-Primary);
+}

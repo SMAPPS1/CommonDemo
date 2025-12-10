@@ -1,0 +1,115 @@
+<div class="main-content my-4">
+    <div class="container dashboardpt" style="padding: 0 !important;">
+        <div class="submitTopHeader">
+            <img src="./assets/img/left-arrow-button.png" alt="" style="cursor: pointer;">
+            <div class="submitTopHeaderText">INV203322, PO No.:23000052340 <span class="status-color st-inProgress"></span></div>
+        </div>
+        <div style="margin-top: 20px;
+            border-radius: 10px;
+            background: #FFF; padding-bottom: 20px;">
+            <div class="invoice-form">
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Invoice Number : <span class="tableBodyText">INV2345671</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Invoice Date : <span class="tableBodyText">20.10.2020</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Payment Method : <span class="tableBodyText">Cheque</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Milestone : <span class="tableBodyText">Payment 4</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Delivery Date : <span class="tableBodyText">20.10.2020</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Net Total : <span class="tableBodyText">Rs. 20,000</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Gross Total : <span class="tableBodyText">Rs. 22,000</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Total Amount : <span class="tableBodyText">Rs. 25,000</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">GST Calculated : <span class="tableBodyText">Yes</span></p>
+                </div>
+                <div class="inv-form-inputs">
+                    <p class="submitDownloadTabTitle">Signed by : <span class="tableBodyText">Laura Fernandez</span></p>
+                </div>
+
+
+
+                <div class="w-100" style="display: flex; gap: 24px;">
+                    <div class="w-100 text-center submitUploadCard">
+                        <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                            <div class="add-file-input">
+                                <label for="input-file" class="file-input submitUploadCardContent">
+                                    <div style="display: flex; gap: 10px;">
+                                        <div class="submitUploadTitle">Attachment testinvoice.pdf</div>
+                                        <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                    </div>
+                                   
+                                    <span class="submitUploadDesc">Upload your E-invoice doc,pdf below 4mb</span>
+                                </label>
+                                <input type="file" id="input-file" class="d-none">
+                
+                            </div>
+                
+                            <!-- <div class="uploadedFiles" *ngIf="viewAttachmentName!=null && viewAttachmentName!=''">
+                                <div class="uploadedFiles__name">{{viewAttachmentName}}</div>
+                                <div *ngIf="viewAttachmentName!=null && viewAttachmentName!=''"
+                                    class="fileCrossIcon">
+                                    <i class="fa fa-close" aria-hidden="true"
+                                        (click)="close()"></i>
+                                </div>
+                            </div> -->
+                
+                        </div>
+                    </div>
+                        <div class="w-100 text-center submitUploadCard">
+                            <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                                <div class="add-file-input">
+                                    <label for="input-file2" class="file-input submitUploadCardContent">
+                                        <div style="display: flex; gap: 10px;">
+                                            <div class="submitUploadTitle">Attached testinvoice.pdf</div>
+                                            <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                        </div>
+                                       
+                                        <span class="submitUploadDesc">Upload Other Supporting documents</span>
+                                    </label>
+                                    <input type="file" id="input-file2" class="d-none" >
+                
+                                </div>
+<!--                 
+                                <ul class="listFiles">
+                                    <li *ngFor="let selected of ArrayOfSelectedFilename;let i=index"
+                                        class="fileUploadSingle">
+                                        {{selected}} <i class="fa fa-close fileCrossIcon fileCrossIcon"
+                                            aria-hidden="true" (click)="removeitem(i)"></i>
+                                    </li>
+                                </ul> -->
+                
+                            </div>
+                        </div>
+                
+                </div>
+
+
+            </div>
+            <div class="text-center">
+                <button class="btn submitButton">
+                    <span>Submit Invoice</span>
+                </button>
+            </div>
+            
+        </div>
+
+        
+    </div>
+
+</div>
+
+
+<app-dialog-model></app-dialog-model>

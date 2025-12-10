@@ -1,0 +1,27 @@
+<app-loader></app-loader>
+<router-outlet></router-outlet>
+<!-- <title>K12 BusinessConnect</title> -->
+ <title>VIMA</title>
+
+<!-- <title *ngIf="isinternaluser">BCCL User Portal</title> -->
+<div class="timescape-essentials" *ngIf="(isLoggedIn$ | async) && showicons">
+    <ul class="timescape-essentialsUl">
+        <li class="rhsicon rhs-sidenav" data-toggle="tooltip" data-placement="left" title="" data-original-title="Need help ?">
+            <div class="arrowImg activeDefault rhs-sidenavIcon">
+                <img src="./assets/img/arrow.png" alt="" />
+            </div>
+            <span class="li-seperator"></span>
+        </li>
+        <li class="rhsicon rhs-grid" data-toggle="tooltip" data-placement="left" title="" data-original-title="Quick Links">
+            <div class="rhs-grid-icon rhs-round rhsHover">
+                <img src="./assets/img/po_icon_grey.png" alt="rhs_icon" />
+            </div>
+            <span class="li-seperator"></span>
+        </li>
+        <li class="rhsicon rhs-asktivia" data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+            <div class="rhs-round rhsHover">
+                <img src="./assets/img/track_po.png" alt="" />
+            </div>
+        </li>
+    </ul>
+</div>

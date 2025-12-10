@@ -1,0 +1,58 @@
+<div class="main-content my-4">
+    <div class="container dashboardpt">
+        <div class="row">
+            <div class="col-md-12" style="padding: 0 !important;">
+                <div class="mainInvoiceTable mt-0">
+                    <div class="tableTopHeader" style="margin-bottom: 20px;">
+                        <div class="tableTopHeaderTitle">New Partner Registration</div>
+                    </div>
+                    
+                    <div class="">
+                        <form [formGroup]="registarion_form">
+                            <!-- <div class="inv-form-inputs" style="width: 100% !important"> -->
+                                <div class="filedpd">
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+
+                                            <label for="Infotech" class="submitInputLabel">Enter Partner Company Mail ID</label><sup class="imp">*</sup>
+                                            <input type="text" class="form-control wizard-required noDataBase submitInputBox"
+                                                placeholder="Enter Partner Company Mail ID" id="Infotech"
+                                                formControlName="Email"/>
+                                            <div class="wizard-form-error"></div>
+                                            <mat-error
+                                                *ngIf="registarion_form.controls?.Email.touched && registarion_form.controls.Email.errors?.required">
+                                                Email Id Required.</mat-error>
+                                            <mat-error
+                                                *ngIf="registarion_form.controls?.Email.touched && registarion_form.controls.Email.errors?.email">
+                                                Please Enter Valid Email Id.</mat-error>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="Plantcode" class="submitInputLabel">Enter Partner Mobile No</label><sup
+                                            class="imp">*</sup>
+                                            <input type="text" class="form-control wizard-required submitInputBox" id="Plantcode"
+                                                placeholder="Enter Partner Mobile No" formControlName="Mobile_no"
+                                                numbersOnly />
+                                            <div class="wizard-form-error"></div>
+                                            <mat-error
+                                                *ngIf="registarion_form.controls?.Mobile_no.touched && registarion_form.controls.Mobile_no.errors?.required">
+                                                Mobile Number Required.</mat-error>
+                                            <mat-error
+                                                *ngIf="registarion_form.controls?.Mobile_no.touched && registarion_form.controls.Mobile_no.errors?.pattern">
+                                                Please Enter Valid Mobile Number.</mat-error>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            <div class="col-lg-12 text-center">
+                                <button type="submit" class="btn submitButton" (click)="Submit()">
+                                    Send Registration Link
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

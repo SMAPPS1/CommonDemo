@@ -1,0 +1,47 @@
+<div class="main-content my-4">
+    <div class="container dashboardpt" style="padding: 0 !important;">
+        <div class="submitTopHeader">
+            <img src="./assets/img/left-arrow-button.png" alt="" [routerLink]="['/purchaseOrdersList']" style="cursor: pointer;">
+            <div class="submitTopHeaderText">{{orderNo}}</div>
+        </div>
+        <div style="margin-top: 20px;
+            border-radius: 10px;
+            background: #FFF; padding-bottom: 20px;">
+
+    
+                    <div class="invoice-form ">
+                        <div class="inv-form-inputs">
+                            <p class="submitDownloadTabTitle">PO No : <span class="tableBodyText">{{poNumber}}</span></p>
+                        </div>
+                        <div class="inv-form-inputs">
+                            <p class="submitDownloadTabTitle">Delivery Name : <span class="tableBodyText">{{lineItemNumber}} {{lineItemText}}</span></p>
+                        </div>
+                        <div class="inv-form-inputs">
+                            <p class="submitDownloadTabTitle">Dispatch Order No: <span class="tableBodyText"> {{orderNo}}</span></p>
+                        </div>
+                        <div class="inv-form-inputs">
+                            <p class="submitDownloadTabTitle">Quantity : <span class="tableBodyText">{{Quantity}}</span></p>
+                        </div>
+                        <div class="inv-form-inputs">
+                            <p class="submitDownloadTabTitle">Dispatch Date : <span class="tableBodyText">{{Date | date: dd-MMM-yyyy}}</span></p>
+                        </div>
+                        <div class="inv-form-inputs">
+                            <p class="submitDownloadTabTitle">Email ID : <span class="tableBodyText">{{email}}</span></p>
+                        </div>
+                        <div class="inv-form-inputs">
+                            <p class="submitDownloadTabTitle">Dispatch Address : <span class="tableBodyText">{{address}}</span></p>
+                        </div>
+                        <div class="inv-form-inputs">
+                            <p class="submitDownloadTabTitle">Remark : <span class="tableBodyText">{{message}} </span></p>
+                        </div>
+                    </div>
+            
+        </div>
+
+        
+    </div>
+
+</div>
+
+
+<app-dialog-model></app-dialog-model>

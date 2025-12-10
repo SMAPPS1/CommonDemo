@@ -1,0 +1,156 @@
+/* .trackInvoicebtnWrapper {
+    display: flex;
+    justify-content: flex-end;
+} */
+.trackInvoicebtnWrapper .btn-primary {
+  background-color: transparent !important;
+  border: 1px solid #cc0000 !important;
+  border-radius: 20px !important;
+  color: #cc0000 !important;
+  padding: 5px 27px !important;
+}
+
+.trackInvoicebtnWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 50px;
+}
+
+.partialyLarge1 {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.partialySmall1 {
+  width: 8px !important;
+  height: 20px !important;
+}
+
+/* .trackInvoicebtnWrapper button {text-transform: capitalize;} */
+.detailTableWrapper {
+  padding: 20px 50px;
+}
+
+@media (max-width: 767px) {
+  .detailTableWrapper {
+    padding: 15px 15px;
+  }
+
+}
+
+/* ***************************************Description & Remarks changes Start 05-01-2023 ************************************************** */
+.expandIcon {
+  margin-bottom: 18%;
+  position: absolute;
+  margin-top: -8%;
+  right: 0px;
+}
+
+/* .expandIcon{margin-bottom: 18%; position: absolute; margin-top: -8%; right: 2px;} */
+.expandIcon2 {
+  margin-bottom: 18%;
+  position: absolute;
+  margin-top: -6%;
+  right: -8px;
+}
+
+.expandIcon3 {
+  margin-bottom: 18%;
+  position: absolute;
+  margin-top: -9%;
+  right: -2px;
+}
+
+.expandIcon4 {
+  margin-bottom: 18%;
+  position: absolute;
+  margin-top: 0%;
+  right: -2px;
+}
+
+.commonDgWrapper .expandIcon6 {
+  position: absolute;
+  top: 7px;
+  right: 0;
+}
+
+.showMore {
+  display: block !important;
+}
+
+.showNothing {
+  display: none !important;
+}
+
+.commonDgWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  min-width: 440px;
+}
+
+.commonDgWrapper1 {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  max-width: 440px;
+}
+
+.dgTextLeft {
+  flex: 1
+}
+
+.dgTextRight {
+  flex: 0 0 13px;
+  margin-left: 5px;
+}
+
+.commonDgWrapper .expandIcon {
+  position: absolute;
+  top: 7px;
+  right: 0;
+}
+
+/* ************************************************************Description & Remarks changes End 05-01-2023 *********************************************************************** */
+
+::ng-deep .mat-form-field-infix {
+  /* border: 1px solid #ccc; */
+  border-radius: 4px;
+  padding: 0.5em 0;
+}
+
+.remarksTextArea {
+  padding: 0px 5px;
+}
+
+.dropdowntext {
+  font-size: 18px;
+  margin: 3px;
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  margin-bottom: -1px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #dce1e4;
+}
+
+.tooltip-para{
+  text-align: left; 
+  white-space: nowrap;
+  color: #333333; 
+  font-size: 15px; 
+  font-weight: 100;
+}
+
+.tooltip-background{
+  max-width: none; 
+  background-color: #edeff1;
+  box-shadow: 5px 5px 0px 0px rgba(0,0,0,0.14);
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+  padding: 17px 14px !important;
+}

@@ -1,0 +1,60 @@
+.mainCard {
+    padding-top: 8px 0;
+    
+    border-radius: 12px;
+    background: #FFF;
+}
+
+.topHeader {
+    padding: 8px 24px 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardTitle {
+    color: #1C1D21;
+
+    font-family: Lato;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px; /* 150% */
+}
+
+.dashboardStatus {
+    display: flex;
+    gap: 8px;
+}
+
+.dashboardCard {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: linear-gradient(0deg, rgba(71, 180, 179, 0.10) 0%, rgba(71, 180, 179, 0.10) 100%), #FFF;
+}
+
+.statusHeading {
+    margin: 0;
+}
+
+.mainTable {
+    padding: 0 24px;
+    margin-top: 16px;
+}
+
+.tableHead {
+    border-radius: 12px;
+    background: linear-gradient(0deg, #F2F5F6 0%, #F2F5F6 100%), #FFF;
+}
+
+.tableHeading {
+    color: var(--Bg-Primary);
+    font-family: Lato;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+}

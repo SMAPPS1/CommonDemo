@@ -1,0 +1,255 @@
+<div class="main-content my-4">
+    <div class="container dashboardpt" style="padding: 0 !important;">
+        <div class="submitTopHeader">
+            <img src="./assets/img/left-arrow-button.png" alt="" [routerLink]="['/dashboard']" style="cursor: pointer;">
+            <div class="submitTopHeaderText">Submit Invoice Without PO</div>
+        </div>
+        <div class="submitMainForm">
+            <form [formGroup]="InvoiceForm" style="margin-bottom: 0;">
+                <div class="submitFormSection w-100">
+                    <div class="submitRadioButtons" (change)="checkInvoice($event)">
+                        <div style="margin-right: 34px;">
+                            <input type="radio" id="cpinvoice" value="Invoice" name="itrfield" checked=""/>
+                            <label for="cpinvoice" class="inv-wrapper active">Invoice</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="cpEinvoice" value="Einvoice" name="itrfield" />
+                            <label for="cpEinvoice" class="inv-wrapper">E-Invoice</label>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 35px; width: 100%;">
+                        <div style="width: 100%; display: flex; flex-direction: column;">
+                            <label for="Invnumber" class="submitInputLabel">Invoice Number <sup class="imp">*</sup></label>
+                            <mat-form-field appearance="none">
+                                <input matInput title="Invoice Number" maxlength="16"
+                                    (keypress)="keyPressAlphanumeric($event)" class="submitInputBox" formControlName="Invnumber"
+                                    value="" placeholder="Enter Invoice Number"/>
+
+                            </mat-form-field>
+                            <mat-error *ngIf="
+                                hasError('Invnumber', 'required') &&
+                                InvoiceForm.controls['Invnumber'].touched
+                                ">
+                                *Invoice Number is required</mat-error>
+                        </div>
+
+
+
+                        <div style="width: 100%;  display: flex; flex-direction: column;">
+                            <!-- <p>Invoice</p>
+                            <input type="text" style="width: 100%;"> -->
+
+                            <label for="InvDate" class="submitInputLabel">Invoice Date <sup class="imp">*</sup></label>
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label class="matLabel">Invoice Date </mat-label> -->
+                                <input matInput [max]="maxdate" [min]="mindate" [matDatepicker]="InvDate"
+                                    formControlName="InvDate" class="submitInputBox" placeholder="Invoice Date"/>
+                                <mat-datepicker-toggle matSuffix [for]="InvDate">
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #InvDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+
+                        <div style="width: 100%; display: flex; flex-direction: column;">
+                            <!-- <mat-label>Bill Of Lading Date </mat-label> -->
+                            <label for="billofladingdate" class="submitInputLabel">Bill Of Lading Date</label>
+                                <mat-form-field appearance="none">
+                                    <!-- <mat-label class="matLabel">Bill Of Lading Date</mat-label> -->
+                                    <input matInput [max]="maxdate" [min]="mindate" [matDatepicker]="billofladingdate"
+                                        formControlName="billofladingdate" readonly class="submitInputBox" placeholder="Bill Of Lading Date">
+                                    <mat-datepicker-toggle matSuffix [for]="billofladingdate">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #billofladingdate></mat-datepicker>
+                                </mat-form-field>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 35px; width: 100%;" *ngIf="irndetail">
+
+
+                        <div style="width: 96%;" *ngIf="irndetail">
+                            <label for="Invnumber" class="submitInputLabel">IRN No <sup class="imp">*</sup></label>
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label>Enter IRN No</mat-label> -->
+                                <input matInput placeholder="IRN No" type="text"
+                                    (keypress)="keyPressAlphanumericWOSChar($event)" maxlength="64" formControlName="IRNNo"
+                                    value="" class="submitInputBox" [for]="Invnumber">
+                            </mat-form-field>
+                        </div>
+
+                        <div style="width: 200%;" *ngIf="irndetail">
+                            <label for="IRNDate" class="submitInputLabel">IRN Date <sup class="imp">*</sup></label>
+                                <mat-form-field appearance="none">
+                                    <!-- <mat-label>Select IRN Date</mat-label> -->
+                                    <input matInput [matDatepicker]="IRNDate" formControlName="IRNDate" readonly placeholder="Select IRN Date" class="submitInputBox">
+                                    <mat-datepicker-toggle matSuffix [for]="IRNDate">
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #IRNDate></mat-datepicker>
+                                </mat-form-field>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 35px; width: 100%;">
+                        <div style="width: 96%;">
+                            <!-- <p>Invoice</p>
+                            <input type="text" style="width: 100%;"> -->
+                            <label for="Useremail" class="submitInputLabel">Email ID of End User <sup class="imp">*</sup></label>
+                            <mat-form-field appearance="none">
+                                <!-- <mat-label class="matLabel">Enter Email ID of End User</mat-label> -->
+                                <input matInput title="Email ID of End User"
+                                    placeholder="Enter Email ID of End User" formControlName="Useremail"
+                                    value="" class="submitInputBox"/>
+                            </mat-form-field>
+                            <mat-error *ngIf="
+                                hasError('Useremail', 'required') &&
+                                InvoiceForm.controls['Useremail'].touched
+                                ">
+                                *User email is required</mat-error>
+                        </div>
+                        <div style="width: 200%;">
+                            <label for="Invamount" class="submitInputLabel">Invoice Amount <sup class="imp">*</sup></label>
+                           
+                                <mat-form-field appearance="none">
+                                    <!-- <mat-label class="matLabel">Enter Amount</mat-label> -->
+                                    <input matInput placeholder="Enter Invoice Amount" formControlName="Invamount"
+                                        value="" valDecimal OnlyNumber="true" maxlength="13" class="submitInputBox"/>
+                                </mat-form-field>
+                           
+                            <mat-error *ngIf="
+                                hasError('Invamount', 'required') &&
+                                InvoiceForm.controls['Invamount'].touched
+                                ">
+                                *Invoice amount is required</mat-error>
+                        </div>
+                    </div>
+
+
+            
+
+
+                    <div class="w-100">
+                        <label for="Description" class="submitInputLabel">Description <sup class="imp">*</sup> ( {{descripionlength}} characters out of 160 )</label>
+                        
+                                <mat-form-field appearance="none">
+                                    <textarea matInput placeholder="Write here" formControlName="Description"
+                                        value="" (input)="checklength('description')" maxlength="160" class="submitInputBox" rows="4"></textarea>
+                                </mat-form-field>
+                        
+                            <mat-error
+                                *ngIf="hasError('Description', 'required') && InvoiceForm.controls['Description'].touched">
+                                *Description is required</mat-error>
+                         
+                    </div>
+
+                    <div class="w-100" style="display: flex; gap: 24px;">
+                        <div class="w-100 text-center submitUploadCard">
+                            <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                                <div class="add-file-input">
+                                    <label for="input-file2" class="file-input submitUploadCardContent">
+                                        <div style="display: flex; gap: 10px;">
+                                            <div class="submitUploadTitle">Upload PDF Invoice <sup class="imp">*</sup></div>
+                                            <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                        </div>
+                                        
+                                        <span class="submitUploadDesc">(upto 4MB with no special characters)</span>
+                                    </label>
+                                    <input type="file" id="input-file2" class="d-none" accept="application/pdf"
+                                        formControlName="attachments"
+                                        (change)="onFileSelectEventforinvoiceupload($event,'invoice')"  onclick="value = null">
+    
+                                </div>
+
+                                <div class="uploadedFiles" style="justify-content: center;" *ngIf="viewAttachmentName!=null && viewAttachmentName!=''">
+                                    <div class="uploadedFiles__name">{{viewAttachmentName}}</div>
+                                    <div *ngIf="viewAttachmentName!=null && viewAttachmentName!=''"
+                                        class="fileCrossIcon">
+                                        <i class="fa fa-close" aria-hidden="true"
+                                            (click)="close()"></i>
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+                        
+                            <div class="w-100 text-center submitUploadCard">
+                                <div class="inv-form-inputs w-100" style="top: 25%; margin: 0;">
+                                    <div class="add-file-input">
+                                        <label for="input-file3" class="file-input submitUploadCardContent">
+                                            <div style="display: flex; gap: 10px;">
+                                                <div class="submitUploadTitle">Upload Supporting Docs</div>
+                                                <img src="./assets/img/cloud-upload.png" class="submitUploadImage" />
+                                            </div>
+                                            
+                                            <span class="submitUploadDesc">(no special characters in the file name)</span>
+                                        </label>
+                                        <input type="file" id="input-file3" class="d-none" multiple="multiple"
+                                            (change)="onFileChanged($event)" onclick="value = null">
+        
+                                    </div>
+
+                                    <ul class="listFiles">
+                                        <li *ngFor="let selected of ArrayOfSelectedFilename;let i=index"
+                                            class="fileUploadSingle">
+                                            {{selected}} <i class="fa fa-close fileCrossIcon fileCrossIcon"
+                                                aria-hidden="true" (click)="removeitem(i)"></i>
+                                        </li>
+                                    </ul>
+        
+                                </div>
+                            </div>
+
+                    </div>
+                    <div class="w-100 text-right">
+                        <button type="submit" class="btn submitButton submitButtonCustom" (click)="submitinvoicedetail()"
+                            [disabled]="InvoiceForm.invalid">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="invoicePopup" class="overlay">
+        <div class="popup customPopup__small">
+            <div class="container">
+                <div class="confirmationpopup mb-2">
+                    <div class="confirmation-title text-center">Confirmation
+                        <button type="button" class="close" (click)="closePopUp()">&times;</button>
+                    </div>
+                    <p class="confirmation-para text-center">
+                        would like to submit your invoice
+                    </p> 
+                    <div class="radioWrapper submitRadioButton" (change)="submitInvoice($event)"
+                        style=" margin-top: 35px;">
+                        <p>
+                            <input type="radio" id="withPo" value="withPo" name="itrfield" />
+                            <label for="withPo">With PO (You will be redirected to the Purchase Orders page)</label>
+                        </p>
+                    </div>
+                    <div class="radioWrapper radioInline" (change)="submitInvoice($event)">
+                        <p>
+                            <input type="radio" id="withoutPo" value="withoutPo" name="itrfield" />
+                            <label for="withoutPo">Without PO</label>
+                        </p>
+                    </div>
+                    <div class="radioWrapper radioInline" (change)="submitInvoice($event)">
+                        <p>
+                            <input type="radio" id="bulkinvoice" value="bulkinvoice" name="itrfield" />
+                            <label for="withoutPo">Bulk Invoice</label>
+                        </p>
+                    </div>
+                    <div class="sbmt_Invoice">
+                        <button type="submit" class="btn submitButton" (click)="submit()"
+                            [disabled]="invoiceStatus == ''">
+                            Submit </button>
+                    </div>
+                    <p style="font-size: 13px;"> * You will be redirected to the Purchase Orders page</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-dialog-model></app-dialog-model>

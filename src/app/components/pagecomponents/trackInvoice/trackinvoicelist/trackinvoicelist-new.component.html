@@ -1,0 +1,783 @@
+<div class="main-content my-4">
+    <div class="container dashboardpt">
+
+        <div class="row">
+            <div class="col-md-12" style="padding: 0 !important">
+                <div class="submitAdvanceSearch">
+                    <div class="submitSearchByPoHeader">Search by <span style="color: #cccccc; font-size: 16px;"> Invoice Number, PO No, Duration, Date Range, Plant</span></div>
+                    <div style="cursor: pointer;" (click)="openAdavnceSearch()">
+                        <img src="./assets/img/close-arrow.png" alt="download image" id="closeArrow"
+                            style="display: none;" width="20px">
+                        <img src="./assets/img/open-arrow.png" alt="refresh image" id="openArrow" width="20px">
+                    </div>
+                </div>
+
+                <div class="p-0" style="display: none;" id="advanceSearcBox">
+                    <form [formGroup]="invoiceList" style="border-radius: 0 0 10px 10px; overflow: hidden;">
+
+                        <div class="" style="background-color: #FFF; padding: 20px 30px; display: flex; gap: 35px; flex-wrap: wrap;">
+                            <div class="" style="width: 30%;">
+                                <label for="InvoiceNumber" class="submitInputLabel">Invoice Number</label>
+                                <mat-form-field appearance="none">
+                                    <input matInput placeholder="Enter Invoice Number"
+                                        (keypress)="keyPressAlphanumeric($event)"
+                                        formControlName="InvoiceNumber" value="" class="submitInputBox" maxlength="16">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="" *ngIf="headdisableoff == false" style="width: 30%;">
+                                <label for="POrealNumber" class="submitInputLabel">PO Number</label>
+                                    <mat-form-field appearance="none">
+                                        <input matInput placeholder="Enter PO Number" formControlName="POrealNumber"
+                                            value="" class="submitInputBox" [for]="POrealNumber">
+                                    </mat-form-field>
+                            </div>
+
+                            <div class="" style="width: 30%;">
+                                <label for="picker" class="submitInputLabel">From Date</label>
+                                    <mat-form-field appearance="none">
+                                        <input matInput placeholder="From Date" [max]="maxdate" [min]="mindate" [matDatepicker]="picker"
+                                            formControlName="fromDate" (dateChange)="onDateChange()" class="submitInputBox">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                <mat-error *ngIf="fromdateerror">
+                                    From date is required</mat-error>
+                            </div>
+
+                            <div class="" style="width: 30%;">
+                                <label for="Topicker" class="submitInputLabel">To Date</label>
+                                    <mat-form-field appearance="none">
+                                        <input matInput placeholder="To Date" [max]="maxdate" [min]="mintodate" [matDatepicker]="Topicker"
+                                            formControlName="toDate" (dateChange)="onDateChange()" class="submitInputBox">
+                                        <mat-datepicker-toggle matSuffix [for]="Topicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #Topicker></mat-datepicker>
+                                    </mat-form-field>
+                                <mat-error *ngIf="todateerror">
+                                    To date is required</mat-error>
+                            </div>
+
+                            <div class="" style="width: 30%;">
+
+                                <label for="Plant" class="submitInputLabel">By Plant</label>
+                                <mat-form-field appearance="none">
+                                    <input placeholder="By Plant" type="text" matInput formControlName="Plant"
+                                        (input)="getPlantData($event)" [matAutocomplete]="auto1"  class="submitInputBox">
+                                    <mat-autocomplete #auto1="matAutocomplete">
+                                        <mat-option *ngFor="let plantdata of tempPlantList"
+                                            [value]="plantdata.PLANTCODE">
+                                            {{plantdata.PLANTNAME}} ({{ plantdata.PLANTCODE}})
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="" style="width: 30%;">
+                                <section class="example-section">
+                                </section>
+                                <div class="customCheckbox" style="display: inline-block; margin-right: 12px;">
+                                    <input type="checkbox" name="cb1" class="chb" id="ch1" (click)="checkbox()"
+                                        value="ASWP" /><label for="ch1" class="submitInputLabel"> Without PO
+                                    </label>
+                                </div>
+                                <div class="customCheckbox" style="display: inline-block;">
+                                    <input type="checkbox" name="cb2" class="chb" id="ch2" (click)="checkbox()"
+                                        value="ASSQ" /><label for="ch2" class="submitInputLabel"> Short
+                                        Quantity</label>
+                                </div>
+                            </div>
+
+                            <div class="w-100 text-center">
+                                <button type="submit" class="btn submitButton" (click)="trackPayment('','','');"
+                                    [disabled]="disable">
+                                    Search
+                                </button>&nbsp; &#160; &#160; &#160;<button type="submit" class="btn submitButton"
+                                    (click)="ResetData()">
+                                    Reset
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="padding: 0 !important;">
+                <div class="mainInvoiceTable">
+                    <div class="tableTopHeader">
+                        <div class="tableTopHeaderTitle"> Invoice(s)
+                        </div>  
+                        <div class="tableTopHeaderStatus">
+                            <div (click)="sortdata('ALL')" [ngClass]="{'selected': currstatus === 'ALL'}">
+                                <div class="tableTopHeaderCount" style="opacity: 0;">0</div>
+                                <div class="tableTopHeaderCard all-bg-status">
+                                    <!-- <span class="tableTopHeaderCardCircle pending-circle-status"></span> -->
+                                    <div class="tableTopHeaderCardTitle">All</div>
+                                    <div class="tableActive" *ngIf="currstatus === 'ALL'"></div>
+                                </div>
+                            </div>
+                            <div (click)="sortdata('P')" [ngClass]="{'selected': currstatus === 'P'}">
+                                <div class="tableTopHeaderCount">{{pendingPo}}</div>
+                                <div class="tableTopHeaderCard pending-bg-status">
+                                    <span class="tableTopHeaderCardCircle pending-circle-status"></span>
+                                    <div class="tableTopHeaderCardTitle">Pending</div>
+                                    <div class="tableActive" *ngIf="currstatus === 'P'"></div>
+                                </div>
+                                
+                            </div>
+                            <div (click)="sortdata('V')" [ngClass]="{'selected': currstatus === 'V'}">
+                                <div class="tableTopHeaderCount">{{ReturnPo}}</div>
+                                <div class="tableTopHeaderCard returned-bg-status">
+                                    <span class="tableTopHeaderCardCircle returned-circle-status"></span>
+                                    <div class="tableTopHeaderCardTitle">Returned</div>
+                                    <div class="tableActive" *ngIf="currstatus === 'V'"></div>
+                                </div>
+                            </div>
+                            <div (click)="sortdata('O')" [ngClass]="{'selected': currstatus === 'O'}">
+                                <div class="tableTopHeaderCount">{{invoiceCountAsPerStatus?.O != null ? invoiceCountAsPerStatus?.O : 0}}</div>
+                                <div class="tableTopHeaderCard on-hold-bg-status">
+                                    <span class="tableTopHeaderCardCircle on-hold-circle-status"></span>
+                                    <div class="tableTopHeaderCardTitle">On Hold</div>
+                                    <div class="tableActive" *ngIf="currstatus === 'O'"></div>
+                                </div>
+                            </div>
+                            
+                            <div (click)="sortdata('A')" [ngClass]="{'selected': currstatus === 'A'}">
+                                <div class="tableTopHeaderCount">{{invoiceCountAsPerStatus?.A != null ? invoiceCountAsPerStatus?.A : 0}}</div>
+                                <div class="tableTopHeaderCard approved-bg-status">
+                                    <span class="tableTopHeaderCardCircle approved-circle-status"></span>
+                                    <div class="tableTopHeaderCardTitle">Approved</div>
+                                    <div class="tableActive" *ngIf="currstatus === 'A'"></div>
+                                </div>
+                            </div>
+                            
+                            <div (click)="sortdata('PRO')" [ngClass]="{'selected': currstatus === 'PRO'}">
+                                <div class="tableTopHeaderCount">{{invoiceCountAsPerStatus?.PRO != null ? invoiceCountAsPerStatus?.PRO : 0}}</div>
+                                <div class="tableTopHeaderCard processed-bg-status">
+                                    <span class="tableTopHeaderCardCircle processed-circle-status"></span>
+                                    <div class="tableTopHeaderCardTitle">Processed</div>
+                                    <div class="tableActive" *ngIf="currstatus === 'PRO'"></div>
+                                </div>
+                            </div>
+                            
+                            <div (click)="sortdata('PP')" [ngClass]="{'selected': currstatus === 'PP'}">
+                                <div class="tableTopHeaderCount">{{invoiceCountAsPerStatus?.PP != null ? invoiceCountAsPerStatus?.PP : 0}}</div>
+                                <div class="tableTopHeaderCard partially-paid-bg-status">
+                                    <span class="tableTopHeaderCardCircle partially-paid-circle-status"></span>
+                                    <div class="tableTopHeaderCardTitle">Partially Paid</div>
+                                    <div class="tableActive" *ngIf="currstatus === 'PP'"></div>
+                                </div>
+                            </div>
+
+                            <div (click)="sortdata('PD')" [ngClass]="{'selected': currstatus === 'PD'}">
+                                <div class="tableTopHeaderCount">{{invoiceCountAsPerStatus?.PD != null ? invoiceCountAsPerStatus?.PD : 0}}</div>
+                                <div class="tableTopHeaderCard paid-bg-status">
+                                    <span class="tableTopHeaderCardCircle paid-circle-status"></span>
+                                    <div class="tableTopHeaderCardTitle">Paid</div>
+                                    <div class="tableActive" *ngIf="currstatus === 'PD'"></div>
+                                </div>
+                            </div>
+                            
+                            <div (click)="sortdata('H')" [ngClass]="{'selected': currstatus === 'H'}">
+                                <div class="tableTopHeaderCount">{{invoiceCountAsPerStatus?.H != null ? invoiceCountAsPerStatus?.H : 0}}</div>
+                                <div class="tableTopHeaderCard offline-bg-status">
+                                    <span class="tableTopHeaderCardCircle offline-circle-status"></span>
+                                    <div class="tableTopHeaderCardTitle">Offline Invoices</div>
+                                    <div class="tableActive" *ngIf="currstatus === 'H'"></div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+
+                    <div class="submitDownloadTab">
+                        <div class="submitDownloadTabTitle">
+                            Invoices List
+                        </div>
+
+                        <div style="display: flex; gap: 5px;">
+                            <div class="nextpreviconWrapper">
+                                <div class="nextprevicoSingle" style="cursor: pointer;"
+                                    (click)="gettrackInvList('HOME');getmessageStatus()"
+                                    *ngIf="disableprevious ==false">
+                                    <img src="./assets/img/first_page_icon_option04.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Home" />
+                                    <!-- <p>Home</p> -->
+                                </div>
+                                <div class="nextprevicoSingle" *ngIf="disableprevious ==true">
+                                    <img src="./assets/img/first_page_icon_disable02.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Home" />
+                                    <!-- <p>Home</p> -->
+                                </div>
+                                <div class="nextprevicoSingle" style="cursor: pointer;"
+                                    (click)="gettrackInvList('PREV');getmessageStatus()"
+                                    *ngIf="disableprevious ==false">
+                                    <img src="./assets/img/first_page_icon_option03.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Previous" />
+                                    <!-- <p>Previous</p> -->
+                                </div>
+                                <div class="nextprevicoSingle" *ngIf="disableprevious ==true">
+                                    <img src="./assets/img/first_page_icon_disable01.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Previous" />
+                                    <!-- <p>Previous</p> -->
+                                </div>
+                                <div class="nextprevicoSingle" style="cursor: pointer;"
+                                    (click)="gettrackInvList('NEXT');getmessageStatus()" *ngIf="disablenext ==false">
+                                    <!-- <p style=" margin-right: 5px;">Next</p> -->
+                                    <img src="./assets/img/end_page_icon_option_03.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Next" />
+                                </div>
+                                <div class="nextprevicoSingle" *ngIf="disablenext ==true">
+                                    <!-- <p style=" margin-right: 5px;">Next</p> -->
+                                    <img src="./assets/img/end_page_icon_disable_01.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="Next" />
+                                </div>
+                                <div class="nextprevicoSingle" style="cursor: pointer;"
+                                    (click)="gettrackInvList('END');getmessageStatus()" *ngIf="disablenext ==false">
+                                    <img src="./assets/img/end_page_icon_option_04.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="End" />
+                                    <!-- <p>End</p> -->
+                                </div>
+                                <div class="nextprevicoSingle" *ngIf="disablenext ==true">
+                                    <img src="./assets/img/end_page_icon_disable_02.png" class="nextprevicon"
+                                        alt="refresh image" tooltip="End" />
+                                    <!-- <p>End</p> -->
+                                </div>
+                            </div>
+                            <div class="tble-each-option" (click)="downloadinvoicelist()" style="cursor: pointer; display: flex; align-items: center;"
+                                *ngIf="historic =='false'">
+                                <!-- <img src="./assets/img/download-arrow.png" alt="download image" width="20px" style="margin: 0 10px 0 10px;"/>
+                                <div class="submitDownloadTabTitle">Download List</div> -->
+                                <img src="./assets/img/download-list-icon.png" alt="download image">
+                            </div>
+
+                            <!-- <div class="tble-each-option" style="cursor: pointer;"
+                                (click)="getRefresh();getmessageStatus()">
+                                <img src="./assets/img/refresh.png" alt="refresh image" />
+                                <p>Refresh</p>
+                            </div> -->
+                        </div>
+                    </div>
+
+
+                    <div class="mainTable">
+                        <table class="table">
+                                <thead class="invoiceTableHead">
+                                    <tr *ngIf="disableoff==false">
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Invoice No.
+                                            </div>
+                                        </th>
+                                        
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Invoice Date
+                                            </div>
+                                        </th>
+
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                PO No.
+                                            </div>
+                                        </th>
+
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Invoice Amt.
+                                            </div>
+                                        </th>
+                
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Paid Amt.
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="min-width: 40px;" class="text-left invoiceTableHeading" *ngIf="disableoff==false">
+                                            <div style="padding: 8px 0;">
+                                                Messages / Info
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="min-width: 40px;" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Credit Note
+                                            </div>
+                                        </th>
+                                        <th scope="col" style="min-width: 40px;" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Resubmit / Edit
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr *ngIf="disableoff==true">
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Invoice No.
+                                            </div>
+                                        </th>
+                                        <th scope="col" class="text-left invoiceTableHeading" *ngIf="disableoff==false">
+                                            <div style="padding: 8px 0;">
+                                                Date
+                                            </div>
+                                        </th>
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Invoice Amt.
+                                            </div>
+                                        </th>
+                                        <th scope="col" class="text-left invoiceTableHeading">
+                                            <div style="padding: 8px 0;">
+                                                Action
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let invData of invoiceData ; let i=index">
+                                        <td class="">
+                                            <div>
+                                                <div *ngIf="disableoff==false && historic =='false'">
+                                                    <div class="tableAttachmentLogo">
+                                                        <img src="./assets/img/AttachmentLogo.png"
+                                                        alt="pdf image"
+
+                                                        [ngClass]="{
+                                                            'approved-bg-status': invData.STATUS == 'N', 
+                                                            'accepted-bg-status': invData.STATUS=='A', 
+                                                            'rejected-bg-status': invData.STATUS=='R',
+                                                            'management-pending-bg-status': invData.STATUS=='P',
+                                                            'without-po-bg-status': invData.STATUS=='WP',
+                                                            'on-hold-bg-status': invData.STATUS=='O', 
+                                                            'new-po-bg-status':invData.STATUS=='INV', 
+                                                            'returned-bg-status':invData.STATUS=='RO' || invData.STATUS =='V',
+                                                            'pending-bg-status': invData.STATUS=='M',
+                                                            'paid-bg-status':invData.STATUS=='G', 
+                                                            'shipped-bg-status': invData.STATUS == 'PRO',
+                                                            'partially-paid-bg-status': invData.STATUS == 'PP',
+                                                            'complete-bg-status': invData. STATUS == 'PD',
+                                                            'short-quantity-bg-status':((invData.STATUS !='A' && invData.STATUS !='P'  && invData.STATUS !='RO'
+                                                                && invData.STATUS !='WP' && invData.STATUS !='O' && invData.STATUS !='M' 
+                                                                && invData.STATUS !='PRO' && invData.STATUS !='G' && invData.STATUS !='PP' 
+                                                                && invData.STATUS !='V') && invData.CREDITADVICENO != null)}"
+
+                                                        style="padding: 13px; border-radius: 6px;"
+                                                        (click)="downloadPDF(invData.SAVEDFILENAME)"/>
+                                                        <span class="tableAttachmentStatus" 
+
+                                                        [ngClass]="{
+                                                            'approved-circle-status': invData.STATUS == 'N', 
+                                                            'accepted-circle-status': invData.STATUS=='A', 
+                                                            'rejected-circle-status': invData.STATUS=='R',
+                                                            'management-pending-circle-status': invData.STATUS=='P',
+                                                            'without-po-circle-status': invData.STATUS=='WP',
+                                                            'on-hold-circle-status': invData.STATUS=='O', 
+                                                            'new-po-circle-status':invData.STATUS=='INV', 
+                                                            'returned-circle-status':invData.STATUS=='RO' || invData.STATUS =='V',
+                                                            'pending-circle-status': invData.STATUS=='M',
+                                                            'paid-circle-status':invData.STATUS=='G', 
+                                                            'shipped-circle-status': invData.STATUS == 'PRO',
+                                                            'partially-paid-circle-status': invData.STATUS == 'PP',
+                                                            'complete-circle-status': invData. STATUS == 'PD',
+                                                            'short-quantity-circle-status':((invData.STATUS !='A' && invData.STATUS !='P'  && invData.STATUS !='RO'
+                                                                && invData.STATUS !='WP' && invData.STATUS !='O' && invData.STATUS !='M' 
+                                                                && invData.STATUS !='PRO' && invData.STATUS !='G' && invData.STATUS !='PP' 
+                                                                && invData.STATUS !='V') && invData.CREDITADVICENO != null)}"
+    
+                                                             style="width: 12px; height: 12px;"></span>
+                                                    </div>
+    
+                                                    <a style="cursor: pointer; margin-left: 16px; color: var(--Bg-Primary);
+                                                        font-family: Lato;
+                                                        font-size: 16px;
+                                                        font-style: normal;
+                                                        font-weight: 600;
+                                                        position: relative;"
+                                                        (click)="multiPOData(invData.INVOICENUMBER,invData.PO_NUMBER,invData.CREDITNOTENO,invData.ALLPO)">
+                                                        {{invData.INVOICENUMBER}} 
+                                                        <div class="invoiceNumImage" *ngIf="invData.MPO =='Y'">
+                                                            <img id="imageTwo" src="./assets/img/multiple-invoice-new.png"
+                                                                title="{{invData.ALLPO}}" alt="pdf image"
+                                                                style="cursor: pointer;" width="16px" />
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                
+                                                <div *ngIf="disableoff==true && historic =='false'" id="historicfalse">
+                                                    <div class="tableAttachmentLogo">
+                                                        <img src="./assets/img/AttachmentLogo.png"
+                                                        alt="pdf image"
+    
+                                                        [ngClass]="{
+                                                            'approved-bg-status': invData.STATUS == 'N', 
+                                                            'accepted-bg-status': invData.STATUS=='A', 
+                                                            'rejected-bg-status': invData.STATUS=='R',
+                                                            'management-pending-bg-status': invData.STATUS=='P',
+                                                            'on-hold-bg-status': invData.STATUS=='O',
+                                                            'processed-bg-status': invData.STATUS == 'PRO',
+                                                            'returned-bg-status':invData.STATUS=='V',
+                                                            'pending-bg-status': invData.STATUS=='M',
+                                                            'partially-paid-bg-status': invData.STATUS == 'PP',
+                                                            'paid-bg-status':invData.STATUS=='G',
+                                                            'complete-bg-status': invData.STATUS == 'PD',
+                                                            'short-quantity-bg-status':((invData.STATUS !='A' && invData.STATUS !='P' 
+                                                                && invData.STATUS !='WP' && invData.STATUS !='O' 
+                                                                && invData.STATUS !='M' && invData.STATUS !='PRO' 
+                                                                && invData.STATUS !='G' && invData.STATUS !='PP') 
+                                                                && invData.CREDITADVICENO != null)}"
+                                                                
+    
+                                                        style="padding: 13px; border-radius: 6px;" />
+                                                        <span class="tableAttachmentStatus" 
+    
+                                                        [ngClass]="{
+                                                            'approved-circle-status': invData.STATUS == 'N', 
+                                                            'accepted-circle-status': invData.STATUS=='A', 
+                                                            'rejected-circle-status': invData.STATUS=='R',
+                                                            'management-pending-circle-status': invData.STATUS=='P',
+                                                            'on-hold-circle-status': invData.STATUS=='O',
+                                                            'processed-circle-status': invData.STATUS == 'PRO',
+                                                            'returned-circle-status':invData.STATUS=='V',
+                                                            'pending-circle-status': invData.STATUS=='M',
+                                                            'partially-paid-circle-status': invData.STATUS == 'PP',
+                                                            'paid-circle-status':invData.STATUS=='G',
+                                                            'complete-circle-status': invData.STATUS == 'PD',
+                                                            'short-quantity-circle-status':((invData.STATUS !='A' && invData.STATUS !='P' 
+                                                                && invData.STATUS !='WP' && invData.STATUS !='O' 
+                                                                && invData.STATUS !='M' && invData.STATUS !='PRO' 
+                                                                && invData.STATUS !='G' && invData.STATUS !='PP') 
+                                                                && invData.CREDITADVICENO != null)}"
+    
+                                                             style="width: 12px; height: 12px;"></span>
+                                                    </div>
+    
+                                                    <a style="cursor: pointer; margin-left: 16px; color: var(--Bg-Primary);
+                                                        font-family: Lato;
+                                                        font-size: 16px;
+                                                        font-style: normal;
+                                                        font-weight: 600;"
+                                                        >
+                                                        {{invData.INVOICENUMBER}} 
+                                                    </a>
+                                                </div>
+
+                                                <div *ngIf="historic=='true'" id="historictrue">
+                                                    <div class="tableAttachmentLogo">
+                                                        <img src="./assets/img/AttachmentLogo.png"
+                                                        alt="pdf image"
+    
+                                                        [ngClass]="{
+                                                            'approved-bg-status': invData.STATUS == 'N', 
+                                                            'accepted-bg-status': invData.STATUS=='A', 
+                                                            'rejected-bg-status': invData.STATUS=='R',
+                                                            'management-pending-bg-status': invData.STATUS=='P',
+                                                            'on-hold-bg-status': invData.STATUS=='O',
+                                                            'processed-bg-status': invData.STATUS == 'PRO',
+                                                            'returned-bg-status':invData.STATUS=='V',
+                                                            'pending-bg-status': invData.STATUS=='M',
+                                                            'partially-paid-bg-status': invData.STATUS == 'PP',
+                                                            'paid-bg-status':invData.STATUS=='G',
+                                                            'complete-bg-status': invData.STATUS == 'PD',
+                                                            'short-quantity-bg-status':((invData.STATUS !='A' && invData.STATUS !='P' 
+                                                                && invData.STATUS !='WP' && invData.STATUS !='O' 
+                                                                && invData.STATUS !='M' && invData.STATUS !='PRO' 
+                                                                && invData.STATUS !='G' && invData.STATUS !='PP') 
+                                                                && invData.CREDITADVICENO != null)}"
+                                                                
+    
+                                                        style="padding: 13px; border-radius: 6px;"/>
+                                                        <span class="tableAttachmentStatus" 
+    
+                                                        [ngClass]="{
+                                                            'approved-circle-status': invData.STATUS == 'N', 
+                                                            'accepted-circle-status': invData.STATUS=='A', 
+                                                            'rejected-circle-status': invData.STATUS=='R',
+                                                            'management-pending-circle-status': invData.STATUS=='P',
+                                                            'on-hold-circle-status': invData.STATUS=='O',
+                                                            'processed-circle-status': invData.STATUS == 'PRO',
+                                                            'returned-circle-status':invData.STATUS=='V',
+                                                            'pending-circle-status': invData.STATUS=='M',
+                                                            'partially-paid-circle-status': invData.STATUS == 'PP',
+                                                            'paid-circle-status':invData.STATUS=='G',
+                                                            'complete-circle-status': invData.STATUS == 'PD',
+                                                            'short-quantity-circle-status':((invData.STATUS !='A' && invData.STATUS !='P' 
+                                                                && invData.STATUS !='WP' && invData.STATUS !='O' 
+                                                                && invData.STATUS !='M' && invData.STATUS !='PRO' 
+                                                                && invData.STATUS !='G' && invData.STATUS !='PP') 
+                                                                && invData.CREDITADVICENO != null)}"
+    
+                                                             style="width: 12px; height: 12px;"></span>
+                                                    </div>
+    
+                                                    <a style="margin-left: 16px; color: var(--Bg-Primary);
+                                                        font-family: Lato;
+                                                        font-size: 16px;
+                                                        font-style: normal;
+                                                        font-weight: 600;"
+                                                        >
+                                                        {{invData.INVOICENUMBER}} 
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="text-left tableBodyText">
+                                                {{invData.INVOICEDATE| date:'dd-MMM-yyyy'}}
+                                            </div>
+                                        </td>
+                                        <td class="text-left" *ngIf="disableoff==false && historic =='false'">
+                                            <div class="tableBodyText" *ngIf=" invData.PO_NUMBER !=null">
+                                                <a style="color: var(--Bg-Primary);
+                                                font-family: Lato;
+                                                font-size: 16px;
+                                                font-style: normal;
+                                                font-weight: 600;
+                                                cursor: pointer;"
+                                                (click)="downloadPDF(invData.PO_NUMBER,'singlepodownload')">{{invData.PO_NUMBER}}</a>
+                                                <!-- 25,000 -->
+                                            </div>
+                                        </td>
+                                        <td *ngIf="historic =='true'">
+                                            <div class="text-left tableBodyText" *ngIf=" invData.PO_NUMBER !=null">
+            
+                                                {{invData.PO_NUMBER}}
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="text-left tableBodyText" *ngIf=" invData.PO_NUMBER !=null || historic =='true'">
+    
+                                                {{invData.TOTALAMOUNT | currency:'INR' }}
+                                            </div>
+                                            <div class="text-left tableBodyText" *ngIf=" invData.PO_NUMBER ==null">
+    
+                                                {{invData.TOTALAMOUNT | currency:'INR' }}
+                                            </div>
+    
+                                        </td>
+
+                                        <td *ngIf="disableoff==false || historic =='true'">
+                                            <div class="text-left tableBodyText">
+                                                {{invData.PAYMENTAMOUNT | currency:'INR' }}
+                                            </div>
+                                        </td>
+
+
+                                        <td>
+                                            <div class="text-left " *ngIf="historic=='false' ">
+                                                <div class="" style="display: flex; align-items: center;" *ngIf="disableoff==false ">
+                                                    <div class="commentIcon  "
+                                                        style="cursor: pointer;" (click)="ShowpopupMessage(event); getInvoiceQuerry(invData.PO_NUMBER, invData.INVOICENUMBER, invData.CONTACTPERSON);getStatusUpdate(invData.PO_NUMBER,invData.INVOICENUMBER,i)
+                                                " *ngIf="invData.STATUS !=null ">
+                                                        <img src="./assets/img/messageUnread.png "
+                                                            style="cursor: pointer; display: none; margin-left: -35px; margin-right: -35px;"
+                                                            id="green{{i}}" />
+                                                        <img src="./assets/img/messageReadBlink.gif"
+                                                            style="cursor: pointer;" id="white{{i}}" />
+                                                        <!-- <i class="fa fa-comment " aria-hidden="true "></i> -->
+                                                    </div><span
+                                                        style="margin-left: 8px;font-size: 25px;color:grey">&#47;</span>
+                                                    <div class="text-left " *ngIf="historic=='false'">
+                                                        <!-- <div *ngIf="(disableoff==true) && (!invData.POINVOICENUMBER) ">
+                                                            --
+                                                        </div> -->
+    
+                                                        <div class="" *ngIf="(disableoff==false)"
+                                                            >
+                                                            <div style="margin-left: -24px;">
+                                                                <a style="cursor: pointer;"
+                                                                    tooltip="Plant : {{invData.PLANTNAME}}"
+                                                                    placement="bottom" showDelay="300">
+                                                                    <img src="./assets/img/infoIcon.png"
+                                                                        style="cursor: pointer;"></a>
+                                                            </div>
+                                                        </div>
+    
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="(disableoff==true) && (!invData.POINVOICENUMBER) "
+                                                    style="margin-left: 15px">
+                                                    <img class="setting-icon " style="max-width: 30px;cursor: pointer; "
+                                                        src="./assets/img/document.png "
+                                                        (click)="gettoposubmitinvoicepage(invData.INVOICENUMBER,invData.INVOICEDATE) "
+                                                        tooltip="Attach PO " />
+                                                </div>
+                                            </div>
+                                            <div class="text-left" *ngIf="historic=='true' ">
+                                                --
+                                            </div>
+                                        </td>
+                                        <!--Commented for k12  -->
+                                        <td>
+                                            <div class="text-left " *ngIf="historic=='false'">
+                                                <div class="commentDiv ">
+                                                    <div class="commentIcon " style="cursor: pointer;"
+                                                        (click)="createCreditNote(invData.INVOICENUMBER,invData.PO_NUMBER,invData.CREDITADVICENO)"
+                                                        *ngIf="invData.CREDITADVICENO != null && invData.CREDITNOTENO == null">
+                                                        <img src="./assets/img/credit_note_icon-new.png "
+                                                            style="cursor: pointer; max-width: 35px;" />
+                                                    </div>
+                                                    <div class="commentIcon " style="cursor: pointer;"
+                                                        (click)="getCreditNoteDetails(invData.INVOICENUMBER,invData.PO_NUMBER,invData.CREDITADVICENO,invData.CREDITNOTENO)"
+                                                        *ngIf="invData.CREDITADVICENO != null &&invData.CREDITNOTENO != null">
+                                                        <img src="./assets/img/credit_note_icon_with_tick-new.png "
+                                                            style="cursor: pointer; max-width: 35px;" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-center" *ngIf="historic=='true'">
+                                                --
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-left " *ngIf="historic=='false'">
+                                                <div class="commentDiv ">
+                                                    <div class="commentIcon " style="cursor: pointer; " tooltip="Resubmit"
+                                                        *ngIf="invData.STATUS =='V'"
+                                                        (click)="resubmitInvoice(invData.INVOICENUMBER,invData.PO_NUMBER,invData.VENDORID,'resubmit',invData.ALLPO,invData.INVOICEDATE)">
+                                                        <img src="./assets/img/resubmit-new.png "
+                                                            style="cursor: pointer;" />
+                                                    </div>
+                                                </div>
+                                                <div class="commentDiv ">
+                                                    <div class="commentIcon " style="cursor: pointer; "
+                                                        tooltip="Reopened for correction" *ngIf="invData.STATUS =='RO'"
+                                                        (click)="reopenInvoice(invData.INVOICENUMBER,invData.PO_NUMBER,invData.VENDORID,'reopen',invData.ALLPO,invData.PLANT,invData.INVOICEDATE,invData.ACTUALFILENAME,invData.SAVEDFILENAME)">
+    
+                                                        <img src="./assets/img/reopen-new.png "
+                                                            style="cursor: pointer; margin-left: -35px;" />
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            <div class="text-left" *ngIf="historic=='true'">
+                                                --
+                                            </div>
+                                        </td>
+                                                                                    <!-- closed-->
+
+    
+                                        <td style="display: none;">
+                                            <div class="InfofixedPOnumber text-left " *ngIf="historic=='false'">
+    
+                                                <!--reopen td strated-->
+                                                <div class="text-left ">
+    
+                                                </div>
+    
+                                                <!--reopen td end-->
+    
+                                                <!-- <td>
+                                            <div class="InfofixedPOnumber text-left " *ngIf="historic=='false'"> -->
+                                                <!-- <div *ngIf="(disableoff==true) && (!invData.POINVOICENUMBER) ">
+                                                    --
+                                                </div> -->
+    
+                                                <!-- <div *ngIf="(disableoff==false)">
+                                                     <div style = "margin-left : -10px;"> 
+                                                        <a style="cursor: pointer;" tooltip="Plant : {{invData.PLANTNAME}}"
+                                                            placement="bottom" showDelay="300">
+                                                            <img src="./assets/img/info.png"
+                                                                style="padding-left: 10px;"></a>
+                                                    </div>
+                                                </div> -->
+    
+                                            </div>
+                                            <div class="text-left " *ngIf="historic=='true'">
+                                                --
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                        <div id="shdata" *ngIf="invoiceData.length==0 "
+                            style="color: #777; font-size: 16px; font-weight: 600; text-align: center; ">
+                            <p>No Data Found</p>
+                        </div>
+                    </div>
+                    <!-- <div class="w-100 text-center">
+                        <button type="submit " class="btn submitButton submitButtonCustom" [routerLink]="[ '/trackInvoiceList'] ">
+                            View All Invoices
+                        </button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-dialog-model></app-dialog-model>
+
+    <!-- bootstrap Modal -->
+    <div class="modal fade customBootstrapModal" id="popupComment" data-backdrop="static" data-keyboard="false"
+        tabindex="-1" aria-labelledby="popupCommentLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content popup-container">
+                <div class="modal-header popup-header">
+                    <div class="popup-head-title text-center">INVOICE No. {{topic}}</div>
+                    <button type="button" class="popup-btn-close" data-dismiss="modal" aria-label="Close"
+                        (click)="message.value=' ';ClosepopupMessage($event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M15 5L5 15M5 5L15 15" stroke="#2A2F35" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                    </button>
+                </div>
+                <div class="modal-body popup-modal-body pt-0">
+                    <div class="confirmationpopup">
+                        <div class="invoice-form p-0 messageBoxbBottom">
+                            <div class="inv-form-inputs mb-mt mt-0">
+                                <div class="submitPopupInputLabel">Enter Your Message </div>
+                                <textarea class="form-control submitPopupInputBox" name="" id="messagetext" cols="30" rows="3" #message
+                                    (input)="checklength('remark')" autofocus (keyup)="Check(message)"
+                                    (input)="checklength('remark')" maxlength="160"
+                                    placeholder="Type here..."></textarea>
+                                <div style="font-size: 10px;display: flex;">{{remarklength}} characters out of 160</div>
+                            </div>
+                        </div>
+                        <!-- <div class="btn btn-primary confirmationNo">
+                        <button [disabled]="validate" > <img src="./assets/img/arrow_icon_red.png" alt="arrow icon" class="arrowIcon" />Submit</button>
+                    </div> -->
+                        <div class=""> <button [disabled]="validate || message.value ==''"
+                                class="btn submitButton submitButtonCustom"
+                                (click)="sendConfirmation('N',message.value,'SubmitQuery', topic); message.value=' ';ClosepopupMessage($event)">
+                                Submit</button></div>
+
+                        <!-- <a [routerLink]="['/poOrderView']"> -->
+                        <!-- <p class="ponum pb-3">INVOICE No. : {{topic}}</p> -->
+                        <!-- </a> -->
+                        <div class="messageChatWrapper">
+                            <!-- Commented on 20 oct 2021 Angaj -->
+                            <!-- <div *ngFor="let message of messageList.slice().reverse();let i=index"> -->
+                            <div *ngFor="let message of messageList;let i=index">
+                                <div class="chatboxWrapper">
+                                    <div class="chat__single">
+                                        <div class="chat__head">
+                                            <span class="messengerName">{{message.SENDER}} </span>
+                                            <span class="chat__date">
+                                                <span class="upperDate">({{message.CREATEDON |
+                                                    date:'dd-MMM-yyyy'}})</span></span>&nbsp;
+                                            <span class="chat-time">{{message.CREATEDON | date:'mediumTime'}}</span>
+                                        </div>
+                                        <div class="chat__desc">{{message.MESSAGETEXT}}</div>
+                                        <div *ngIf="messageList.length==0"
+                                            style="color: #777; font-size: 16px; font-weight: 600; text-align: center;">
+                                            <p class="text-center w-100">No Data Found</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    
+

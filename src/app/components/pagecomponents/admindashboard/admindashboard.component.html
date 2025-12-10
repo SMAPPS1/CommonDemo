@@ -1,0 +1,218 @@
+<div class="dashboard-safe-wrapper">
+  <div class="container-fluid dashboardpt">
+   <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card card-stats mt-0">
+                    <div class="card-header card-header-danger card-header-icon">
+                        <h3 class="card-title">Summary Dashboard</h3>
+                    </div>
+                   
+                    <!-- TODO            -->
+                    <div class="advanceSearchWrapper">
+                        
+
+                        <!-- TODO            -->
+                        <div class="advanceSearc__box" id="advanceSearcBox">
+                            <!-- TODO            -->
+                            <div class="container">
+
+                                <form [formGroup]="searchList" >
+                                    <div class="invoice-form" style="display: block; padding:0;">
+                                        <div class="row summary-form">
+                                
+                                            <!-- <div class="col-lg-6 col-md-7 col-sm-12">
+                                                <div class="inv-form-inputs mb-mt" style="width: 100%;">
+                                                    <mat-label>Function</mat-label>
+                                                    <mat-form-field appearance="none">
+                                                        <mat-label>PO</mat-label>
+                                                        <mat-select formControlName="valueSelect"  #singleSelect (selectionChange)="updateChartData('select',$event)" disableOptionCentering>
+                                                            
+                                                            <mat-option >
+                                                                <ngx-mat-select-search 
+                                                                formControlName="modeFilterType" 
+                                                                (input)="filterData()"
+                                                                [placeholderLabel]="'Search'"
+                                                                [noEntriesFoundLabel]="'Not found'"
+                                                                ></ngx-mat-select-search>
+                                                            </mat-option>
+                                                            <mat-option *ngFor="let modedata of modelist"
+                                                                [value]="modedata.DESCRIPTION" >
+                                                                {{ modedata.DESCRIPTION }}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div> -->
+                                
+                                            <div class="col-lg-3 col-md-7 col-sm-12">
+                                                <div class="inv-form-inputs mb-mt" style="width: 100%;">
+                                                    <mat-label>From Date </mat-label>
+                                                    <mat-form-field appearance="none">
+                                                        <mat-label>From Date</mat-label>
+                                                        <input matInput 
+                                                            [max]="maxdate" 
+                                                            [min]="mindate"
+                                                            [matDatepicker]="picker" formControlName="fromDate"
+                                                            (dateChange)="onDateChange()" 
+                                                            (dateInput)="updateChartData('input', $event)" readonly>
+                                                        <mat-datepicker-toggle matSuffix [for]="picker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #picker></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                                <mat-error *ngIf="fromdateerror">
+                                                    From date is required</mat-error>
+                                            </div>
+                                            <div class="col-lg-3 col-md-7 col-sm-12">
+                                                <div class="inv-form-inputs mb-mt" style="width: 100%;">
+                                                    <mat-label>To Date </mat-label>
+                                                    <mat-form-field appearance="none">
+                                                        <mat-label>To Date </mat-label>
+                                                        <input matInput 
+                                                            [min]="mintodate" 
+                                                            [max]="today"     
+                                                            [matDatepicker]="Topicker"
+                                                            formControlName="toDate" 
+                                                            (dateChange)="onDateChange()" 
+                                                            (dateInput)="updateChartData('input', $event)"
+                                                            readonly>
+                                                        <mat-datepicker-toggle matSuffix [for]="Topicker">
+                                                        </mat-datepicker-toggle>
+                                                        <mat-datepicker #Topicker></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                                <mat-error *ngIf="todateerror">
+                                                    To date is required</mat-error>
+                                            </div>
+                                        
+                                
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <hr style="width: 97%;margin-bottom:0px;"/>
+
+                            <div class="row center-div">
+                                <mat-slide-toggle
+                                        *ngIf="!togglehideStatus"
+                                        (change)="showBigFiveChart()"
+                                        [color]="color"
+                                        [(ngModel)]="toggleStatus">
+                                </mat-slide-toggle>
+                                <div id="acquisitions-loader" class="loading">
+                                    <img src="./assets/img/loader06.gif" alt="Chart will Render Here..." />
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="row">
+                                <div class="example-events">
+                                    <div *ngFor="let e of events">{{e}}</div>
+                                </div>
+                                <div class="col-lg-6 acquisitions-fields" *ngIf="valSum != 0 else elseblock">
+                                    <div class="table-div">
+                                    <table class="acquisitions-table">
+                                        <thead>
+                                            <tr class="field-row-heading">
+                                                <th></th>
+                                                <th></th>
+                                                <th class="headingData" *ngIf="!toggleStatus">Invoice Status</th>
+                                                <th class="headingData" *ngIf="toggleStatus">Function</th>
+                                                <th colspan="2" class="headingData" style="text-align:right;" *ngIf="!toggleStatus">Count/Percent</th>
+                                                <th colspan="2" class="headingData" style="text-align:right;" *ngIf="toggleStatus">Count</th>
+                                                <th class="headingData" style="text-align:right;">Amount (Cr)</th>
+                                            </tr>
+                                            
+                                        </thead>
+                                        <tbody *ngIf="!toggleStatus">
+                                            <tr class="field-row" *ngFor="let val of chartVals;let i = index" >
+                                                <td class="horizontal-heading-cell" *ngIf="i == 0 || i == 4" [attr.rowspan] = "i == 0 ? '4' : i == 4 ? '4' : ''">
+                                                    <span [ngClass]="{'end-count-percent':i == 0,'payment-count-percent':i == 4}">{{i == 0 ? 'Count/Percent' : i == 4 ? 'Count/Percent' : ''}}</span>
+                                                    <span [ngClass]="{'end-top':i == 0,'payment-top':i == 4}">{{i == 0 ? end_user_count_sum+'/'+end_user_percent_sum.toFixed(2)+'%' : i == 4 ? payment_process_count_sum+'/'+payment_process_percent_sum.toFixed(2)+'%' : ''}}</span>
+                                                </td>
+                                                <td class="horizontal-heading-cell" *ngIf="i == 0 || i == 4" [attr.rowspan] = "i == 0 ? '4' : i == 4 ? '4' : ''">
+                                                    <span [ngClass]="{'end-user':i == 0,'payment-process':i == 4}">{{i == 0 ? 'END USER PROCESS' : i == 4 ? 'PAYMENT PROCESS' : ''}}</span>
+                                                </td>
+                                                <td colspan="2" class="field-invoice" [ngStyle]="{ 'border-left':'20px solid '+ val.chartVal.dataColor}" (click)="updateAgeingChart(val.chartVal.key,i)" [ngClass]="{'selectedClass':val.chartVal.key == ageing_clicked && ageing_chart,'unselectedClass':val.chartVal.key != ageing_clicked && !ageing_chart}">{{ getChartStatus(val.chartVal.key) }}</td>
+                                                <td class="field-count" [ngClass]="{'selectedClass':val.chartVal.key == ageing_clicked && ageing_chart,'unselectedClass':val.chartVal.key != ageing_clicked && !ageing_chart}"><a href="#" style="cursor: pointer;color:black" tooltip="Count : {{ math.trunc(val.chartVal.val) }}">{{ ((val.chartVal.val/valSum)*100).toFixed(2)  + '%' }}</a></td>
+                                                <td class="field-count" [ngClass]="{'selectedClass':val.chartVal.key == ageing_clicked && ageing_chart,'unselectedClass':val.chartVal.key != ageing_clicked && !ageing_chart}">{{ val.chartVal.amount }}</td>
+                                            </tr>
+                                            <tr class="field-row">
+                                                <td></td>
+                                                <td></td>
+                                                <td colspan="2" class="field-invoice" style="font-weight:bold;">Total</td>
+                                                <td class="field-total-count">{{numberWithCommas(math.trunc(valSum))}}</td>
+                                                <td class="field-total-count">{{valAmt}}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="toggleStatus">
+                                            <tr class="field-row" *ngFor="let val of bigFiveChVals;let i = index" >
+                                                <td></td>
+                                                <td></td>
+                                                <td class="field-invoice" [ngStyle]="{ 'border-left':'20px solid '+ val.key_color,'cursor':'default'}">{{ val.key }}</td>
+                                                <td colspan="2" class="field-count" >{{ math.trunc(val.count_val) }}</td>
+                                                <td class="field-count">{{ val.amt_val }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="big-five-note" *ngIf="toggleStatus">
+                                        <p class="big-five-notes"><strong>How to read the chart on 'Big 5 Data'</strong></p>
+                                        <p class="big-five-notes">'Big 5 Data' provides information on the top 5 functions that have invoices pending in different states for approval (by count) since April 1, 2022.</p>
+                                        <p class="big-five-notes">Please mouse over the chart to display the function name with the count and percentage of invoices pending in a state that have breached the '21-day SLA' in that state.</p>
+                                    </div>
+                                    </div>
+                                    <!-- <span id="back-text">Back</span> -->
+                                </div>
+                                <ng-template #elseblock>
+                                    <div class="no-data">
+                                        <p>No data found.</p>
+                                    </div>
+                                </ng-template>
+                                <div class="col-lg-6 chart-section">
+                                    <div *ngIf="!toggleStatus" class="acquisitions-heading row justify-content-center"   [ngStyle]="ageing_chart ? {'visibility' : 'visible'} : {'visibility':'hidden'}">
+                                        <div class="ageing-title">
+                                            <h2 class="summary-title-ageing">{{ 'Ageing: '+ getChartStatus(ageing_clicked) }}</h2>
+                                        </div>
+                                        <div class="ageing-button">
+                                            <button type="button" class="btn btn-light back-btn" (click)="showPieChart(ageing_clicked)"><i class="material-icons" >arrow_back</i>Back</button>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="toggleStatus"><p [ngClass]="{'big-message' : toggleStatus, '' : !toggleStatus}" >Pending GRN, GRN Confirmation & Invoice Approval since April 1, 2022</p></div>
+                                    <!-- <div class="acquisitions-chart">
+                                        <canvas id="acquisitions" ></canvas>
+                                    </div> -->
+                                    <div class="acquisitions-chart" style="height:360px; position:relative;">
+  <canvas id="acquisitions" style="width:100%; height:100%;"></canvas>
+</div>
+                                </div>
+                                
+                            </div>
+
+                            
+
+                            <div class="container" id="instructions" [ngStyle]="toggleStatus ? {'margin-top' : '150px'} : {'margin-top':'0px'}">
+                                <div class="row container instruction-div" *ngIf="valSum != 0">
+                                    <div class="col-lg-6" >
+                                        <p class="notes" *ngIf="!toggleStatus">Click on the Status of the Invoice to view the Ageing details</p>
+                                        <!-- <p class="notes">Click on the percentage to view the details of the Status</p> -->
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <p class="chart-notes" *ngIf="!toggleStatus">Mouse over on the chart to see the count and percentage details</p>
+                                    </div>
+                                </div>
+                            
+                            </div>
+
+                            <hr style="width: 97%;margin-bottom:0px;margin-top:20px;"/>
+                        </div>
+
+                        
+                    </div>
+
+                    
+
+                    </div>
+                </div>
+            </div>
+  </div>
+</div>

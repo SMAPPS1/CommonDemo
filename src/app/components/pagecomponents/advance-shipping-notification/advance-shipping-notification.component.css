@@ -1,0 +1,105 @@
+select.form-control.form-select {
+    /* background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #fff, #fff) !important; */
+    background-image: url('../../../../assets/img/down-arrow.png') !important;
+    background-position: calc(100% - 11px) calc(1em + -5px), calc(100% - 1px) calc(1em + 2px), calc(100% - 2.5em) 0.5em !important;
+    background-size: 16px 10px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+}
+
+.formSelect {
+    /* color: #8181A5;
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+
+    border:none;
+    border-bottom: 1px solid #ECECF2;
+    min-width: 100px;
+    padding: 14px 0px;   */
+
+    /* display: flex;
+    width: 114px; */
+    /* align-items: center; */
+
+    color: #8181A5;
+    font-family: Lato;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    padding: 6px 50px 6px 8px;
+    border-radius: 4px;
+    border: 1px solid #D8D8D8;
+    background: #FFF;
+    width: auto;
+}
+
+/* .tableInputBox {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #D8D8D8;
+    background: #FFF; 
+    padding: 2.5px 6px;
+    color: var(--main-text-color);
+}
+
+.tableInputBox::placeholder {
+    color: var(--sub-text-color);
+    font-family: Lato;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; 
+} */
+
+.exceededMsg {
+    /* font-weight: 200; */
+    color: red;
+    /* padding: 0; */
+    margin: 0;
+}
+
+.inv-wrapper.active {
+    color: var(--main-text-color) !important;
+    font-weight: bolder;
+  }
+  
+  .inv-wrapper.active::after {
+    color: var(--main-text-color) !important;
+    font-weight: bolder;
+  }
+
+  [type="radio"]:checked+label, [type="radio"]:not(:checked)+label {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    display: inline-block;
+    color: var(--sub-text-color);
+    font-weight: 700;
+    line-height: 21px; /* 150% */
+    font-size: 14px;
+  }
+  [type="radio"][_ngcontent-sbw-c314]:checked + label[_ngcontent-sbw-c314], [type="radio"][_ngcontent-sbw-c314]:not(:checked) + label[_ngcontent-sbw-c314] {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    display: inline-block;
+    color: #8181A5;
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 21px; /* 150% */
+  }
+
+
+  .validationMessage {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .errormsg{
+    color: red;
+    font-size: 16px;
+    margin-top: 4px;
+  }
