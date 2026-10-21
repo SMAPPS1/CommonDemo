@@ -1,0 +1,756 @@
+
+<section class="sect-common">
+    <div class="container">
+        <div class="invoice-details-main-wrap">
+            <div class="invoice-details-wrap blue">
+                <div class="main-info-wrap">
+                    <div class="back-btn">
+                        <div class="back-btn">
+                            <img class="left-arrow" src="./assets/img/arrow_icon_grey_prev.png"
+                        [routerLink]="['/MobileAproval']" style="cursor: pointer;" />                   </div>                   </div>
+                    <div class="info-wrap">
+                        <div class="invoice-num">
+                            {{invoicenumber}}
+                        </div>
+                        <div class="invoice-amt">
+                            {{totalamount}} <span>INR</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="company-name">{{vendorName}}</div>
+                <div class="company-date">Invoice Date :{{invoicedate | date:'dd-MMM-yyyy'}}</div>
+            </div>
+            <div class="requester-wrap">
+                <div class="pdf-icon">
+                    <img src="./assets/img/PDF-Icon.png" alt="" width="50" height="50" (click)="downloadfile(savedfilename,actualfilename,'listdownload')">
+                </div>
+                <div class="requester-text-wrap">
+                    <div class="requester-name">Requester: {{user}}</div>
+                    <div class="po-no">PO No :{{ponumber}}</div>
+                    <div class="company-name">{{vendorName}}</div>
+                </div>
+            </div>
+            <div class="item-list-wrapper">
+                <h2 class="header">Item List</h2>
+                <table>
+                    <thead >
+                        <tr>
+                            <th scope="col" width="10%">Item</th>
+                            <th scope="col" width="55%">Item Description</th>
+                            <!-- <th scope="col" class="text-left">DC. No.</th> -->
+                            <th scope="col" width="20%">Invoiced Qty</th>
+                            <th scope="col" width="15%">Accepted Qty</th>
+                            <!-- <th scope="col" class="text-right">Rate</th>
+                            <th scope="col" class="text-left">PER/UOM</th> -->
+                            <!-- <th scope="col" class="text-center">RATE IN INR</th> -->
+                            <!-- <th scope="col" class="text-right">Amount</th> -->
+                            <!-- <th scope="col" class="text-left"
+                                *ngIf="usertype == 'storekeeper'|| usertype == 'enduser'">Storage
+                                Location</th> -->
+                            <!-- <th scope="col" class="text-left">Storage Location</th> -->
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="customtbl-accordion-head "
+                            *ngFor="let invData of invoicedata; let i=index">
+                            <td class="preventClick">
+                                <div class="text-left">
+                                    {{invData.LINEITEMNUMBER}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-left upperDate fixedDateCol">
+                                    {{invData.LINEITEMTEXT}}
+                                </div>
+                            </td>
+                            <!-- <td>
+                                    <div class="text-left upperDate fixedDateCol">
+                                        {{invData.ORDERNUMBER}}
+                                    </div>
+                                </td> -->
+                            <td>
+                                <div class="text-left">
+                                    {{invData.QUANTITY | number:'1.3-3'}}
+                                </div>
+                            </td>
+                            <td
+                                *ngIf="(quantitiesaccepted==true || usertype == 'manager') || invData.CREDITADVICENO !=null">
+                                <div class="text-left">
+                                    {{invData.ACCEPTEDQTY | number:'1.3-3'}}
+                                </div>
+                            </td>
+                            <td
+                                *ngIf="quantitiesaccepted==false && usertype != 'manager' && invData.CREDITADVICENO ==null">
+                                <div class="text-left">
+                                    <input type="text" valThreeDecimal
+                                        (input)="checkacceptedquantity($event, invData.QUANTITY,i);calculateAmount($event,invData.RATEPERQTY,i)"
+                                        id="AcceptedQtyId{{i}}" [value]="invData.QUANTITY" />
+                                    <!-- {{invData.QUANTITY}} -->
+                                </div>
+                                <div class="exceededMsg" id="exceeded{{i}}" style="display: none;">
+                                    Accepted quantity cannot exceed invoiced quantity.
+                                </div>
+                                <div class="exceededMsg" id="zero{{i}}" style="display: none;">
+                                    Accepted quantity cannot be empty.
+                                </div>
+                            </td>
+                            <!-- <td> -->
+                                <!-- style="margin-right: 15px;" -->
+                                <!-- <div class="text-right">
+                                    {{invData.RATEPERQTY | currency:'INR'}}
+                                </div> -->
+                            <!-- </td> -->
+                            <!-- <td> -->
+                                <!-- style="margin-right: 25px;" -->
+                                <!-- <div class="text-left">
+                                    1/{{invData.UOM}}
+                                </div>
+                            </td> -->
+                            <!-- <td>
+                            <div class="text-right" style="margin-right: 15px;">
+                                {{invData.TOTALAMOUNT}}
+                            </div>
+                        </td> -->
+
+                            <!-- <td
+                                *ngIf="(quantitiesaccepted==true || usertype == 'manager') || invData.CREDITADVICENO !=null"> -->
+                                <!-- style="margin-right: 15px;" -->
+                                <!-- <div class="text-right">
+
+                                    {{invData.TOTALCALCULATEAMOUNT | number :'1.2-2'}}
+
+
+                                </div>
+                            </td> -->
+                            <!-- <td
+                                *ngIf="quantitiesaccepted==false && usertype != 'manager' && invData.CREDITADVICENO ==null"> -->
+                                <!-- style="margin-right: 15px;" -->
+                                <!-- <div class="text-right">
+                                    {{invData.INVOICEAMOUNT | number :'1.2-2'}}
+                                </div>
+                            </td> -->
+                            <!-- Commented for now dated 21-02-2022 start -->
+                            <!-- <td *ngIf="usertype != 'storekeeper' && invData.STORAGELOCATION == null" class="text-center">
+
+                                No Location found.
+
+                            </td> -->
+                            <!-- Commented for now dated 21-02-2022 end -->
+                            <!-- <td *ngIf="grnpresent"
+                                class="text-center">
+
+                                {{invData.STORAGELOCATION}}
+
+                            </td>
+                            <td *ngIf="(usertype == 'storekeeper' || usertype == 'enduser') && grnpresent == false">
+                                <div class="">
+
+                                    <div class="select-box" *ngIf="storagelist != null">
+                                        <select class="form-control" [(ngModel)]="seletedValue[i]"
+                                            id="storagelocation{{i}}" style="height: 30px;">
+                                            <option *ngFor="let store of storagelist"
+                                                [value]="store?.storagelocation">
+                                                {{store?.locationdesc}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="select-box" *ngIf="storagelist == null">
+                                        <select class="form-control" 
+                                            id="storagelocation{{i}}" style="height: 30px;">
+                                            <option>--SELECT STORAGE--</option>
+                                            <option *ngFor="let store of storagelist"
+                                                [value]="store?.storagelocation">
+                                                {{store?.locationdesc}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                            </td> -->
+                            <!-- <td
+                                *ngIf="((usertype == 'manager') ||(quantitiesaccepted == true)) || invData.CREDITADVICENO !=null">
+                                <div class="text-center">
+                                    {{invData.STORAGELOCATION}}
+                                </div>
+                            </td> -->
+                            <!-- <td
+                                *ngIf="(quantitiesaccepted == false && usertype != 'manager' && invData.CREDITADVICENO ==null)">
+                                <div class="select-box"
+                                    *ngIf="invData.STORAGELOCATION == null ||invData.STORAGELOCATION == '' || invData.STORAGELOCATION == 'null' || invData.STORAGELOCATION == ' '">
+                                    <select class="form-control" id="storagelocation{{i}}"
+                                        style="height: 30px;">
+                                        <option>--SELECT STORAGE--</option>
+                                        <option *ngFor="let store of storagelist"
+                                            [value]="store?.storagelocation">
+                                            {{store?.locationdesc}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="select-box"
+                                    *ngIf="invData.STORAGELOCATION != null && invData.STORAGELOCATION != '' && invData.STORAGELOCATION != 'null' && invData.STORAGELOCATION != ' '"> -->
+                                    <!-- <div class="select-box" *ngIf="storagelist != null"> -->
+                                    <!-- <select class="form-control" [(ngModel)]="seletedValue[i]"
+                                        id="storagelocation{{i}}" style="height: 30px;">
+                                        <option *ngFor="let store of storagelist"
+                                            [value]="store?.storagelocation">
+                                            {{store?.locationdesc}}
+                                        </option>
+                                    </select> -->
+                                    <!-- </div> -->
+                                <!-- </div> -->
+                            <!-- </td> -->
+                        </tr>
+                        <!-- tr end  -->
+
+                    </tbody>
+                </table>
+                <div *ngIf="showcustomManagerList==false" >
+                    <p class="table-remark">Remarks</p>
+                <textarea name="remark" id="" placeholder="Enter Remarks"></textarea>
+                </div>
+                
+            </div>
+            <div class="compiance-note">
+                <!-- <label class="checkbox" for="first">
+                    <input type="checkbox" name="check" value="first" id="first">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">
+                        Lorem Ipsum is simply dummy text of the <a href="">printing and typesetting industry.</a>  
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    </span>
+                </label>
+                <label class="checkbox" for="second">
+                    <input type="checkbox" name="check" value="second" id="second">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-label">
+                        <a href="">Lorem Ipsum</a> is simply dummy text of the printing and typesetting industry. 
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    </span>
+                </label>
+                <a href="" class="show-more">Show More <i class="fa fa-angle-down"></i></a> -->
+                <div class="col-lg-12">
+                    <label style="text-align: 5px; font-size: 15px; margin: 5px;color:#212529;">
+                        <b>Compliance Note :</b><br>
+                        <span style="text-align: 5px; font-size: 12px;">1. End
+                            user confirmation mandatory on tool for "on behalf of end user" goods
+                            acceptances (for non-stock based invoices).<br>
+                            <!-- 2. Invoice approvers are GM and above within your function (for non-stock based invoices). -->
+                        </span>
+                    </label>
+                </div>
+                <div class="customCheckbox col-lg-12"
+                *ngIf="quantitiesaccepted ==false && hide==true && creditadvice == null">
+                <input type="checkbox" id="acceptcheck1" name="acceptcheck1"
+                    (click)="getvalue($event,'behalf')">
+                <label for="acceptcheck1">
+                    <!-- <b
+                    style="text-align: 5px; font-style: oblique; font-size: 15px; margin: 5px;color:#212529;">I
+                    confirm the receipt of the said material / services <span
+                    style="color:#cc0000;">on behalf of end
+                    user</span> and confirm that they are in accordance to the invoice.
+
+                </b> -->
+                    <b style="text-align: 5px; font-style: oblique; font-size: 15px;
+                         margin: 5px;color:#212529">I confirm invoice is as per
+                        PO and <span style="color:#cc0000;">assigning for end user
+                            acceptance</span> of Goods/Services in accordance
+                        with the Invoice.
+                    </b>
+                </label>
+                <input type="checkbox" id="acceptcheck" name="acceptcheck"
+                    (click)="getvalue($event,'self')">
+                <label for="acceptcheck">
+                    <!-- color:#212529; -->
+                    <b
+                        style="text-align: 5px; font-style: oblique; font-size: 15px; margin: 5px;color:#212529;"><span
+                            style="color:#cc0000;">I
+                            am the recipient</span> of the said material / services and confirm
+                        that they are in accordance with the Invoice.</b>
+                    <!-- <b style="text-align: 5px; font-style: oblique; font-size: 15px;
+                         margin: 5px;color:#212529;">I confirm invoice is as per PO and assign</b><span style="margin:-5px;font-size: 15px;
+                         color:#212529;display: inherit;">ing for end user acceptance of Goods/Services in accordance with the Invoice.</span> -->
+
+                </label>
+
+            </div>
+            </div>
+        </div>
+        <div>
+            <div *ngIf="quantitiesaccepted ==false && hide==true">
+                <div class="row">
+                    <div class="col-lg-12 ">
+                        <div class="buttonWrapper text-center">
+                            <button type="submit" class="btn button-primary"
+                                [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue || acceptedqty"
+                                (click)="confirmAcceptQuantityPopup()">
+                                <!-- <img src="./assets/img/arrow_icon_red.png" alt="arrow icon" class="arrowIcon" /> -->
+                                <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                    class="disabledImg arrowIcon">
+                                Accept Quantities
+                            </button>
+                            <button type="submit" class="btn button-primary"
+                                [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue|| !acceptedqty "
+                                (click)="returnInvoice()">
+                                <!-- <img src="./assets/img/arrow_icon_red.png" alt="arrow icon" class="arrowIcon" /> -->
+                                <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                    class="disabledImg arrowIcon">
+                                Return to Vendor
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="acceptQuantityConfirm" class="overlay">
+                <div class="popup confirmationPopup">
+                    <!-- <a class="close" (click)="closePopup()">&times;</a><br /> -->
+                    <div class="container text-center">
+                        <div class="confirmationpopup mb-2">
+                            <div class="confirmation-title">Confirmation
+                                <button type="button" class="close" (click)="CloseconfirmAcceptQuantityPopup()">&times;</button>
+                            </div>
+                            <p class="confirmation-para">
+                                Do you want to accept quantities? Once you accept, it cannot be reversed.
+                            </p>
+                            <div class="button__wrapper">
+                                <a class="btn btn-primary button-primary" id="btnConfirmOk" (click)="submitgrn()">Yes</a>
+                                <a class="btn btn-primary button-primary confirmationNo"
+                                    (click)="CloseconfirmAcceptQuantityPopup()" id="btnConfirmBack">No</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <section>
+            <div class="container" 
+            >
+                <div class="row">
+                    <div class="col-12 padd-0">
+                        <!-- <div class="parent">
+                            <div class="invoice-card">
+                                <h2 class="card-title">Add End Users :</h2>
+                                <p class="card-info">Add Email ID of end users (Max upto 3) by using search icon in the
+                                    field</p>
+                                <div class="search-box">
+                                    <input class="card-input" type="text" placeholder="Please enter enduser">
+                                    <span class="card-icon"><i class="fas fa-search"></i></span>
+                                </div>
+                                <div></div>
+     
+     
+                            </div>
+                            <div class="invoice-card">
+                                <h2 class="card-title">End User's Status</h2>
+                                <input class="card-input" type="text" placeholder="Approved">
+     
+     
+                            </div>
+                            <div class="invoice-card">
+                                <h2 class="card-title">Add more Approver(s) :</h2>
+                                <p class="card-info">Add Email ID by using search icon in the field</p>
+                                <div class="search-box">
+                                    <input class="card-input" type="text" placeholder="Please enter approver">
+                                    <span class="card-icon"><i class="fas fa-search"></i></span>
+                                </div>
+                                <div></div>
+     
+     
+                            </div>
+                        <div class="card-button">
+                            <span class="btn-icon"><i class="fa-solid fa-arrow-right"></i></span>
+                            <button class="card-btn" type="button">Submit</button>
+                        </div>
+                        </div> -->
+                        <div class="parent"
+                        *ngIf="usertype == 'enduser' && quantitiesaccepted == true && customManagerList.length == 1 && cmPresent == false && behalf && (behalf || submitdone)"
+                        
+                       >
+                            <div class="invoice-card">
+                                <h2 class="card-title">Add End Users :</h2>
+                                <p class="card-info">Add Email ID of end users (Max upto 3) by using search icon in the
+                                    field</p>
+
+                                    <!-- <div class="search-box">
+                                        <input class="card-input" type="text" placeholder="Please enter enduser">
+                                        <span class="card-icon"><i class="fas fa-search"></i></span>
+                                    </div> -->
+                                <div class="search-box">
+                                    <input matInput class="card-input" type="search"
+                                        id="search1" placeholder="Please enter enduser"
+                                        [(ngModel)]="queryString1"
+                                        (keydown.enter)="callConfirmatoryDynamicData()"
+                                        (blur)="clearConfirmationSearchData()" />
+                                    <!-- <button class="btn btn-primary addbtn" (click)="addNewColleagues($event)"><i class="fa fa-plus"></i></button> -->
+                                    <span class="card-icon"><i class="fa fa-search" (click)="callConfirmatoryDynamicData()"
+                                        style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i></span>
+                                    
+                                </div>
+                                <div class="suggestion-core">
+                                    <ul class="suggestion-list" *ngIf="confirmatoryList != null">
+                                        <li class="displaytitle suggestionlistli"
+                                            (click)="addConfirmatoriesToSuggestionList($event,item)"
+                                            *ngFor="let item of confirmatoryList">
+                                            {{item.email}} | <b>{{item.designation}}</b>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="suggestion-lhs">
+
+                                    <ul class="suggestion-list selectedcolegues"
+                                        *ngIf="selectedConfirmatoryList!=null">
+                                        <li class="displaytitle"
+                                            *ngFor="let n of selectedConfirmatoryList">
+                                            <label class="check-box">
+                                                {{n.email}}
+                                                <span class="checkmark"></span>
+                                            </label> <img src="./assets/img/cross_icon.png"
+                                                (click)="removeConfirmatoryFromSuggestionList($event,n)" />
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+     
+        </section>    
+        <section  *ngIf="quantitiesaccepted == true  && status !='V' 
+        && ((creditadvice == null && creditnote == null) 
+        || (creditadvice != null && creditnote != null))">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 padd-0">
+                        <div class="parent">
+                            <div class="invoice-card" >
+                                <!-- <div class="formWrapper__heading no-bg pl-6"></div> -->
+                                <!-- <b style="text-align: 5px; font-style: oblique; font-size: 15px; margin: 5px;">Approver:</b><span style="text-align: 5px; font-style: oblique; font-size: 15px"> A person who confirms receipt of material/services and that the approved invoice is in accordance with the same.</span> -->
+                                <br>
+                                <span style="text-align: 5px; font-style: oblique; font-size: 15px;margin: 60px;">An
+                                    <b>Approver</b> confirms receipt of material/services and that the approved invoice
+                                    is in accordance with the same.</span>
+                                <div class="invoice-form">
+                                    <div class="inv-form-inputs">
+                                        <div class="form-group">
+                                            <div class="customFormGroup">
+                                                <label style="font-size: 20px; font-weight: 600; color: black;">
+                                                    <!-- <span *ngIf="storekeeper != 'true'">Requisitioner's</span>
+                                    <span *ngIf="storekeeper == 'true'">Storekeeper's</span>  -->
+                                                    End User's Status
+                                                </label>
+                                                <select id="selectManager" class="form-control form-select"
+                                                    [disabled]="stage =='2'" (change)="enduserstatuschange($event)"
+                                                    aria-label="Default select example">
+                                                    <!-- <option selected disabled>--Select--</option> -->
+                                                    <option value="P">Pending</option>
+                                                    <option value="A">Approved</option>
+                                                    <!-- <option value="R">Rejected</option> -->
+                                                    <!-- <option value="O">On Hold</option> -->
+                                                    <option value="V"
+                                                        *ngIf="managerStatusDisplay == 'CM' || managerStatusDisplay == 'CO'">
+                                                        Return To Vendor</option>
+                                                </select>
+                                                <div class="wizard-form-error"></div>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                    <div class="inv-form-inputs">
+                                        <div class="form-group">
+                                            <div class="customFormGroup">
+                                                <label style="font-size: 20px; font-weight: 600; color: black;">
+                                                    Invoice Approver's Status</label>
+                                            <div *ngIf="OnHold == 'True'">
+                                                 <select id="selectuser" class="form-control form-select"
+                                                    [disabled]="stage =='1'" aria-label="Default select example"
+                                                    (change)="approverstatuschange($event)">
+                                                        <option value="A">Approved</option>
+                                                        <option value="O">On Hold</option>    
+                                                 </select>
+                                            </div>
+                                            <div *ngIf="OnHold != 'True'">
+                                                <select id="selectuser" class="form-control form-select"
+                                                    [disabled]="stage =='1'" aria-label="Default select example"
+                                                    (change)="approverstatuschange($event)">
+                                                        <option value="P">Pending</option>
+                                                        <option value="A">Approved</option>
+                                                        <option value="O">On Hold</option>
+                                                </select>
+                                            </div>
+                                               <div class="wizard-form-error"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+    
+                                <div class="invoice-form pt-0" *ngIf="showmanagerlist">
+                                    <div class="inv-form-inputs">
+    
+                                        <div class="form-group">
+                                            <div class="customFormGroup">
+                                                <label class="withoutSubLabel" for=""
+                                                    style="font-size: 20px; font-weight: 600; color: black;">Select
+                                                    Approver :</label>
+                                                <select name="" id="custommanagerselectedID" class="form-control"
+                                                    (change)="addApprover($event)">
+                                                    <option value="0">--Select--</option>
+                                                    <option id="customID{{m}}"
+                                                        *ngFor="let customMangerlist of customManagerListNames;  let m = index"
+                                                        [value]="customMangerlist">
+                                                        {{customMangerlist}}
+                                                    </option>
+                                                </select>
+                                                <div class="wizard-form-error"></div>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                    <div class="inv-form-inputs">
+                                        <div class="form-group" *ngIf="showmanagerlist">
+                                            <!-- <input class="form-control" placeholder="Select Colleagues"/> -->
+                                            <!-- <input  matInput class="form-control" type="search" [(ngModel)]="queryString" id="search" (keyup)="onKey()" placeholder="Search Apps" (blur)="claerSearchApps()"/> -->
+                                            <div class="">
+                                                <label style="font-size: 20px; font-weight: 600; color: black;">Add more
+                                                    Approver(s) :<span
+                                                        style="display: block;font-size: 14px; font-weight:400; color: #555;">Add
+                                                        Email ID by using search icon in the field</span></label>
+                                                <div style="position: relative;">
+                                                    <input matInput class="form-control searchText" type="search"
+                                                        id="search" placeholder="Please enter approver"
+                                                        [(ngModel)]="queryString" (keydown.enter)="callDynamicData()"
+                                                        (blur)="clearSearchData()" />
+                                                    <!-- <button class="btn btn-primary addbtn" (click)="addNewColleagues($event)"><i class="fa fa-plus"></i></button> -->
+                                                    <i class="fa fa-search" (click)="callDynamicData()"
+                                                        style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i>
+                                                </div>
+                                                <div class="suggestion-core">
+                                                    <ul class="suggestion-list" *ngIf="colleaguesList != null">
+                                                        <li class="displaytitle suggestionlistli"
+                                                            (click)="addColleaguesToSuggestionList($event,item)"
+                                                            *ngFor="let item of colleaguesList">
+                                                            {{item.email}} | <b>{{item.designation}}</b>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="suggestion-lhs">
+    
+                                                    <ul class="suggestion-list selectedcolegues"
+                                                        *ngIf="selectedColleaguesList!=null">
+                                                        <li class="displaytitle"
+                                                            *ngFor="let n of selectedColleaguesList">
+                                                            <label class="check-box">
+                                                                {{n.email}}
+                                                                <span class="checkmark"></span>
+                                                            </label> <img src="./assets/img/cross_icon.png"
+                                                                (click)="removeColleaguesFromSuggestionList($event,n)" />
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+    
+    
+                                <!-- button wrapper  -->
+                                <div>
+                                    <div class="row">
+                                        <div class="col-lg-12 text-center">
+                                            <button type="submit" class="btn button-primary" id="UpdateInvoiceID"
+                                                [disabled]="submitdone == true || (behalf && selectedConfirmatoryList.length ==0 && usertype == 'enduser')"
+                                                (click)="trackInvoice()">
+                                                <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                                <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                                    class="disabledImg arrowIcon">
+                                                Submit
+                                            </button>
+    
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="formWrapper__heading no-bg pl-6" *ngIf="showcustomManagerList">
+                                    Approval Status</div>
+                                <div class="table-responsive pl-forIcon" *ngIf="showcustomManagerList">
+    
+                                    <table class="table customTableStripped noAccordionTable">
+    
+    
+                                        <tbody>
+                                            <tr class="" *ngFor="let customManager of customManagerList;let j=index">
+                                                <td class="" style="vertical-align:top;">
+                                                    <span class="text-left" style="cursor: pointer;"
+                                                        tooltip="{{customManager.DESIGNATION}}" placement="top"
+                                                        showDelay="300">{{customManager.EUMANAGER}}</span>
+                                                </td>
+                                                <td class="" style="vertical-align:top; max-width: 457px;">
+                                                    <div *ngFor="let chatmessage of statuschatmessage">
+                                                        <div class="chatmessageWrapper"
+                                                            *ngIf="customManager.EUMANAGER == chatmessage.SENDER">
+                                                            <!-- <span class="messagescroll">{{chatmessage.MESSAGETEXT | slice:0:20}}</span> -->
+                                                            <div class="prevChar commonDgWrapper" id="showIdList{{j}}">
+                                                                <div class="dgTextLeft">
+                                                                    {{chatmessage.MESSAGETEXT | slice:0:60}}
+                                                                    <span
+                                                                        *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60">...
+                                                                    </span>
+                                                                </div>
+                                                                <div class="dgTextRight">
+                                                                    <img src="./assets/img/open_arrow_down_dark_grey.png"
+                                                                        align="right"
+                                                                        *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60"
+                                                                        (click)="toggle(j)" class="expandIcon">
+                                                                </div>
+                                                            </div>
+                                                            <div id="messagescrollMoreList{{j}}"
+                                                                class="showNothing commonDgWrapper">
+                                                                <div class="dgTextLeft">
+                                                                    {{chatmessage.MESSAGETEXT}}
+                                                                </div>
+                                                                <div class="dgTextRight">
+                                                                    <img src="./assets/img/open_arrow_up_light_grey.png"
+                                                                        *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60"
+                                                                        (click)="toggle(j)" class="expandIcon">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="vertical-align:top">
+                                                    <div class="text-left" *ngIf="customManager.STATUS =='P'">
+                                                        Pending</div>
+                                                    <div class="text-left" *ngIf="customManager.STATUS =='M'">
+                                                        Pending</div>
+                                                    <div class="text-left" *ngIf="customManager.STATUS =='CM'">
+                                                        Pending</div>
+                                                    <div class="text-left" *ngIf="customManager.STATUS =='CA'">
+                                                        GRN Confirmed</div>
+                                                    <div class="text-left" *ngIf="customManager.STATUS =='A'">
+                                                        <div *ngIf="enduserid == customManager.EUMANAGER">
+                                                            GRN Creator
+                                                        </div>
+                                                        <div *ngIf="enduserid != customManager.EUMANAGER">
+                                                            Invoice Approver
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-left" *ngIf="customManager.STATUS =='R'">
+                                                        Invoice Rejected</div>
+                                                    <div class="text-left" *ngIf="customManager.STATUS =='CR'">
+                                                        Invoice Rejected</div>
+                                                    <div class="text-left"
+                                                        *ngIf="customManager.STATUS =='O' || customManager.STATUS =='CO'">
+                                                        On Hold</div>
+                                                    <div *ngFor="let chatmessage of statuschatmessage">
+                                                        <div class="chatmessageWrapper"
+                                                            *ngIf="customManager.EUMANAGER == chatmessage.SENDER">
+                                                            <span class="messagescroll">{{chatmessage.CREATEDON}}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </section>    
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 padd-0" *ngIf="quantitiesaccepted == true">
+                    <div class="parent">
+                        <h1 >DocumentS</h1>
+                        <h2 *ngIf="quantitiesaccepted == false">Related Documents sent for your reviews!</h2>
+                        <div *ngIf="quantitiesaccepted == true">End User Supporting Docs<span style="margin-left: 5px;"
+                            class="InvStatus__date">(Filename can have spaces but no special
+                            characters)</span></div>
+                    <div class="inv-form-inputs w-100">
+                        <div
+                            *ngIf="usertype != 'manager'  && quantitiesaccepted == false && creditadvice ==null && multipleactualendfilename == null">
+    
+    
+                            <div class=" FileUploadIconWrap" style="width: 100%;">
+                                <div class="add-file-input pdfFileListing">
+                                    <!-- <label for="input-file3" class="file-input" *ngIf="viewAttachmentNames==null || viewAttachmentNames==''"> -->
+                                    <label for="input-file3" class="file-input">
+                                        <span *ngIf="usertype != 'manager'"><img
+                                                src="./assets/img/cloud-computing.png"
+                                                style="cursor: pointer; " /></span>
+                                        <!-- BCCL Supporting Docs -->
+                                    </label>
+                                    <div>
+                                        <input type="file" id="input-file3" class="d-none"
+                                            multiple="multiple" (change)="onFileChanged($event)"
+                                            onclick="value = null">
+    
+    
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <ul class="listFiles">
+                                <li *ngFor="let selected of ArrayOfSelectedFilename;let i=index"
+                                    class="fileUploadSingle">
+                                    {{selected}} <i class="fa fa-close fileCrossIcon fileCrossIcon"
+                                        aria-hidden="true" (click)="removeitem(i)"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <div *ngIf="usertype == 'manager' || (usertype != 'manager' && quantitiesaccepted == true) || 
+                            creditadvice !=null || multipleactualendfilename != null">
+                            <span *ngIf="IsFileUploaded">
+                                <span
+                                    style="cursor: pointer; text-decoration: underline;color: #0645AD;">
+                                    <ul class="supportingDocList">
+                                        <li *ngFor="let multipleindividualactualfilename of multipleactualendfilename?.split(','); let i=index"
+                                            (click)="downloadfile(individualsavedendname[i],multipleindividualactualfilename,'listdownload')"
+                                            class="supportingDocList__icon">
+                                            <a style="cursor: pointer;"
+                                                tooltip="{{multipleindividualactualfilename}}"
+                                                placement="bottom" showDelay="300">
+                                                <img src="./assets/img/downloadfile.png">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </span>
+                            </span>
+                            <span *ngIf="!IsFileUploaded">
+                                No Docs Attached.
+                            </span>
+    
+                        </div>
+                    </div>
+                        </div>
+                    
+                </div>
+                
+            </div>
+
+        </div>
+    </section>
+<section>
+
+
+</section>
+
+</div>    
+
+
+
+

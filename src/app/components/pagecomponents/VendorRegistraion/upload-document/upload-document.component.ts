@@ -134,7 +134,7 @@ export class UploadDocumentComponent implements OnInit {
     sessionStorage.removeItem("GST");
     sessionStorage.removeItem("MSMEDetails");
     this.UploadDocument = this.fb.group({
-      GSTattachments: [null,],
+      GSTattachments: [,],
       PANattachments: [null, Validators.required],
       ChequeAtt: [null, Validators.required],
       MSMEAtt: [,],
@@ -154,7 +154,7 @@ export class UploadDocumentComponent implements OnInit {
       MICR: ["",],
       BankNAme: ["",],
       bankBrach: ["",],
-      AccHolderName:["",],
+      // AccHolderName:["",],
       GSTNumber: ["",Validators.pattern("^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$")],
       Tradname: ["",],
       Address: ["",],
@@ -530,7 +530,6 @@ get ClientsControls() {
           this.requestID + "_" + "PAN" + "_" + this.viewUploadFile.name;
         // 165_PAN_vardanissues.pdf
         sessionStorage.removeItem("PanData");
-
         this.callApi(this.viewUploadFile, this.pancardfilename, "PAN");
         this.UploadDocument.get("PANattachments").clearValidators();
         this.UploadDocument.get("PANattachments").updateValueAndValidity();
@@ -682,6 +681,7 @@ get ClientsControls() {
       // this.showfeilds1 = true;
       // this.showCheque = false;
       // this.showGST = false;
+      
       this.UploadDocument.controls?.PANattachments.markAsTouched();
       this.UploadDocument.controls?.GSTattachments.markAsTouched();
       this.UploadDocument.controls?.ChequeAtt.markAsTouched();
@@ -978,30 +978,30 @@ if (TSD) {
     }
   }
 
-  // CallPanGSTVALIDATION(){
-  //   this.purchaseOrderListService.GetPanGstVal(this.formdetails.controls.PanNumber?.value,this.formdetails.controls.GSTNumber?.value).subscribe((result) => {
-  //     debugger
-  //     console.log(result);  
-  //     if(result[0].message == "Warning! Duplicate PAN number with different GSTN number."){
-  //       const dialogConfig = new MatDialogConfig();
-  //       dialogConfig.data = {
-  //         message: result[0].message,
-  //         condition: "success",
-  //         page: "invoicesubmit",
-  //         specific: "note",
-  //       };
-  //       const mydata = dialogConfig.data;
-  //       console.log("PopupComponent", mydata);
+  CallPanGSTVALIDATION(){
+    this.purchaseOrderListService.GetPanGstVal(this.formdetails.controls.PanNumber?.value,this.formdetails.controls.GSTNumber?.value).subscribe((result) => {
+      debugger
+      console.log(result);  
+      if(result[0].message == "Warning! Duplicate PAN number with different GSTN number."){
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          message: result[0].message,
+          condition: "success",
+          page: "invoicesubmit",
+          specific: "note",
+        };
+        const mydata = dialogConfig.data;
+        console.log("PopupComponent", mydata);
         
-  //       const dialogRef = this.dialog.open(PopupComponent, {
-  //         panelClass: "custom-modalbox",
-  //         width: "400px",
-  //         data: { datakey: dialogConfig.data },
-  //       });
-  //     }
-  //   })
+        const dialogRef = this.dialog.open(PopupComponent, {
+          panelClass: "custom-modalbox",
+          width: "400px",
+          data: { datakey: dialogConfig.data },
+        });
+      }
+    })
 
-  // }
+  }
   checkPan(){
     debugger
     this.formdetails.controls.BuissinessDataCheck.reset();
@@ -1107,11 +1107,44 @@ if (TSD) {
       this.loaderservice.hide();
     });
   }
-  onCheckboxChange(formControlName: string) {
+  // onCheckboxChange(formControlName: string) {
+  //   ;
+  //   const controlValue = this.formdetails.get(formControlName)?.value;
+  //   const generalDataControl = this.formdetails.get(formControlName);
+  
+  //   if (controlValue) {
+  //     // Checkbox is checked: Remove validators
+  //     if (generalDataControl) {
+  //       generalDataControl.clearValidators();
+  //       generalDataControl.updateValueAndValidity(); // Update validity after clearing validators
+  //     }
+  //   } else {
+  //     // Checkbox is unchecked: Add required validator
+  //     if (generalDataControl) {
+  //       generalDataControl.setValidators([Validators.required]);
+  //       generalDataControl.updateValueAndValidity(); // Update validity after setting validators
+        
+  //       // If the value is empty, force invalid state
+  //       if (!generalDataControl.value || generalDataControl.value === '') {
+  //         generalDataControl.setValue(''); // Reset the value explicitly to trigger validation
+  //       }
+  //     }
+  //   }
+  
+  //   // Mark the control as touched to trigger validation messages
+  //   if (generalDataControl) {
+  //     generalDataControl.markAsTouched();
+  //   }
+  //   if(formControlName === 'BuissinessDataCheck'){
+  //     this.CallPanGSTVALIDATION();
+  //   }
+  // }
+
+   onCheckboxChange(formControlName: string) {
     ;
     const controlValue = this.formdetails.get(formControlName)?.value;
     const generalDataControl = this.formdetails.get(formControlName);
-  
+
     if (controlValue) {
       // Checkbox is checked: Remove validators
       if (generalDataControl) {
@@ -1123,23 +1156,22 @@ if (TSD) {
       if (generalDataControl) {
         generalDataControl.setValidators([Validators.required]);
         generalDataControl.updateValueAndValidity(); // Update validity after setting validators
-        
+
         // If the value is empty, force invalid state
         if (!generalDataControl.value || generalDataControl.value === '') {
           generalDataControl.setValue(''); // Reset the value explicitly to trigger validation
         }
       }
     }
-  
+
     // Mark the control as touched to trigger validation messages
     if (generalDataControl) {
       generalDataControl.markAsTouched();
     }
-    if(formControlName === 'BuissinessDataCheck'){
-      // this.CallPanGSTVALIDATION();
+    if (formControlName === 'BuissinessDataCheck') {
+      this.CallPanGSTVALIDATION();
     }
   }
-
   checkDocumentAttachments() {
     let isValid = true;
   
@@ -1327,7 +1359,7 @@ if (TSD) {
       this.formdetails.controls.vendorName2.value;
       this.registration.bankName = this.formdetails.controls.BankNAme.value;
     this.registration.branch = this.formdetails.controls.bankBrach.value;
-    this.registration.accHolderName = this.formdetails.controls.AccHolderName.value;
+    // this.registration.accHolderName = this.formdetails.controls.AccHolderName.value;
     this.registration.country = this.formdetails.controls.countryKey.value;
     this.registration.region = this.formdetails.controls.region.value;
     //       panFileName:string;

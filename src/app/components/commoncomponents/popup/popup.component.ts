@@ -5,14 +5,16 @@ import { LoaderService } from 'app/services/LoaderService/loader.service';
 import { PurchaseOrderListService } from 'app/services/purchaseOrderList/purchaseorderlist.service';
 import { ShareDataService } from 'app/services/ShareData/share-data.service';
 
+
 @Component({
   selector: 'app-popup',
   templateUrl: './popup-new.component.html',
   styleUrls: ['./popup.component.css']
 })
-export class PopupComponent implements OnInit, AfterViewInit {
+export class PopupComponent implements OnInit {
   mydata: any;
   @Output() datasharingFunction2 = new EventEmitter();
+  @Output() shareData=new EventEmitter();
   dataGO: any;
   validate: boolean = false;
   btnDisabled: boolean;
@@ -34,9 +36,7 @@ export class PopupComponent implements OnInit, AfterViewInit {
     private sharedata: ShareDataService
 
   ) { }
-  ngAfterViewInit(): void {
-    throw new Error('Method not implemented.');
-  }
+ 
 
   @ViewChild('messages') messagesTextarea: any;
   displayTextarea: boolean = false;
@@ -76,7 +76,8 @@ export class PopupComponent implements OnInit, AfterViewInit {
     console.log("messagess 1======>", this.dataGO);
     this.datasharingFunction2.emit(this.dataGO);
     console.log("messagess======>", this.dataGO);
-
+    // this.SubmitData = "";
+    // this.sharedata.sendData(this.SubmitData)
     this.dialogRef.close({ return: value, messageString: message });
   }
 
@@ -110,7 +111,11 @@ export class PopupComponent implements OnInit, AfterViewInit {
     debugger
     this.viewUploadFile = event.target.files[0];
     this.cancelledCheque = this.viewUploadFile.name;
+    sessionStorage.setItem(
+      "chequeData","set")
     this.purchaseOrderListService
+    
+
       .fileupload1(this.viewUploadFile ,this.cancelledCheque)
       .subscribe((res) => {
         debugger;

@@ -48,6 +48,10 @@ import { AdvanceShippingNotificationComponent } from 'app/components/pagecompone
 import { InertnalLoginComponent } from 'app/components/pagecomponents/internalportal/inertnal-login/inertnal-login.component';
 import { ViewRegistrationComponent } from 'app/components/pagecomponents/VendorRegistraion/view-registration/view-registration.component';
 import { AdmindashboardComponent } from 'app/components/pagecomponents/admindashboard/admindashboard.component';
+import { InvoiceAprovalComponent } from 'app/components/pagecomponents/MobileAproval/invoice-aproval/invoice-aproval.component';
+import { MobileAprovalInternaltrackinvoicewithPOComponent } from 'app/components/pagecomponents/MobileAproval/mobile-aproval-internaltrackinvoicewith-po/mobile-aproval-internaltrackinvoicewith-po.component';
+import { MobileAprovalInternalTrackinvoicewithMultiPOComponent } from 'app/components/pagecomponents/MobileAproval/mobile-aproval-internal-trackinvoicewith-multi-po/mobile-aproval-internal-trackinvoicewith-multi-po.component';
+import { CreditnoteComponent } from 'app/components/pagecomponents/MobileAproval/creditnote/creditnote.component';
 // import { InvalidinvoicesComponent } from 'app/components/pagecomponents/invalidinvoices/invalidinvoices.component';
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',       component: DashboardComponent ,canActivate:[AuthGuard]},
@@ -98,6 +102,11 @@ export const AdminLayoutRoutes: Routes = [
     {path :'advanceShipping',component:AdvanceShippingNotificationComponent,canActivate:[AuthGuard]},
     {path :'VendorLogin',component:VendorLoginComponent},
     {path:'admindashboard', component:AdmindashboardComponent},
+    {path:'MobileApproval',component:InvoiceAprovalComponent },
+     {path: 'MobileaprovalinternaltrackinvoicewithPO',component:MobileAprovalInternalTrackinvoicewithMultiPOComponent,canActivate:[AuthGuard]},
+      {path:'MobileaprovalinternaltrackinvoicewithoutPO',component: MobileAprovalInternaltrackinvoicewithPOComponent,canActivate:[AuthGuard]},
+      {path:'MobilecreateCreditNote', component:CreditnoteComponent},
+
 
     // {path:'InvalidInvoices',component:InvalidinvoicesComponent,canActivate:[AuthGuard]},
     // {path: '**', component:FourZeroFourComponent }

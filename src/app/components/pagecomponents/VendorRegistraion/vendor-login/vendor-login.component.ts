@@ -201,6 +201,7 @@ export class VendorLoginComponent implements OnInit {
       this.LoginService.VendorOTPCheck(this.loginModel.Email, this.loginModel.OTP).subscribe(res => {
         const accessKey = res.headers.get('Authorizationkey');
         const profileAccesKey = res.headers.get('Authorization');
+        sessionStorage.setItem("requestid", res.body[0].RequestID);
         if (res.body[0].message == "Invalid OTP") {
           this.invalid = true;
           setTimeout(() => {

@@ -255,6 +255,11 @@ public static getidsbasedonmaterial  =  AppSettings.apitime+"/api/internalportal
 public static multiuploadVen=AppSettings.apitime+"/api/file/addtionalfilesUploads"
 public static PanGSVal= AppSettings.apitime+"/api/vendordetails/checkPanGST";
 
+public static CheckActiveInactivePan = AppSettings.apitime+"/api/external/checkPanNumber";
+public static CheckActiveInactiveGst = AppSettings.apitime+"/api/external/checkGSTNumber";
+public static DownloadPDF = AppSettings.apitime+"/api/external/downloadPDF";
+
+
 
 
 // ===================================================Simpo===============================================

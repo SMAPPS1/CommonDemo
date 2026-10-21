@@ -103,6 +103,10 @@ import { AdvanceShippingNotificationComponent } from './components/pagecomponent
 import { InertnalLoginComponent } from './components/pagecomponents/internalportal/inertnal-login/inertnal-login.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AdmindashboardComponent } from './components/pagecomponents/admindashboard/admindashboard.component';
+import { InvoiceAprovalComponent } from './components/pagecomponents/MobileAproval/invoice-aproval/invoice-aproval.component';
+import { MobileAprovalInternaltrackinvoicewithPOComponent } from './components/pagecomponents/MobileAproval/mobile-aproval-internaltrackinvoicewith-po/mobile-aproval-internaltrackinvoicewith-po.component';
+import { MobileAprovalInternalTrackinvoicewithMultiPOComponent } from './components/pagecomponents/MobileAproval/mobile-aproval-internal-trackinvoicewith-multi-po/mobile-aproval-internal-trackinvoicewith-multi-po.component';
+import { CreditnoteComponent } from './components/pagecomponents/MobileAproval/creditnote/creditnote.component';
 
 
 @NgModule({
@@ -201,7 +205,11 @@ import { AdmindashboardComponent } from './components/pagecomponents/admindashbo
     ClickOutsideDirective,
     AdvanceShippingNotificationComponent,
     InertnalLoginComponent,
-    AdmindashboardComponent
+    AdmindashboardComponent,
+     InvoiceAprovalComponent,
+    MobileAprovalInternaltrackinvoicewithPOComponent,
+    MobileAprovalInternalTrackinvoicewithMultiPOComponent,
+    CreditnoteComponent    
     
   ],
   exports:[

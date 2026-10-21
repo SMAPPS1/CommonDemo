@@ -2,8 +2,10 @@
     <div class="container dashboardpt">
         <div class="row">
             <div class="col-md-12" style="padding: 0 !important; display: flex; align-items: center; gap: 12px;">
-                <img src="./assets/img/left-arrow-button.png" alt="" style="width: 45px; cursor: pointer;" [routerLink]="['/internaltrackInvoiceList']">
-                <div class="submitSearchHeader" style="background-color: #FFFFFF; padding: 12px 16px; border-radius: 10px; flex: 1;">
+                <img src="./assets/img/left-arrow-button.png" alt="" style="width: 45px; cursor: pointer;"
+                    [routerLink]="['/internaltrackInvoiceList']">
+                <div class="submitSearchHeader"
+                    style="background-color: #FFFFFF; padding: 12px 16px; border-radius: 10px; flex: 1;">
                     {{invoicenumber}}
                 </div>
             </div>
@@ -36,13 +38,15 @@
                             </div>
 
                             <div *ngIf="return == true">
-                                <div *ngIf="resubmit == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                                <div *ngIf="resubmit == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle default-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Resubmitted</div>
                                 </div>
 
-                                <div *ngIf="resubmit == true" class="tableTopHeaderCard pending-bg-status" style="cursor: auto;">
+                                <div *ngIf="resubmit == true" class="tableTopHeaderCard pending-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle pending-circle-status"></span>
                                     <div class="tableTopHeaderCardTitle">Resubmitted</div>
                                 </div>
@@ -51,9 +55,10 @@
                                 </div>
                             </div>
 
-                            <div class="" (mouseenter)="showEndUserTooltip()"
-                                (mouseleave)="hideEndUserTooltip()" style="position: relative">
-                                <div *ngIf="mpending == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                            <div class="" (mouseenter)="showEndUserTooltip()" (mouseleave)="hideEndUserTooltip()"
+                                style="position: relative">
+                                <div *ngIf="mpending == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle default-circle-status"></span>
 
                                     <span class="tableTopHeaderCardTitle">
@@ -65,7 +70,7 @@
                                                     Approval awaited from: <br>
                                                     <div [innerHTML]="tooltipData"></div>
                                                     <div *ngIf="isCreditNoteMsgVisible"><br>
-                                                        <span>*Awaiting  for Credit Note</span>
+                                                        <span>*Awaiting for Credit Note</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -76,7 +81,8 @@
                                     </span>
                                 </div>
 
-                                <div *ngIf="mpending == true" class="tableTopHeaderCard end-user-approve-bg-status" style="cursor: auto;">
+                                <div *ngIf="mpending == true" class="tableTopHeaderCard end-user-approve-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle end-user-approve-circle-status"></span>
                                     <span class="tableTopHeaderCardTitle">
                                         <span *ngIf="actionBy == 'ST'">Storekeeper</span>
@@ -89,9 +95,10 @@
                                 </div>
                             </div>
 
-                            <div class="" (mouseenter)="showApprovalTooltip()"
-                                (mouseleave)="hideApprovalTooltip()" style="position: relative">
-                                <div *ngIf="accepted == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                            <div class="" (mouseenter)="showApprovalTooltip()" (mouseleave)="hideApprovalTooltip()"
+                                style="position: relative">
+                                <div *ngIf="accepted == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle default-circle-status"></span>
                                     <span class="tableTopHeaderCardTitle">
                                         <!-- Tooltip code start-->
@@ -109,7 +116,8 @@
                                     </span>
                                 </div>
 
-                                <div *ngIf="accepted == true" class="tableTopHeaderCard approved-bg-status" style="cursor: auto;">
+                                <div *ngIf="accepted == true" class="tableTopHeaderCard approved-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle approved-circle-status"></span>
                                     <span class="tableTopHeaderCardTitle">Approved</span>
                                 </div>
@@ -121,15 +129,17 @@
 
 
                             <div *ngIf="reopen == true">
-                                <div *ngIf="reopen == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                                <div *ngIf="reopen == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle rejected-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Reopen for correction</div>
                                 </div>
 
-                                <div *ngIf="reopen == true" class="tableTopHeaderCard rejected-bg-status" style="cursor: auto;">
+                                <div *ngIf="reopen == true" class="tableTopHeaderCard rejected-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle rejected-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Reopen for correction</div>
                                 </div>
                                 <div class="InvStatus__date">
@@ -138,15 +148,17 @@
                             </div>
 
                             <div *ngIf="reopen == true">
-                                <div *ngIf="corrected == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                                <div *ngIf="corrected == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle default-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Corrected</div>
                                 </div>
 
-                                <div *ngIf="corrected == true" class="tableTopHeaderCard corrected-bg-status" style="cursor: auto;">
+                                <div *ngIf="corrected == true" class="tableTopHeaderCard corrected-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle corrected-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Corrected</div>
                                 </div>
 
@@ -156,15 +168,17 @@
                             </div>
 
                             <div *ngIf="rejected == true">
-                                <div *ngIf="rejected == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                                <div *ngIf="rejected == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle rejected-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Rejected</div>
                                 </div>
 
-                                <div *ngIf="rejected == true" class="tableTopHeaderCard rejected-bg-status" style="cursor: auto;">
+                                <div *ngIf="rejected == true" class="tableTopHeaderCard rejected-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle rejected-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Rejected</div>
                                 </div>
 
@@ -175,33 +189,37 @@
 
 
                             <div *ngIf="invalidinvoice == false">
-                                <div *ngIf="processed == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                                <div *ngIf="processed == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle default-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Processed</div>
                                 </div>
 
-                                <div *ngIf="processed == true" class="tableTopHeaderCard processed-bg-status" style="cursor: auto;">
+                                <div *ngIf="processed == true" class="tableTopHeaderCard processed-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle processed-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Processed</div>
                                 </div>
                                 <div class="InvStatus__date">
                                     <span>{{processedtime}}</span>
                                 </div>
                             </div>
-                        
+
 
                             <div *ngIf="partialpaid == true">
-                                <div *ngIf="partialpaid == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                                <div *ngIf="partialpaid == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle partially-paid-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Partially Paid</div>
                                 </div>
 
-                                <div *ngIf="partialpaid == true" class="tableTopHeaderCard partially-paid-bg-status" style="cursor: auto;">
+                                <div *ngIf="partialpaid == true" class="tableTopHeaderCard partially-paid-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle partially-paid-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Partially Paid</div>
                                 </div>
                                 <div class="InvStatus__date">
@@ -211,15 +229,17 @@
 
 
                             <div *ngIf="invalidinvoice == false">
-                                <div *ngIf="paid == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                                <div *ngIf="paid == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle default-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Paid</div>
                                 </div>
 
-                                <div *ngIf="paid == true" class="tableTopHeaderCard paid-bg-status" style="cursor: auto;">
+                                <div *ngIf="paid == true" class="tableTopHeaderCard paid-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle paid-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Paid</div>
                                 </div>
                                 <div class="InvStatus__date">
@@ -229,15 +249,17 @@
 
 
                             <div *ngIf="reversed == true">
-                                <div *ngIf="reversed == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                                <div *ngIf="reversed == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle returned-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Reversed</div>
                                 </div>
 
-                                <div *ngIf="reversed == true" class="tableTopHeaderCard returned-bg-status" style="cursor: auto;">
+                                <div *ngIf="reversed == true" class="tableTopHeaderCard returned-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle returned-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Reversed</div>
                                 </div>
                                 <div class="InvStatus__date">
@@ -246,15 +268,17 @@
                             </div>
 
                             <div *ngIf="invalidinvoice == true">
-                                <div *ngIf="invalidinvoice == false" class="tableTopHeaderCard default-bg-status" style="cursor: auto;">
+                                <div *ngIf="invalidinvoice == false" class="tableTopHeaderCard default-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle rejected-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Rejected by finance</div>
                                 </div>
 
-                                <div *ngIf="invalidinvoice == true" class="tableTopHeaderCard rejected-bg-status" style="cursor: auto;">
+                                <div *ngIf="invalidinvoice == true" class="tableTopHeaderCard rejected-bg-status"
+                                    style="cursor: auto;">
                                     <span class="tableTopHeaderCardCircle rejected-circle-status"></span>
-                                    
+
                                     <div class="tableTopHeaderCardTitle">Rejected by finance</div>
                                 </div>
                                 <div class="InvStatus__date">
@@ -266,13 +290,15 @@
                     <div style="margin-bottom: 40px;">
                         <div class="invoice-form" style="padding: 0px 24px;">
                             <div class="inv-form-inputs">
-                                <p class="submitDownloadTabTitle">Vendor Name : <span class="tableBodyText">{{vendorName}}</span></p>
+                                <p class="submitDownloadTabTitle">Vendor Name : <span
+                                        class="tableBodyText">{{vendorName}}</span></p>
                             </div>
                             <!-- <div class="inv-form-inputs"> -->
                             <!-- <p class="submitDownloadTabTitle">Buyer Name : <span class="tableBodyText">{{buyerID}}</span></p> -->
                             <!-- </div> -->
                             <div class="inv-form-inputs">
-                                <p class="submitDownloadTabTitle">Requisitioner : <span class="tableBodyText">{{user}}</span></p>
+                                <p class="submitDownloadTabTitle">Requisitioner : <span
+                                        class="tableBodyText">{{user}}</span></p>
                             </div>
                             <div class="inv-form-inputs">
                                 <!-- <p class="submitDownloadTabTitle">PO Number :  -->
@@ -289,11 +315,13 @@
                                 <p class="submitDownloadTabTitle">Invoice Number : <span class="tableBodyText">{{invoicenumber}}</span></p>
                             </div> -->
                             <div class="inv-form-inputs">
-                                <p class="submitDownloadTabTitle">Invoice Date : <span class="tableBodyText">{{invoicedate | date:'dd-MMM-yyyy'}}</span>
+                                <p class="submitDownloadTabTitle">Invoice Date : <span
+                                        class="tableBodyText">{{invoicedate | date:'dd-MMM-yyyy'}}</span>
                                 </p>
                             </div>
                             <div class="inv-form-inputs">
-                                <p class="submitDownloadTabTitle">Invoice Amount (Excl Taxes) : <i class="fal fa-rupee-sign"></i>
+                                <p class="submitDownloadTabTitle">Invoice Amount (Excl Taxes) : <i
+                                        class="fal fa-rupee-sign"></i>
                                     <span class="tableBodyText">{{amtexcltax}}</span>
                                 </p>
                             </div>
@@ -304,7 +332,8 @@
                                 </p>
                             </div>
                             <div class="inv-form-inputs">
-                                <p class="submitDownloadTabTitle">Invoice Amount (Incl Taxes) : <i class="fal fa-rupee-sign"></i>
+                                <p class="submitDownloadTabTitle">Invoice Amount (Incl Taxes) : <i
+                                        class="fal fa-rupee-sign"></i>
                                     <span class="tableBodyText">{{totalamount}}</span>
                                 </p>
                             </div>
@@ -314,22 +343,35 @@
                             <p  class="submitDownloadTabTitle"  *ngIf="customManager.STATUS =='M'>Status : <span class="tableBodyText" >{{status}}</span> <span class="tableBodyText" class="listImage">
                             <p  class="submitDownloadTabTitle"  *ngIf="customManager.STATUS =='M'>Status : <span class="tableBodyText" >{{status}}</span> <span class="tableBodyText" class="listImage"> -->
 
-                                <p class="submitDownloadTabTitle" *ngIf="status =='M'"> Overall Status : <span class="tableBodyText">Pending</span></p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='P'">Overall Status : <span class="tableBodyText">Pending</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='A'">Overall Status : <span class="tableBodyText">Approved</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='RO'">Overall Status : <span class="tableBodyText">Reopened for
+                                <p class="submitDownloadTabTitle" *ngIf="status =='M'"> Overall Status : <span
+                                        class="tableBodyText">Pending</span></p>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='P'">Overall Status : <span
+                                        class="tableBodyText">Pending</span> </p>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='A'">Overall Status : <span
+                                        class="tableBodyText">Approved</span> </p>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='RO'">Overall Status : <span
+                                        class="tableBodyText">Reopened for
                                         correction</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='C'">Overall Status : <span class="tableBodyText">Corrected</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='R'">Overall Status : <span class="tableBodyText">Rejected</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='O'">Overall Status : <span class="tableBodyText">On Hold</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='S'">Overall Status : <span class="tableBodyText">Submitted</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='PP'">Overall Status : <span class="tableBodyText">Partially
+                                <p class="submitDownloadTabTitle" *ngIf="status =='C'">Overall Status : <span
+                                        class="tableBodyText">Corrected</span> </p>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='R'">Overall Status : <span
+                                        class="tableBodyText">Rejected</span> </p>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='O'">Overall Status : <span
+                                        class="tableBodyText">On Hold</span> </p>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='S'">Overall Status : <span
+                                        class="tableBodyText">Submitted</span> </p>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='PP'">Overall Status : <span
+                                        class="tableBodyText">Partially
                                         Paid</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='PD'">Overall Status : <span class="tableBodyText">Paid</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='PRO'">Overall Status : <span class="tableBodyText">Processed</span>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='PD'">Overall Status : <span
+                                        class="tableBodyText">Paid</span> </p>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='PRO'">Overall Status : <span
+                                        class="tableBodyText">Processed</span>
                                 </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='V'">Overall Status : <span class="tableBodyText">Returned</span> </p>
-                                <p class="submitDownloadTabTitle" *ngIf="status =='INV'">Overall Status : <span class="tableBodyText">Invalid
+                                <p class="submitDownloadTabTitle" *ngIf="status =='V'">Overall Status : <span
+                                        class="tableBodyText">Returned</span> </p>
+                                <p class="submitDownloadTabTitle" *ngIf="status =='INV'">Overall Status : <span
+                                        class="tableBodyText">Invalid
                                         Invoice</span> </p>
 
 
@@ -360,7 +402,8 @@
                                 <div style="display: flex;margin-right: -3%;">
                                     <p>
                                         <span class="submitDownloadTabTitle">Description : </span>
-                                        <span id="messagescrollMore1" class="showNothing tableBodyText" style="font-size: 18px">
+                                        <span id="messagescrollMore1" class="showNothing tableBodyText"
+                                            style="font-size: 18px">
                                             <!-- <span id="messagescrollMore1" class="showNothing commonDgWrapper1"> -->
                                             <!-- <div class="dgTextLeft dropdowntext">  -->
                                             {{ description }}
@@ -400,7 +443,8 @@
                                 <div style="display: flex; margin-right: 2% ">
                                     <p>
                                         <span class="submitDownloadTabTitle">Vendor Remarks :</span>
-                                        <span id="messagescrollMore2" class="showNothing tableBodyText" style="font-size: 18px">
+                                        <span id="messagescrollMore2" class="showNothing tableBodyText"
+                                            style="font-size: 18px">
                                             {{ vendorremarks }}
                                             <div class="dgTextRight dropdowntext" style="float: right; top: 0">
                                                 <img src="./assets/img/open_arrow_up_light_grey.png" (click)="toggle2()"
@@ -448,7 +492,8 @@
                                 <p class="submitDownloadTabTitle">Remarks : <span>NA</span></p>
                             </div> -->
                             <div class="inv-form-inputs" *ngIf="billofladingdate != null">
-                                <p class="submitDownloadTabTitle">Bill Of Lading Date : <i class="fal fa-rupee-sign"></i>
+                                <p class="submitDownloadTabTitle">Bill Of Lading Date : <i
+                                        class="fal fa-rupee-sign"></i>
                                     <span class="tableBodyText">{{billofladingdate | date:'dd-MMM-yyyy'}}</span>
                                 </p>
                             </div>
@@ -489,7 +534,8 @@
                                         <span (click)="downloadPDF(savedfilename)"
                                             style="cursor: pointer; text-decoration: underline;color: #0645AD;"><img
                                                 src="./assets/img/PDF-Icon.png" alt="pdf image"
-                                                class="activeImg arrowIcon" /></span><span class="tableBodyText">{{invoicenumber}}</span>
+                                                class="activeImg arrowIcon" /></span><span
+                                            class="tableBodyText">{{invoicenumber}}</span>
                                     </p>
                                 </a>
                             </div>
@@ -527,7 +573,8 @@
                                         style="word-break: break-all;">{{grnnumber}}</span></p>
                             </div>
                             <div class="inv-form-inputs" *ngIf="grnnumber == null && cmPresent == true">
-                                <p class="submitDownloadTabTitle">GRN : <span class="tableBodyText" style="word-break: break-all;">End User Confirmation
+                                <p class="submitDownloadTabTitle">GRN : <span class="tableBodyText"
+                                        style="word-break: break-all;">End User Confirmation
                                         Pending</span></p>
                             </div>
                             <div class="inv-form-inputs" *ngIf="scrnNumber != null">
@@ -558,7 +605,8 @@
                             </div>
                             <div class="inv-form-inputs"
                                 *ngIf="irnNumber != null && irnNumber != '' && irnNumber != undefined">
-                                <p class="submitDownloadTabTitle">IRN Date : <span class="tableBodyText">{{irnDate | date:'dd-MMM-yyyy'}}</span></p>
+                                <p class="submitDownloadTabTitle">IRN Date : <span class="tableBodyText">{{irnDate |
+                                        date:'dd-MMM-yyyy'}}</span></p>
                             </div>
                         </div>
                     </div>
@@ -575,18 +623,18 @@
                         </div>
 
                         <table class="table" id="approvalBox3">
-                                <thead class="invoiceTableHead">
+                            <thead class="invoiceTableHead">
 
-                                    <tr>
+                                <tr>
 
                                     <th scope="col" class="text-left invoiceTableHeading">
                                         <div style="padding: 8px 0;">
                                             Item
                                         </div>
-            
+
                                     </th>
                                     <th scope="col" class="text-left invoiceTableHeading">
-                                        <div style="padding: 8px 0;" >
+                                        <div style="padding: 8px 0;">
                                             Item Description
                                         </div>
                                     </th>
@@ -600,7 +648,7 @@
                                             Delivered Qty
                                         </div>
                                     </th>
-            
+
                                     <th scope="col" class="text-left invoiceTableHeading">
                                         <div style="padding: 8px 0;">
                                             Rate
@@ -622,87 +670,93 @@
                                         </div>
                                     </th>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let invData of invoicedata; let i=index">
-                                        <td class="preventClick">
-                                            <div class="text-left tableBodyText">
-                                                {{invData.LINEITEMNUMBER}}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="text-left upperDate tableBodyText">
-                                                {{invData.LINEITEMTEXT}}
-                                            </div>
-                                        </td>
-                                        <!-- <td>
+                            </thead>
+                            <tbody>
+
+                                <tr *ngFor="let invData of invoicedata; let i=index">
+                                    <td class="preventClick">
+                                        <div *ngIf="invData.STATUS != 'N'" class="text-left tableBodyText">
+                                            {{invData.LINEITEMNUMBER}}
+                                        </div>
+                                        <input *ngIf="invData.STATUS === 'N'" type="text" class="table-input"
+                                            [(ngModel)]="invData.LINEITEMNUMBER" />
+                                    </td>
+                                    <td>
+                                        <div *ngIf="invData.STATUS != 'N'" class="text-left upperDate tableBodyText">
+                                            {{invData.LINEITEMTEXT}}
+                                        </div>
+                                        <input *ngIf="invData.STATUS === 'N'" type="text" class="table-input"
+                                            [(ngModel)]="invData.LINEITEMTEXT" />
+                                    </td>
+                                    <!-- <td>
                                                 <div class="text-left upperDate fixedDateCol">
                                                     {{invData.ORDERNUMBER}}
                                                 </div>
                                             </td> -->
-                                        <td>
-                                            <div class="text-left tableBodyText">
-                                                {{invData.QUANTITY | number:'1.3-3'}}
-                                            </div>
-                                        </td>
-                                        <td
-                                            *ngIf="(quantitiesaccepted==true || usertype == 'manager') || invData.CREDITADVICENO !=null">
-                                            <div class="text-left tableBodyText">
-                                                {{invData.ACCEPTEDQTY | number:'1.3-3'}}
-                                            </div>
-                                        </td>
-                                        <td
-                                            *ngIf="quantitiesaccepted==false && usertype != 'manager' && invData.CREDITADVICENO ==null">
-                                            <div class="text-left">
-                                                <input type="text" valThreeDecimal
-                                                    (input)="checkacceptedquantity($event, invData.QUANTITY,i);calculateAmount($event,invData.RATEPERQTY,i)"
-                                                    id="AcceptedQtyId{{i}}" [value]="invData.QUANTITY" />
-                                                <!-- {{invData.QUANTITY}} -->
-                                            </div>
-                                            <div class="exceededMsg tableBodyText" id="exceeded{{i}}" style="display: none;">
-                                                Accepted quantity cannot exceed invoiced quantity.
-                                            </div>
-                                            <div class="exceededMsg tableBodyText" id="zero{{i}}" style="display: none;">
-                                                Accepted quantity cannot be empty.
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <!-- style="margin-right: 15px;" -->
-                                            <div class="text-left tableBodyText">
-                                                {{invData.RATEPERQTY | currency:'INR'}}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <!-- style="margin-left: 25px;" -->
-                                            <div class="text-left tableBodyText">
-                                                1/{{invData.UOM}}
-                                            </div>
-                                        </td>
+                                    <td>
+                                        <div class="text-left tableBodyText">
+                                            {{invData.QUANTITY | number:'1.3-3'}}
+                                        </div>
+                                    </td>
+                                    <td
+                                        *ngIf="(quantitiesaccepted==true || usertype == 'manager') || invData.CREDITADVICENO !=null">
+                                        <div class="text-left tableBodyText">
+                                            {{invData.ACCEPTEDQTY | number:'1.3-3'}}
+                                        </div>
+                                    </td>
+                                    <td
+                                        *ngIf="quantitiesaccepted==false && usertype != 'manager' && invData.CREDITADVICENO ==null">
+                                        <div class="text-left">
+                                            <input type="text" valThreeDecimal
+                                                (input)="checkacceptedquantity($event, invData.QUANTITY,i);calculateAmount($event,invData.RATEPERQTY,i)"
+                                                id="AcceptedQtyId{{i}}" [value]="invData.QUANTITY" />
+                                            <!-- {{invData.QUANTITY}} -->
+                                        </div>
+                                        <div class="exceededMsg tableBodyText" id="exceeded{{i}}"
+                                            style="display: none;">
+                                            Accepted quantity cannot exceed invoiced quantity.
+                                        </div>
+                                        <div class="exceededMsg tableBodyText" id="zero{{i}}" style="display: none;">
+                                            Accepted quantity cannot be empty.
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <!-- style="margin-right: 15px;" -->
+                                        <div class="text-left tableBodyText">
+                                            {{invData.RATEPERQTY | currency:'INR'}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <!-- style="margin-left: 25px;" -->
+                                        <div class="text-left tableBodyText">
+                                            1/{{invData.UOM}}
+                                        </div>
+                                    </td>
 
-                                        <td
-                                            *ngIf="(quantitiesaccepted==true || usertype == 'manager') || invData.CREDITADVICENO !=null">
-                                            <!-- style="margin-left: 15px;" -->
-                                            <div class="text-left tableBodyText">
+                                    <td
+                                        *ngIf="(quantitiesaccepted==true || usertype == 'manager') || invData.CREDITADVICENO !=null">
+                                        <!-- style="margin-left: 15px;" -->
+                                        <div class="text-left tableBodyText">
 
-                                                {{invData.TOTALCALCULATEAMOUNT | number :'1.2-2'}}
+                                            {{invData.TOTALCALCULATEAMOUNT | number :'1.2-2'}}
 
 
-                                            </div>
-                                        </td>
-                                        <td
-                                            *ngIf="quantitiesaccepted==false && usertype != 'manager' && invData.CREDITADVICENO ==null">
-                                            <!-- style="margin-right: 15px;" -->
-                                            <div class="text-left tableBodyText">
-                                                {{invData.INVOICEAMOUNT | number :'1.2-2'}}
-                                            </div>
-                                        </td>
-                                        <td
-                                            *ngIf="((usertype == 'manager') ||(quantitiesaccepted == true)) || invData.CREDITADVICENO !=null">
-                                            <div class="text-left tableBodyText">
-                                                {{invData.DELVPLANTNAME}}
-                                            </div>
-                                        </td>
-                                        <!-- <td
+                                        </div>
+                                    </td>
+                                    <td
+                                        *ngIf="quantitiesaccepted==false && usertype != 'manager' && invData.CREDITADVICENO ==null">
+                                        <!-- style="margin-right: 15px;" -->
+                                        <div class="text-left tableBodyText">
+                                            {{invData.INVOICEAMOUNT | number :'1.2-2'}}
+                                        </div>
+                                    </td>
+                                    <td
+                                        *ngIf="((usertype == 'manager') ||(quantitiesaccepted == true)) || invData.CREDITADVICENO !=null">
+                                        <div class="text-left tableBodyText">
+                                            {{invData.DELVPLANTNAME}}
+                                        </div>
+                                    </td>
+                                    <!-- <td
                                             *ngIf="(quantitiesaccepted == false && usertype != 'manager' && invData.CREDITADVICENO ==null)">
                                             <div class="select-box"
                                                 *ngIf="invData.STORAGELOCATION == null ||invData.STORAGELOCATION == '' || invData.STORAGELOCATION == 'null' || invData.STORAGELOCATION == ' '">
@@ -715,35 +769,36 @@
                                                     </option>
                                                 </select>
                                             </div> -->
-                                            <!-- <div class="select-box"
+                                    <!-- <div class="select-box"
                                                 *ngIf="invData.STORAGELOCATION != null && invData.STORAGELOCATION != '' && invData.STORAGELOCATION != 'null' && invData.STORAGELOCATION != ' '"> -->
-                                                <!-- <div class="select-box" *ngIf="storagelist != null"> -->
-                                                <!-- <select class="form-control" [(ngModel)]="seletedValue[i]"
+                                    <!-- <div class="select-box" *ngIf="storagelist != null"> -->
+                                    <!-- <select class="form-control" [(ngModel)]="seletedValue[i]"
                                                     id="storagelocation{{i}}" style="height: 30px;">
                                                     <option *ngFor="let store of storagelist"
                                                         [value]="store?.storagelocation">
                                                         {{store?.locationdesc}}
                                                     </option>
                                                 </select> -->
-                                                <!-- </div> -->
-                                            <!-- </div> -->
-                                        <!-- </td> -->
-                                        
-                                    </tr>
-                                </tbody>
+                                    <!-- </div> -->
+                                    <!-- </div> -->
+                                    <!-- </td> -->
+
+                                </tr>
+                            </tbody>
                         </table>
 
-                        
+
                     </div>
 
-                    
+
                     <div class="row" style="padding: 24px;">
                         <div class="col-lg-6">
                             <div>End User Supporting Docs<span style="margin-left: 5px;"
                                     class="InvStatus__date">(Filename can have spaces but no special
                                     characters)</span></div>
                             <div class="inv-form-inputs w-100">
-                                <div *ngIf="usertype != 'manager'  && quantitiesaccepted == false && creditadvice ==null && multipleactualendfilename == null">
+                                <div
+                                    *ngIf="usertype != 'manager'  && quantitiesaccepted == false && creditadvice ==null && multipleactualendfilename == null">
                                     <div class=" FileUploadIconWrap" style="width: 100%;">
                                         <div class="add-file-input pdfFileListing">
                                             <!-- <label for="input-file3" class="file-input" *ngIf="viewAttachmentNames==null || viewAttachmentNames==''"> -->
@@ -754,9 +809,8 @@
                                                 <!-- BCCL Supporting Docs -->
                                             </label>
                                             <div>
-                                                <input type="file" id="input-file3" class="d-none"
-                                                    multiple="multiple" (change)="onFileChanged($event)"
-                                                    onclick="value = null">
+                                                <input type="file" id="input-file3" class="d-none" multiple="multiple"
+                                                    (change)="onFileChanged($event)" onclick="value = null">
 
 
                                             </div>
@@ -774,8 +828,7 @@
                                 <div *ngIf="usertype == 'manager' || (usertype != 'manager' && quantitiesaccepted == true) || 
                                     creditadvice !=null || multipleactualendfilename != null">
                                     <span *ngIf="IsFileUploaded">
-                                        <span
-                                            style="cursor: pointer; text-decoration: underline;color: #0645AD;">
+                                        <span style="cursor: pointer; text-decoration: underline;color: #0645AD;">
                                             <ul class="supportingDocList">
                                                 <li *ngFor="let multipleindividualactualfilename of multipleactualendfilename?.split(','); let i=index"
                                                     (click)="downloadfile(individualsavedendname[i],multipleindividualactualfilename,'listdownload')"
@@ -804,12 +857,13 @@
                                     <textarea class="mat_textArea" matInput placeholder="Enter Remark" id="enduserremarks" maxlength="500" value=""></textarea>
                                 </mat-form-field> -->
                                 <!-- <mat-label>Remarks</mat-label> -->
-                                <label for="enduserremarks" class="submitInputLabel">Remarks ({{remarklength}} characters out of 160)</label>
+                                <label for="enduserremarks" class="submitInputLabel">Remarks ({{remarklength}}
+                                    characters out of 160)</label>
                                 <mat-form-field class="example-full-width" appearance="none">
                                     <!-- <mat-label>Remarks</mat-label> -->
                                     <textarea style="padding: 0px 1px 6px 10px;" matInput
-                                        (input)="checklength('remark')" placeholder="Enter Remarks"
-                                        id="enduserremarks" autofocus maxlength="160" value="" class="submitInputBox"></textarea>
+                                        (input)="checklength('remark')" placeholder="Enter Remarks" id="enduserremarks"
+                                        autofocus maxlength="160" value="" class="submitInputBox"></textarea>
                                 </mat-form-field>
                                 <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="Description"
                                             placement="left" showDelay="300"></span> -->
@@ -837,10 +891,9 @@
                                         <span id="messagescrollMore3" class="showNothing tableBodyText"
                                             style="font-size: 14px;">
                                             {{ enduserremarkspresent }}
-                                            <div class="dgTextRight dropdowntext1"
-                                                style="float: right; top: 0">
-                                                <img src="./assets/img/open_arrow_up_light_grey.png"
-                                                    (click)="toggle3()" class="expandIcon5" />
+                                            <div class="dgTextRight dropdowntext1" style="float: right; top: 0">
+                                                <img src="./assets/img/open_arrow_up_light_grey.png" (click)="toggle3()"
+                                                    class="expandIcon5" />
                                             </div>
                                         </span>
                                     </p>
@@ -857,8 +910,7 @@
                                                 </span>
                                             </div>
                                             <div class="dgTextRight dropdowntext1">
-                                                <img src="./assets/img/open_arrow_down_dark_grey.png"
-                                                    align="right"
+                                                <img src="./assets/img/open_arrow_down_dark_grey.png" align="right"
                                                     *ngIf="enduserremarkspresent!= null && enduserremarkspresent.length > 60"
                                                     (click)="toggle3()" class="expandIcon4" />
                                             </div>
@@ -910,12 +962,11 @@
                                     with the Invoice.
                                 </b>
                             </label>
-                            <input type="checkbox" id="acceptcheck" name="acceptcheck"
-                                (click)="getvalue($event,'self')" class="submitInputBox">
+                            <input type="checkbox" id="acceptcheck" name="acceptcheck" (click)="getvalue($event,'self')"
+                                class="submitInputBox">
                             <label class="submitInputLabel" for="acceptcheck">
                                 <!-- color:#212529; -->
-                                <b
-                                    style="font-style: oblique; font-size: 15px; margin: 5px;color:#212529;"><span
+                                <b style="font-style: oblique; font-size: 15px; margin: 5px;color:#212529;"><span
                                         style="color:#cc0000;">I
                                         am the recipient</span> of the said material / services and confirm
                                     that they are in accordance with the Invoice.</b>
@@ -934,237 +985,244 @@
                     <div style="padding: 24px;" *ngIf="quantitiesaccepted == true  && status !='V' 
                     && ((creditadvice == null && creditnote == null) 
                     || (creditadvice != null && creditnote != null))">
-                    <!-- (behalf || submitdone) -->
-                    <div class="approvalWrapper"
-                        *ngIf="usertype == 'enduser' && quantitiesaccepted == true && customManagerList.length == 1 && cmPresent == false && behalf && (behalf || submitdone)">
-                        <div class="approval__header">
-                            <p class="approval__title">End Users</p>
-                            <div class="approvalIcon" (click)="openapproval('5')">
-                                <span class="fa fa-minus" alt="download image" id="closeArrow5"></span>
-                                <span class="fa fa-plus" alt="refresh image" id="openArrow5"
-                                    style="display: none;"></span>
+                        <!-- (behalf || submitdone) -->
+                        <div class="approvalWrapper"
+                            *ngIf="usertype == 'enduser' && quantitiesaccepted == true && customManagerList.length == 1 && cmPresent == false && behalf && (behalf || submitdone)">
+                            <div class="approval__header">
+                                <p class="approval__title">End Users</p>
+                                <div class="approvalIcon" (click)="openapproval('5')">
+                                    <span class="fa fa-minus" alt="download image" id="closeArrow5"></span>
+                                    <span class="fa fa-plus" alt="refresh image" id="openArrow5"
+                                        style="display: none;"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="approval__box" id="approvalBox5">
-                            <div class="">
-                                <div class="invoice-form pt-0">
+                            <div class="approval__box" id="approvalBox5">
+                                <div class="">
+                                    <div class="invoice-form pt-0">
 
-                                    <div class="inv-form-inputs">
-                                        <div class="form-group">
-                                            <!-- <input class="form-control" placeholder="Select Colleagues"/> -->
-                                            <!-- <input  matInput class="form-control" type="search" [(ngModel)]="queryString" id="search" (keyup)="onKey()" placeholder="Search Apps" (blur)="claerSearchApps()"/> -->
-                                            <div class="">
-                                                <label class="submitDownloadTabTitle">Add End
-                                                    Users :<span
-                                                        class="tableBodyText">Add
-                                                        Email ID of end users (Max upto 3) by using search icon in the
-                                                        field</span></label>
-                                                <div style="position: relative;">
-                                                    <input matInput class="form-control searchText submitInputBox" type="search"
-                                                        id="search1" placeholder="Please enter enduser"
-                                                        [(ngModel)]="queryString1"
-                                                        (keydown.enter)="callConfirmatoryDynamicData()"
-                                                        (blur)="clearConfirmationSearchData()" />
-                                                    <!-- <button class="btn btn-primary addbtn" (click)="addNewColleagues($event)"><i class="fa fa-plus"></i></button> -->
-                                                    <i class="fa fa-search" (click)="callConfirmatoryDynamicData()"
-                                                        style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i>
-                                                </div>
-                                                <div class="suggestion-core">
-                                                    <ul class="suggestion-list" *ngIf="confirmatoryList != null">
-                                                        <li class="displaytitle suggestionlistli"
-                                                            (click)="addConfirmatoriesToSuggestionList($event,item)"
-                                                            *ngFor="let item of confirmatoryList">
-                                                            {{item.email}} | <b>{{item.designation}}</b>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="suggestion-lhs">
+                                        <div class="inv-form-inputs">
+                                            <div class="form-group">
+                                                <!-- <input class="form-control" placeholder="Select Colleagues"/> -->
+                                                <!-- <input  matInput class="form-control" type="search" [(ngModel)]="queryString" id="search" (keyup)="onKey()" placeholder="Search Apps" (blur)="claerSearchApps()"/> -->
+                                                <div class="">
+                                                    <label class="submitDownloadTabTitle">Add End
+                                                        Users :<span class="tableBodyText">Add
+                                                            Email ID of end users (Max upto 3) by using search icon in
+                                                            the
+                                                            field</span></label>
+                                                    <div style="position: relative;">
+                                                        <input matInput class="form-control searchText submitInputBox"
+                                                            type="search" id="search1"
+                                                            placeholder="Please enter enduser"
+                                                            [(ngModel)]="queryString1"
+                                                            (keydown.enter)="callConfirmatoryDynamicData()"
+                                                            (blur)="clearConfirmationSearchData()" />
+                                                        <!-- <button class="btn btn-primary addbtn" (click)="addNewColleagues($event)"><i class="fa fa-plus"></i></button> -->
+                                                        <i class="fa fa-search" (click)="callConfirmatoryDynamicData()"
+                                                            style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i>
+                                                    </div>
+                                                    <div class="suggestion-core">
+                                                        <ul class="suggestion-list" *ngIf="confirmatoryList != null">
+                                                            <li class="displaytitle suggestionlistli"
+                                                                (click)="addConfirmatoriesToSuggestionList($event,item)"
+                                                                *ngFor="let item of confirmatoryList">
+                                                                {{item.email}} | <b>{{item.designation}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="suggestion-lhs">
 
-                                                    <ul class="suggestion-list selectedcolegues"
-                                                        *ngIf="selectedConfirmatoryList!=null">
-                                                        <li class="displaytitle"
-                                                            *ngFor="let n of selectedConfirmatoryList">
-                                                            <label class="check-box submitDownloadTabTitle">
-                                                                {{n.email}}
-                                                                <span class="checkmark"></span>
-                                                            </label> <img src="./assets/img/cross_icon.png"
-                                                                (click)="removeConfirmatoryFromSuggestionList($event,n)" />
-                                                        </li>
-                                                    </ul>
+                                                        <ul class="suggestion-list selectedcolegues"
+                                                            *ngIf="selectedConfirmatoryList!=null">
+                                                            <li class="displaytitle"
+                                                                *ngFor="let n of selectedConfirmatoryList">
+                                                                <label class="check-box submitDownloadTabTitle">
+                                                                    {{n.email}}
+                                                                    <span class="checkmark"></span>
+                                                                </label> <img src="./assets/img/cross_icon.png"
+                                                                    (click)="removeConfirmatoryFromSuggestionList($event,n)" />
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
+
+
+
                                             </div>
 
-
-
                                         </div>
+                                    </div>
 
+                                    <div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div>
+                        <div class="approvalWrapper">
+                            <div class="approval__header">
+                                <p class="approval__title">Approvals</p>
+                                <div class="approvalIcon" (click)="openapproval('4')">
+                                    <span class="fa fa-minus" alt="download image" id="closeArrow4"></span>
+                                    <span class="fa fa-plus" alt="refresh image" id="openArrow4"
+                                        style="display: none;"></span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="approvalWrapper">
-                        <div class="approval__header">
-                            <p class="approval__title">Approvals</p>
-                            <div class="approvalIcon" (click)="openapproval('4')">
-                                <span class="fa fa-minus" alt="download image" id="closeArrow4"></span>
-                                <span class="fa fa-plus" alt="refresh image" id="openArrow4"
-                                    style="display: none;"></span>
-                            </div>
-                        </div>
-                        <div class="approval__box" id="approvalBox4">
-                            <div class="">
-                                <!-- <div class="formWrapper__heading no-bg pl-6"></div> -->
-                                <!-- <b style="text-align: 5px; font-style: oblique; font-size: 15px; margin: 5px;">Approver:</b><span style="text-align: 5px; font-style: oblique; font-size: 15px"> A person who confirms receipt of material/services and that the approved invoice is in accordance with the same.</span> -->
-                                <br>
-                                <span style="font-style: oblique; font-size: 15px;margin: 60px;">An
-                                    <b>Approver</b> confirms receipt of material/services and that the approved invoice
-                                    is in accordance with the same.</span>
-                                <div class="invoice-form">
-                                    <div class="inv-form-inputs">
-                                        <div class="form-group">
-                                            <div class="customFormGroup">
-                                                <label class="submitInputLabel">
-                                                    <!-- <span *ngIf="storekeeper != 'true'">Requisitioner's</span>
+                            <div class="approval__box" id="approvalBox4">
+                                <div class="">
+                                    <!-- <div class="formWrapper__heading no-bg pl-6"></div> -->
+                                    <!-- <b style="text-align: 5px; font-style: oblique; font-size: 15px; margin: 5px;">Approver:</b><span style="text-align: 5px; font-style: oblique; font-size: 15px"> A person who confirms receipt of material/services and that the approved invoice is in accordance with the same.</span> -->
+                                    <br>
+                                    <span style="font-style: oblique; font-size: 15px;margin: 60px;">An
+                                        <b>Approver</b> confirms receipt of material/services and that the approved
+                                        invoice
+                                        is in accordance with the same.</span>
+                                    <div class="invoice-form">
+                                        <div class="inv-form-inputs">
+                                            <div class="form-group">
+                                                <div class="customFormGroup">
+                                                    <label class="submitInputLabel">
+                                                        <!-- <span *ngIf="storekeeper != 'true'">Requisitioner's</span>
                                     <span *ngIf="storekeeper == 'true'">Storekeeper's</span>  -->
-                                                    End User's Status
-                                                </label>
-                                                <select id="selectManager" class="form-control form-select submitInputBox"
-                                                    [disabled]="stage =='2'" (change)="enduserstatuschange($event)"
-                                                    aria-label="Default select example">
-                                                    <!-- <option selected disabled>--Select--</option> -->
-                                                    <option value="P">Pending</option>
-                                                    <option value="A">Approved</option>
-                                                    <!-- <option value="R">Rejected</option> -->
-                                                    <!-- <option value="O">On Hold</option> -->
-                                                    <option value="V"
-                                                        *ngIf="managerStatusDisplay == 'CM' || managerStatusDisplay == 'CO'">
-                                                        Return To Vendor</option>
-                                                </select>
-                                                <div class="wizard-form-error"></div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="inv-form-inputs">
-                                        <div class="form-group">
-                                            <div class="customFormGroup">
-                                                <label class="submitInputLabel">
-                                                    Invoice Approver's Status</label>
-                                                <select id="selectuser" class="form-control form-select submitInputBox"
-                                                    [disabled]="stage =='1'" aria-label="Default select example"
-                                                    (change)="approverstatuschange($event)">
-                                                    <!-- <option selected disabled>--Select--</option> -->
-                                                    <!-- <option value="M">Pending</option> -->
-                                                    <!-- <option value="INV">Invalid Invoice</option> -->
-                                                    <option value="P">Pending</option>
-                                                    <option value="A">Approved</option>
-                                                    <!-- <option value="R">Rejected</option> -->
-                                                    <option value="O">On Hold</option>
-
-
-                                                </select>
-                                                <div class="wizard-form-error"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="invoice-form pt-0" *ngIf="showmanagerlist">
-                                    <div class="inv-form-inputs">
-                                        <div class="form-group">
-                                            <div class="customFormGroup">
-                                                <label class="submitInputLabel" for="">Select
-                                                    Approver :</label>
-                                                <select name="" id="custommanagerselectedID" [(ngModel)]="selectedApprover" class="form-control submitInputBox"
-                                                    (change)="addApprover($event)">
-                                                    <option value="0">--Select--</option>
-                                                    <option id="customID{{m}}"
-                                                        *ngFor="let customMangerlist of customManagerListNames;  let m = index"
-                                                        [value]="customMangerlist">
-                                                        {{customMangerlist}}
-                                                    </option>
-                                                </select>
-                                                <div class="wizard-form-error"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="inv-form-inputs">
-                                        <div class="form-group" *ngIf="showmanagerlist">
-                                            <!-- <input class="form-control" placeholder="Select Colleagues"/> -->
-                                            <!-- <input  matInput class="form-control" type="search" [(ngModel)]="queryString" id="search" (keyup)="onKey()" placeholder="Search Apps" (blur)="claerSearchApps()"/> -->
-                                            <div class="">
-                                                <label class="submitDownloadTabTitle">Add more
-                                                    Approver(s) :<span
-                                                        class="tableBodyText">Add
-                                                        Email ID by using search icon in the field</span></label>
-                                                <div style="position: relative;">
-                                                    <input matInput class="form-control searchText submitInputBox" type="search"
-                                                        id="search" placeholder="Please enter approver"
-                                                        [(ngModel)]="queryString" (keydown.enter)="callDynamicData()"
-                                                        (blur)="clearSearchData()" />
-                                                    <!-- <button class="btn btn-primary addbtn" (click)="addNewColleagues($event)"><i class="fa fa-plus"></i></button> -->
-                                                    <i class="fa fa-search" (click)="callDynamicData()"
-                                                        style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i>
-                                                </div>
-                                                <div class="suggestion-core">
-                                                    <ul class="suggestion-list" *ngIf="colleaguesList != null">
-                                                        <li class="displaytitle suggestionlistli"
-                                                            (click)="addColleaguesToSuggestionList($event,item)"
-                                                            *ngFor="let item of colleaguesList">
-                                                            {{item.email}} | <b>{{item.designation}}</b>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="suggestion-lhs">
-
-                                                    <ul class="suggestion-list selectedcolegues"
-                                                        *ngIf="selectedColleaguesList!=null">
-                                                        <li class="displaytitle"
-                                                            *ngFor="let n of selectedColleaguesList">
-                                                            <label class="check-box">
-                                                                {{n.email}}
-                                                                <span class="checkmark"></span>
-                                                            </label> <img src="./assets/img/cross_icon.png"
-                                                                (click)="removeColleaguesFromSuggestionList($event,n)" />
-                                                        </li>
-                                                    </ul>
+                                                        End User's Status
+                                                    </label>
+                                                    <select id="selectManager"
+                                                        class="form-control form-select submitInputBox"
+                                                        [disabled]="stage =='2'" (change)="enduserstatuschange($event)"
+                                                        aria-label="Default select example">
+                                                        <!-- <option selected disabled>--Select--</option> -->
+                                                        <option value="P">Pending</option>
+                                                        <option value="A">Approved</option>
+                                                        <!-- <option value="R">Rejected</option> -->
+                                                        <!-- <option value="O">On Hold</option> -->
+                                                        <option value="V"
+                                                            *ngIf="managerStatusDisplay == 'CM' || managerStatusDisplay == 'CO'">
+                                                            Return To Vendor</option>
+                                                    </select>
+                                                    <div class="wizard-form-error"></div>
                                                 </div>
                                             </div>
 
+                                        </div>
+                                        <div class="inv-form-inputs">
+                                            <div class="form-group">
+                                                <div class="customFormGroup">
+                                                    <label class="submitInputLabel">
+                                                        Invoice Approver's Status</label>
+                                                    <select id="selectuser"
+                                                        class="form-control form-select submitInputBox"
+                                                        [disabled]="stage =='1'" aria-label="Default select example"
+                                                        (change)="approverstatuschange($event)">
+                                                        <!-- <option selected disabled>--Select--</option> -->
+                                                        <!-- <option value="M">Pending</option> -->
+                                                        <!-- <option value="INV">Invalid Invoice</option> -->
+                                                        <option value="P">Pending</option>
+                                                        <option value="A">Approved</option>
+                                                        <!-- <option value="R">Rejected</option> -->
+                                                        <option value="O">On Hold</option>
 
+
+                                                    </select>
+                                                    <div class="wizard-form-error"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="invoice-form pt-0" *ngIf="showmanagerlist">
+                                        <div class="inv-form-inputs">
+                                            <div class="form-group">
+                                                <div class="customFormGroup">
+                                                    <label class="submitInputLabel" for="">Select
+                                                        Approver :</label>
+                                                    <select name="" id="custommanagerselectedID"
+                                                        [(ngModel)]="selectedApprover"
+                                                        class="form-control submitInputBox"
+                                                        (change)="addApprover($event)">
+                                                        <option value="0">--Select--</option>
+                                                        <option id="customID{{m}}"
+                                                            *ngFor="let customMangerlist of customManagerListNames;  let m = index"
+                                                            [value]="customMangerlist">
+                                                            {{customMangerlist}}
+                                                        </option>
+                                                    </select>
+                                                    <div class="wizard-form-error"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="inv-form-inputs">
+                                            <div class="form-group" *ngIf="showmanagerlist">
+                                                <!-- <input class="form-control" placeholder="Select Colleagues"/> -->
+                                                <!-- <input  matInput class="form-control" type="search" [(ngModel)]="queryString" id="search" (keyup)="onKey()" placeholder="Search Apps" (blur)="claerSearchApps()"/> -->
+                                                <div class="">
+                                                    <label class="submitDownloadTabTitle">Add more
+                                                        Approver(s) :<span class="tableBodyText">Add
+                                                            Email ID by using search icon in the field</span></label>
+                                                    <div style="position: relative;">
+                                                        <input matInput class="form-control searchText submitInputBox"
+                                                            type="search" id="search"
+                                                            placeholder="Please enter approver"
+                                                            [(ngModel)]="queryString"
+                                                            (keydown.enter)="callDynamicData()"
+                                                            (blur)="clearSearchData()" />
+                                                        <!-- <button class="btn btn-primary addbtn" (click)="addNewColleagues($event)"><i class="fa fa-plus"></i></button> -->
+                                                        <i class="fa fa-search" (click)="callDynamicData()"
+                                                            style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i>
+                                                    </div>
+                                                    <div class="suggestion-core">
+                                                        <ul class="suggestion-list" *ngIf="colleaguesList != null">
+                                                            <li class="displaytitle suggestionlistli"
+                                                                (click)="addColleaguesToSuggestionList($event,item)"
+                                                                *ngFor="let item of colleaguesList">
+                                                                {{item.email}} | <b>{{item.designation}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="suggestion-lhs">
+
+                                                        <ul class="suggestion-list selectedcolegues"
+                                                            *ngIf="selectedColleaguesList!=null">
+                                                            <li class="displaytitle"
+                                                                *ngFor="let n of selectedColleaguesList">
+                                                                <label class="check-box">
+                                                                    {{n.email}}
+                                                                    <span class="checkmark"></span>
+                                                                </label> <img src="./assets/img/cross_icon.png"
+                                                                    (click)="removeColleaguesFromSuggestionList($event,n)" />
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
 
                                         </div>
-
                                     </div>
-                                </div>
 
 
 
-                                <!-- button wrapper  -->
-                                <div>
-                                    <div class="row">
-                                        <div class="col-lg-12 text-center">
-                                            <button type="submit" class="btn submitButton" id="UpdateInvoiceID"
-                                                [disabled]="submitdone == true || (behalf && selectedConfirmatoryList.length ==0 && usertype == 'enduser')"
-                                                (click)="trackInvoice()">
+                                    <!-- button wrapper  -->
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center">
+                                                <button type="submit" class="btn submitButton" id="UpdateInvoiceID"
+                                                    [disabled]="submitdone == true || (behalf && selectedConfirmatoryList.length ==0 && usertype == 'enduser')"
+                                                    (click)="trackInvoice()">
                                                     Submit
-                                            </button>
+                                                </button>
 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="mainTable" style="padding-bottom: 40px;" *ngIf="showcustomManagerList">
-                                    <div class="formWrapper__heading no-bg pl-6" *ngIf="showcustomManagerList">
-                                        Approval Status</div>
-            
-                                    <table class="table" *ngIf="showcustomManagerList">
+                                    <div class="mainTable" style="padding-bottom: 40px;" *ngIf="showcustomManagerList">
+                                        <div class="formWrapper__heading no-bg pl-6" *ngIf="showcustomManagerList">
+                                            Approval Status</div>
+
+                                        <table class="table" *ngIf="showcustomManagerList">
                                             <tbody>
                                                 <tr *ngFor="let customManager of customManagerList;let j=index">
 
@@ -1179,105 +1237,115 @@
                                                             <div class="chatmessageWrapper"
                                                                 *ngIf="customManager.EUMANAGER == chatmessage.SENDER">
                                                                 <!-- <span class="messagescroll">{{chatmessage.MESSAGETEXT | slice:0:20}}</span> -->
-                                                                <div class="prevChar commonDgWrapper" id="showIdList{{j}}">
-                                                                   <div class="dgTextLeft">
+                                                                <div class="prevChar commonDgWrapper"
+                                                                    id="showIdList{{j}}">
+                                                                    <div class="dgTextLeft">
                                                                         {{chatmessage.MESSAGETEXT | slice:0:60}}
                                                                         <span
-                                                                        *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60">...
+                                                                            *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60">...
                                                                         </span>
-                                                                   </div>
-                                                                   <div class="dgTextRight">
-                                                                        <img
-                                                                        src="./assets/img/open_arrow_down_dark_grey.png"
-                                                                        align="right"
-                                                                        *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60"
-                                                                        (click)="toggle(j)" class="expandIcon"> 
-                                                                   </div>
+                                                                    </div>
+                                                                    <div class="dgTextRight">
+                                                                        <img src="./assets/img/open_arrow_down_dark_grey.png"
+                                                                            align="right"
+                                                                            *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60"
+                                                                            (click)="toggle(j)" class="expandIcon">
+                                                                    </div>
                                                                 </div>
-                                                                <div id="messagescrollMoreList{{j}}" class="showNothing commonDgWrapper">
-                                                                   <div  class="dgTextLeft">
-                                                                    {{chatmessage.MESSAGETEXT}}
-                                                                   </div>
+                                                                <div id="messagescrollMoreList{{j}}"
+                                                                    class="showNothing commonDgWrapper">
+                                                                    <div class="dgTextLeft">
+                                                                        {{chatmessage.MESSAGETEXT}}
+                                                                    </div>
                                                                     <div class="dgTextRight">
                                                                         <img src="./assets/img/open_arrow_up_light_grey.png"
-                                                                        *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60"
-                                                                        (click)="toggle(j)" class="expandIcon">
+                                                                            *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60"
+                                                                            (click)="toggle(j)" class="expandIcon">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td style="vertical-align:top">
-                                                        <div class="text-left tableBodyText" *ngIf="customManager.STATUS =='P'">
+                                                        <div class="text-left tableBodyText"
+                                                            *ngIf="customManager.STATUS =='P'">
                                                             Pending</div>
-                                                        <div class="text-left tableBodyText" *ngIf="customManager.STATUS =='M'">
+                                                        <div class="text-left tableBodyText"
+                                                            *ngIf="customManager.STATUS =='M'">
                                                             Pending</div>
                                                         <div class="text-left" *ngIf="customManager.STATUS =='CM'">
                                                             Pending</div>
-                                                        <div class="text-left tableBodyText" *ngIf="customManager.STATUS =='CA'">
+                                                        <div class="text-left tableBodyText"
+                                                            *ngIf="customManager.STATUS =='CA'">
                                                             GRN Confirmed</div>
                                                         <div class="text-left" *ngIf="customManager.STATUS =='A'">
-                                                            <div class="tableBodyText" *ngIf="enduserid == customManager.EUMANAGER">
+                                                            <div class="tableBodyText"
+                                                                *ngIf="enduserid == customManager.EUMANAGER">
                                                                 <!-- GRN Creator -->
                                                                 Purchase Approver
                                                             </div>
-                                                            <div class="tableBodyText" *ngIf="enduserid != customManager.EUMANAGER">
+                                                            <div class="tableBodyText"
+                                                                *ngIf="enduserid != customManager.EUMANAGER">
                                                                 Invoice Approver
                                                             </div>
                                                         </div>
-                                                        <div class="text-left tableBodyText" *ngIf="customManager.STATUS =='R'">
+                                                        <div class="text-left tableBodyText"
+                                                            *ngIf="customManager.STATUS =='R'">
                                                             Invoice Rejected</div>
-                                                        <div class="text-lef tableBodyTextt" *ngIf="customManager.STATUS =='CR'">
+                                                        <div class="text-lef tableBodyTextt"
+                                                            *ngIf="customManager.STATUS =='CR'">
                                                             Invoice Rejected</div>
-                                                        <div class="text-left tableBodyText" *ngIf="customManager.STATUS =='O' || customManager.STATUS =='CO'">
+                                                        <div class="text-left tableBodyText"
+                                                            *ngIf="customManager.STATUS =='O' || customManager.STATUS =='CO'">
                                                             On Hold</div>
-                                                            <div *ngFor="let chatmessage of statuschatmessage">
-                                                                <div class="chatmessageWrapper"
-                                                                    *ngIf="customManager.EUMANAGER == chatmessage.SENDER">
-                                                                    <span class="messagescroll">{{chatmessage.CREATEDON}}</span>
-                                                                </div>
+                                                        <div *ngFor="let chatmessage of statuschatmessage">
+                                                            <div class="chatmessageWrapper"
+                                                                *ngIf="customManager.EUMANAGER == chatmessage.SENDER">
+                                                                <span
+                                                                    class="messagescroll">{{chatmessage.CREATEDON}}</span>
                                                             </div>
+                                                        </div>
                                                     </td>
-                                                    
+
                                                 </tr>
                                             </tbody>
-                                    </table>
-            
-                                    
-                                </div>
+                                        </table>
 
-                                
-                                <div>
+
+                                    </div>
+
+
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div style="padding: 24px;">
+                        <div *ngIf="quantitiesaccepted ==false && hide==true">
+                            <div class="row">
+                                <div class="col-lg-12 ">
+                                    <div class="buttonWrapper text-center">
+                                        <button type="submit" class="btn submitButton"
+                                            [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue || acceptedqty"
+                                            (click)="confirmAcceptQuantityPopup()">
+                                            Accept Quantities
+                                        </button>
+                                        <button type="submit" class="btn submitButton"
+                                            [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue|| !acceptedqty "
+                                            (click)="returnInvoice()">
+                                            Return to Vendor
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                </div>
-
-
-
-                <div style="padding: 24px;">
-                    <div *ngIf="quantitiesaccepted ==false && hide==true">
-                        <div class="row">
-                            <div class="col-lg-12 ">
-                                <div class="buttonWrapper text-center">
-                                    <button type="submit" class="btn submitButton"
-                                        [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue || acceptedqty"
-                                        (click)="confirmAcceptQuantityPopup()">
-                                        Accept Quantities
-                                    </button>
-                                    <button type="submit" class="btn submitButton"
-                                        [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue|| !acceptedqty "
-                                        (click)="returnInvoice()">
-                                        Return to Vendor
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                        
 
 
 
@@ -1286,7 +1354,7 @@
         </div>
     </div>
 </div>
-           
+
 
 <div id="acceptQuantityConfirm" class="overlay">
     <div class="popup confirmationPopup">
@@ -1301,8 +1369,8 @@
                 </p>
                 <div class="button__wrapper">
                     <a class="btn submitButtonSecondary" id="btnConfirmOk" (click)="submitgrn()">Yes</a>
-                    <a class="btn submitButtonSecondary"
-                        (click)="CloseconfirmAcceptQuantityPopup()" id="btnConfirmBack">No</a>
+                    <a class="btn submitButtonSecondary" (click)="CloseconfirmAcceptQuantityPopup()"
+                        id="btnConfirmBack">No</a>
                 </div>
             </div>
         </div>

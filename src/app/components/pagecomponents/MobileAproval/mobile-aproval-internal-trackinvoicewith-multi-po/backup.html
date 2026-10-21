@@ -1,0 +1,1749 @@
+<!-- <section class="sect-common">
+        <div class="container">
+            <div class="invoice-details-main-wrap">
+                <div class="invoice-details-wrap blue">
+                    <div class="main-info-wrap">
+                        <div class="back-btn">
+                            <img class="left-arrow" src="./assets/img/arrow_icon_grey_prev.png"
+                        [routerLink]="['/MobileApproval']" style="cursor: pointer;" />                   </div>
+                        <div class="info-wrap">
+                            <div class="invoice-num">
+                                {{invoicenumber}}
+                            </div>
+                            <div class="invoice-amt">
+                                {{totalamount}} <span>INR</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="company-name">{{vendorName}}</div>
+                    <div class="company-date">Invoice Date :{{invoicedate | date:'dd-MMM-yyyy'}}</div>
+                </div>
+                <div class="requester-wrap">
+                    <div class="pdf-icon">
+                        <img src="./assets/img/PDF-Icon.png" alt="" width="50" height="50" (click)="downloadfile(savedfilename,actualfilename,'listdownload')">
+                    </div>
+                    <div class="requester-text-wrap">
+                        <div class="requester-name">Requester: {{user}}</div>
+                        <div class="po-no">PO No :{{ponumber}}</div>
+                        <div class="company-name">{{vendorName}}</div>
+                    </div>
+                </div>
+                <div class="item-list-wrapper">
+                    <h2 class="header">Item List</h2>
+                    <table>
+                        <thead >
+                            <tr>
+                                <th scope="col" width="10%">Item</th>
+                                <th scope="col" width="55%">Item Description</th>
+                                <th scope="col" width="20%">Invoiced Qty</th>
+                                <th scope="col" width="15%">Accepted Qty</th>
+                                
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="customtbl-accordion-head "
+                                *ngFor="let invData of invoicedata; let i=index">
+                                <td class="preventClick">
+                                    <div class="text-left">
+                                        {{invData.LINEITEMNUMBER}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-left upperDate fixedDateCol">
+                                        {{invData.LINEITEMTEXT}}
+                                    </div>
+                                </td>
+                                
+                                <td>
+                                    <div class="text-left">
+                                        {{invData.QUANTITY | number:'1.3-3'}}
+                                    </div>
+                                </td>
+                                <td
+                                    *ngIf="(quantitiesaccepted==true || usertype == 'manager') || invData.CREDITADVICENO !=null">
+                                    <div class="text-left">
+                                        {{invData.ACCEPTEDQTY | number:'1.3-3'}}
+                                    </div>
+                                </td>
+                                <td
+                                    *ngIf="quantitiesaccepted==false && usertype != 'manager' && invData.CREDITADVICENO ==null">
+                                    <div class="text-left">
+                                        <input type="text" valThreeDecimal
+                                            (input)="checkacceptedquantity($event, invData.QUANTITY,i);calculateAmount($event,invData.RATEPERQTY,i)"
+                                            id="AcceptedQtyId{{i}}" [value]="invData.QUANTITY" />
+                                    </div>
+                                    <div class="exceededMsg" id="exceeded{{i}}" style="display: none;">
+                                        Accepted quantity cannot exceed invoiced quantity.
+                                    </div>
+                                    <div class="exceededMsg" id="zero{{i}}" style="display: none;">
+                                        Accepted quantity cannot be empty.
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <div *ngIf="showcustomManagerList==false" >
+                        <p class="table-remark">Remarks</p>
+                    <textarea name="remark" id="" placeholder="Enter Remarks"></textarea>
+                    </div>
+                    
+                </div>
+                <div class="compiance-note">
+                    
+                    <div class="col-lg-12">
+                        <label style="text-align: 5px; font-size: 15px; margin: 5px;color:#212529;">
+                            <b>Compliance Note :</b><br>
+                            <span style="text-align: 5px; font-size: 12px;">1. End
+                                user confirmation mandatory on tool for "on behalf of end user" goods
+                                acceptances (for non-stock based invoices).<br>
+                            </span>
+                        </label>
+                    </div>
+                    <div class="customCheckbox col-lg-12"
+                    *ngIf="quantitiesaccepted ==false && hide==true && creditadvice == null">
+                    <input type="checkbox" id="acceptcheck1" name="acceptcheck1"
+                        (click)="getvalue($event,'behalf')">
+                    <label for="acceptcheck1">
+                      
+                        <b style="text-align: 5px; font-style: oblique; font-size: 15px;
+                             margin: 5px;color:#212529">I confirm invoice is as per
+                            PO and <span style="color:#cc0000;">assigning for end user
+                                acceptance</span> of Goods/Services in accordance
+                            with the Invoice.
+                        </b>
+                    </label>
+                    <input type="checkbox" id="acceptcheck" name="acceptcheck"
+                        (click)="getvalue($event,'self')">
+                    <label for="acceptcheck">
+                        <b
+                            style="text-align: 5px; font-style: oblique; font-size: 15px; margin: 5px;color:#212529;"><span
+                                style="color:#cc0000;">I
+                                am the recipient</span> of the said material / services and confirm
+                            that they are in accordance with the Invoice.</b>
+                        
+                    </label>
+
+                </div>
+                </div>
+            </div>
+            <div>
+                <div *ngIf="quantitiesaccepted ==false && hide==true">
+                    <div class="row">
+                        <div class="col-lg-12 ">
+                            <div class="buttonWrapper text-center">
+                                <button type="submit" class="btn button-primary"
+                                    [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue || acceptedqty"
+                                    (click)="confirmAcceptQuantityPopup()">
+                                    <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                        class="disabledImg arrowIcon">
+                                    Accept Quantities
+                                </button>
+                                <button type="submit" class="btn button-primary"
+                                    [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue|| !acceptedqty "
+                                    (click)="returnInvoice()">
+                                    <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                        class="disabledImg arrowIcon">
+                                    Return to Vendor
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="acceptQuantityConfirm" class="overlay">
+                    <div class="popup confirmationPopup">
+                        <div class="container text-center">
+                            <div class="confirmationpopup mb-2">
+                                <div class="confirmation-title">Confirmation
+                                    <button type="button" class="close" (click)="CloseconfirmAcceptQuantityPopup()">&times;</button>
+                                </div>
+                                <p class="confirmation-para">
+                                    Do you want to accept quantities? Once you accept, it cannot be reversed.
+                                </p>
+                                <div class="button__wrapper">
+                                    <a class="btn btn-primary button-primary" id="btnConfirmOk" (click)="submitgrn()">Yes</a>
+                                    <a class="btn btn-primary button-primary confirmationNo"
+                                        (click)="CloseconfirmAcceptQuantityPopup()" id="btnConfirmBack">No</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <section>
+                <div class="container" 
+                >
+                    <div class="row">
+                        <div class="col-12 padd-0">
+                            
+                            <div class="parent"
+                            *ngIf="usertype == 'enduser' && quantitiesaccepted == true && customManagerList.length == 1 && cmPresent == false && behalf && (behalf || submitdone)"
+                            
+                           >
+                                <div class="invoice-card">
+                                    <h2 class="card-title">Add End Users :</h2>
+                                    <p class="card-info">Add Email ID of end users (Max upto 3) by using search icon in the
+                                        field</p>
+
+                                        
+                                    <div class="search-box">
+                                        <input matInput class="card-input" type="search"
+                                            id="search1" placeholder="Please enter enduser"
+                                            [(ngModel)]="queryString1"
+                                            (keydown.enter)="callConfirmatoryDynamicData()"
+                                            (blur)="clearConfirmationSearchData()" />
+                                        <span class="card-icon"><i class="fa fa-search" (click)="callConfirmatoryDynamicData()"
+                                            style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i></span>
+                                        
+                                    </div>
+                                    <div class="suggestion-core">
+                                        <ul class="suggestion-list" *ngIf="confirmatoryList != null">
+                                            <li class="displaytitle suggestionlistli"
+                                                (click)="addConfirmatoriesToSuggestionList($event,item)"
+                                                *ngFor="let item of confirmatoryList">
+                                                {{item.email}} | <b>{{item.designation}}</b>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="suggestion-lhs">
+    
+                                        <ul class="suggestion-list selectedcolegues"
+                                            *ngIf="selectedConfirmatoryList!=null">
+                                            <li class="displaytitle"
+                                                *ngFor="let n of selectedConfirmatoryList">
+                                                <label class="check-box">
+                                                    {{n.email}}
+                                                    <span class="checkmark"></span>
+                                                </label> <img src="./assets/img/cross_icon.png"
+                                                    (click)="removeConfirmatoryFromSuggestionList($event,n)" />
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+         
+            </section>    
+            <section  *ngIf="quantitiesaccepted == true  && status !='V' 
+            && ((creditadvice == null && creditnote == null) 
+            || (creditadvice != null && creditnote != null))">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 padd-0">
+                            <div class="parent">
+                                <div class="invoice-card" >
+                                    
+                                    <br>
+                                    <span style="text-align: 5px; font-style: oblique; font-size: 15px;margin: 60px;">An
+                                        <b>Approver</b> confirms receipt of material/services and that the approved invoice
+                                        is in accordance with the same.</span>
+                                    <div class="invoice-form">
+                                        <div class="inv-form-inputs">
+                                            <div class="form-group">
+                                                <div class="customFormGroup">
+                                                    <label style="font-size: 20px; font-weight: 600; color: black;">
+                                                                                                         End User's Status
+                                                    </label>
+                                                    <select id="selectManager" class="form-control form-select"
+                                                        [disabled]="stage =='2'" (change)="enduserstatuschange($event)"
+                                                        aria-label="Default select example">
+                                                        <option value="P">Pending</option>
+                                                        <option value="A">Approved</option>
+                                                        
+                                                        <option value="V"
+                                                            *ngIf="managerStatusDisplay == 'CM' || managerStatusDisplay == 'CO'">
+                                                            Return To Vendor</option>
+                                                    </select>
+                                                    <div class="wizard-form-error"></div>
+                                                </div>
+                                            </div>
+        
+                                        </div>
+                                        <div class="inv-form-inputs">
+                                            <div class="form-group">
+                                                <div class="customFormGroup">
+                                                    <label style="font-size: 20px; font-weight: 600; color: black;">
+                                                        Invoice Approver's Status</label>
+                                                <div *ngIf="OnHold == 'True'">
+                                                     <select id="selectuser" class="form-control form-select"
+                                                        [disabled]="stage =='1'" aria-label="Default select example"
+                                                        (change)="approverstatuschange($event)">
+                                                            <option value="A">Approved</option>
+                                                            <option value="O">On Hold</option>    
+                                                     </select>
+                                                </div>
+                                                <div *ngIf="OnHold != 'True'">
+                                                    <select id="selectuser" class="form-control form-select"
+                                                        [disabled]="stage =='1'" aria-label="Default select example"
+                                                        (change)="approverstatuschange($event)">
+                                                            <option value="P">Pending</option>
+                                                            <option value="A">Approved</option>
+                                                            <option value="O">On Hold</option>
+                                                    </select>
+                                                </div>
+                                                   <div class="wizard-form-error"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+        
+        
+                                    <div class="invoice-form pt-0" *ngIf="showmanagerlist">
+                                        <div class="inv-form-inputs">
+        
+                                            <div class="form-group">
+                                                <div class="customFormGroup">
+                                                    <label class="withoutSubLabel" for=""
+                                                        style="font-size: 20px; font-weight: 600; color: black;">Select
+                                                        Approver :</label>
+                                                    <select name="" id="custommanagerselectedID" class="form-control"
+                                                        (change)="addApprover($event)">
+                                                        <option value="0">--Select--</option>
+                                                        <option id="customID{{m}}"
+                                                            *ngFor="let customMangerlist of customManagerListNames;  let m = index"
+                                                            [value]="customMangerlist">
+                                                            {{customMangerlist}}
+                                                        </option>
+                                                    </select>
+                                                    <div class="wizard-form-error"></div>
+                                                </div>
+                                            </div>
+        
+                                        </div>
+                                        <div class="inv-form-inputs">
+                                            <div class="form-group" *ngIf="showmanagerlist">
+                                                
+                                                <div class="">
+                                                    <label style="font-size: 20px; font-weight: 600; color: black;">Add more
+                                                        Approver(s) :<span
+                                                            style="display: block;font-size: 14px; font-weight:400; color: #555;">Add
+                                                            Email ID by using search icon in the field</span></label>
+                                                    <div style="position: relative;">
+                                                        <input matInput class="form-control searchText" type="search"
+                                                            id="search" placeholder="Please enter approver"
+                                                            [(ngModel)]="queryString" (keydown.enter)="callDynamicData()"
+                                                            (blur)="clearSearchData()" />
+                                                        <i class="fa fa-search" (click)="callDynamicData()"
+                                                            style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i>
+                                                    </div>
+                                                    <div class="suggestion-core">
+                                                        <ul class="suggestion-list" *ngIf="colleaguesList != null">
+                                                            <li class="displaytitle suggestionlistli"
+                                                                (click)="addColleaguesToSuggestionList($event,item)"
+                                                                *ngFor="let item of colleaguesList">
+                                                                {{item.email}} | <b>{{item.designation}}</b>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="suggestion-lhs">
+        
+                                                        <ul class="suggestion-list selectedcolegues"
+                                                            *ngIf="selectedColleaguesList!=null">
+                                                            <li class="displaytitle"
+                                                                *ngFor="let n of selectedColleaguesList">
+                                                                <label class="check-box">
+                                                                    {{n.email}}
+                                                                    <span class="checkmark"></span>
+                                                                </label> <img src="./assets/img/cross_icon.png"
+                                                                    (click)="removeColleaguesFromSuggestionList($event,n)" />
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+        
+        
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center">
+                                                <button type="submit" class="btn button-primary" id="UpdateInvoiceID"
+                                                    [disabled]="submitdone == true || (behalf && selectedConfirmatoryList.length ==0 && usertype == 'enduser')"
+                                                    (click)="trackInvoice()">
+                                                    <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                                    <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                                        class="disabledImg arrowIcon">
+                                                    Submit
+                                                </button>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div class="formWrapper__heading no-bg pl-6" *ngIf="showcustomManagerList">
+                                        Approval Status</div>
+                                    <div class="table-responsive pl-forIcon" *ngIf="showcustomManagerList">
+        
+                                        <table class="table customTableStripped noAccordionTable">
+        
+        
+                                            <tbody>
+                                                <tr class="" *ngFor="let customManager of customManagerList;let j=index">
+                                                    <td class="" style="vertical-align:top;">
+                                                        <span class="text-left" style="cursor: pointer;"
+                                                            tooltip="{{customManager.DESIGNATION}}" placement="top"
+                                                            showDelay="300">{{customManager.EUMANAGER}}</span>
+                                                    </td>
+                                                    <td class="" style="vertical-align:top; max-width: 457px;">
+                                                        <div *ngFor="let chatmessage of statuschatmessage">
+                                                            <div class="chatmessageWrapper"
+                                                                *ngIf="customManager.EUMANAGER == chatmessage.SENDER">
+                                                                <div class="prevChar commonDgWrapper" id="showIdList{{j}}">
+                                                                    <div class="dgTextLeft">
+                                                                        {{chatmessage.MESSAGETEXT | slice:0:60}}
+                                                                        <span
+                                                                            *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60">...
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="dgTextRight">
+                                                                        <img src="./assets/img/open_arrow_down_dark_grey.png"
+                                                                            align="right"
+                                                                            *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60"
+                                                                            (click)="toggle(j)" class="expandIcon">
+                                                                    </div>
+                                                                </div>
+                                                                <div id="messagescrollMoreList{{j}}"
+                                                                    class="showNothing commonDgWrapper">
+                                                                    <div class="dgTextLeft">
+                                                                        {{chatmessage.MESSAGETEXT}}
+                                                                    </div>
+                                                                    <div class="dgTextRight">
+                                                                        <img src="./assets/img/open_arrow_up_light_grey.png"
+                                                                            *ngIf="chatmessage.MESSAGETEXT != null && chatmessage.MESSAGETEXT.length > 60"
+                                                                            (click)="toggle(j)" class="expandIcon">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="vertical-align:top">
+                                                        <div class="text-left" *ngIf="customManager.STATUS =='P'">
+                                                            Pending</div>
+                                                        <div class="text-left" *ngIf="customManager.STATUS =='M'">
+                                                            Pending</div>
+                                                        <div class="text-left" *ngIf="customManager.STATUS =='CM'">
+                                                            Pending</div>
+                                                        <div class="text-left" *ngIf="customManager.STATUS =='CA'">
+                                                            GRN Confirmed</div>
+                                                        <div class="text-left" *ngIf="customManager.STATUS =='A'">
+                                                            <div *ngIf="enduserid == customManager.EUMANAGER">
+                                                                GRN Creator
+                                                            </div>
+                                                            <div *ngIf="enduserid != customManager.EUMANAGER">
+                                                                Invoice Approver
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-left" *ngIf="customManager.STATUS =='R'">
+                                                            Invoice Rejected</div>
+                                                        <div class="text-left" *ngIf="customManager.STATUS =='CR'">
+                                                            Invoice Rejected</div>
+                                                        <div class="text-left"
+                                                            *ngIf="customManager.STATUS =='O' || customManager.STATUS =='CO'">
+                                                            On Hold</div>
+                                                        <div *ngFor="let chatmessage of statuschatmessage">
+                                                            <div class="chatmessageWrapper"
+                                                                *ngIf="customManager.EUMANAGER == chatmessage.SENDER">
+                                                                <span class="messagescroll">{{chatmessage.CREATEDON}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </section>    
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 padd-0" *ngIf="quantitiesaccepted == true">
+                        <div class="parent">
+                            <h1 >Documents</h1>
+                            <h2 *ngIf="quantitiesaccepted == false">Related Documents sent for your reviews!</h2>
+                            <div *ngIf="quantitiesaccepted == true">End User Supporting Docs<span style="margin-left: 5px;"
+                                class="InvStatus__date">(Filename can have spaces but no special
+                                characters)</span></div>
+                        <div class="inv-form-inputs w-100">
+                            <div
+                                *ngIf="usertype != 'manager'  && quantitiesaccepted == false && creditadvice ==null && multipleactualendfilename == null">
+        
+        
+                                <div class=" FileUploadIconWrap" style="width: 100%;">
+                                    <div class="add-file-input pdfFileListing">
+                                        <label for="input-file3" class="file-input">
+                                            <span *ngIf="usertype != 'manager'"><img
+                                                    src="./assets/img/cloud-computing.png"
+                                                    style="cursor: pointer; " /></span>
+                                        </label>
+                                        <div>
+                                            <input type="file" id="input-file3" class="d-none"
+                                                multiple="multiple" (change)="onFileChanged($event)"
+                                                onclick="value = null">
+        
+        
+                                        </div>
+                                    </div>
+        
+                                </div>
+                                <ul class="listFiles">
+                                    <li *ngFor="let selected of ArrayOfSelectedFilename;let i=index"
+                                        class="fileUploadSingle">
+                                        {{selected}} <i class="fa fa-close fileCrossIcon fileCrossIcon"
+                                            aria-hidden="true" (click)="removeitem(i)"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div *ngIf="usertype == 'manager' || (usertype != 'manager' && quantitiesaccepted == true) || 
+                            creditadvice !=null || multipleactualendfilename != null">
+                            <span *ngIf="IsFileUploaded">
+                                <span
+                                    style="cursor: pointer; text-decoration: underline;color: #0645AD;">
+                                    <ul class="supportingDocList">
+                                        <li *ngFor="let multipleindividualactualfilename of multipleactualendfilename?.split(','); let i=index"
+                                            (click)="downloadfile(individualsavedendname[i],multipleindividualactualfilename,'listdownload')"
+                                            class="supportingDocList__icon">
+                                            <a style="cursor: pointer;"
+                                                tooltip="{{multipleindividualactualfilename}}"
+                                                placement="bottom" showDelay="300">
+                                                <img src="./assets/img/downloadfile.png">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </span>
+                            </span>
+                            <span *ngIf="!IsFileUploaded">
+                                No Docs Attached.
+                            </span>
+    
+                        </div>
+                        </div>
+                            </div>
+                        
+                    </div>
+                    
+                </div>
+
+            </div>
+        </section>
+        <section>
+    </section>
+</div>     -->
+<div class="container-fluid table-bg">
+    <div class="container">
+
+        <div class="consultant-section paddingtop">
+            <div class="card">
+                <div class="card-header heading-align">
+                    <a><img src="assets/img/back-arrow.png" alt="" [routerLink]="['/MobileApproval']"
+                            style="cursor: pointer;" /></a> {{invoicenumber}}
+                </div>
+                <div class="card-body padlr0">
+
+                    <div class="container">
+                        <div class="invoice-box shadow-sm">
+                            <i class="bi bi-file-earmark-pdf-fill pdf-icon"
+                                (click)="downloadfile(savedfilename,actualfilename,'listdownload')"></i>
+                            <div><span class="details-head">Inv No.:</span> {{invoicenumber}}</div>
+                            <div class="pd"><span class="details-head">Inv Amt:</span> {{totalamount}}INR</div>
+                            <div class="pd"><span class="details-head">Vendor:</span> {{vendorName}}</div>
+                            <div class="pd"><span class="details-head">Inv Date:</span> {{invoicedate |
+                                date:'dd-MMM-yyyy'}}</div>
+                        </div>
+                        <br>
+                        <p class="para"><span>Requestor:</span> {{user}}</p>
+                        <p style="padding-top:1%" class="para"><span>PO No:</span> <a href="#">{{ponumber}}</a></p>
+
+
+                        <div class="table-list">
+                            <div class="table-heading">
+                                <div class="row">
+                                    <div class="col">
+                                        <span>Item List</span>
+                                    </div>
+                                    <!--<div class="col">
+                  <div class="text-right">
+                <a href="#"><img src="images/download.png" alt="" class="download-img">
+                  <span class="download-btn">Download</span></a> 
+                </div> 
+				</div>-->
+                                </div>
+                            </div>
+                            <div class="table-wrapper">
+
+                                <table>
+
+
+                                    <thead>
+
+                                        <tr class="first">
+                                            <th class="sticky-col">Item</th>
+                                            <th>
+                                                Item Description
+
+                                            </th>
+
+                                            <th>
+                                                Invoice Qty
+                                            </th>
+                                            <th>Invoice Date</th>
+                                            <th class="text-right">
+                                                Accepted Qty
+                                            </th>
+                                            <th class="text-right">
+                                                Amount
+                                            </th>
+                                            <!-- <th class="text-right">
+                                                Approved Amount
+                                            </th> -->
+
+                                            <!-- <th class="text-center">Messages</th> -->
+                                            <!-- <th class="text-center">Resubmit/Edit</th> -->
+                                        </tr>
+
+
+
+                                    </thead>
+
+                                    <tbody id="tableBody">
+
+                                        <tr *ngFor="let invData of invoicedata; let i=index">
+                                            <td><a style="color: #007bff;">{{invData.LINEITEMNUMBER}}</a></td>
+                                            <td>{{invData.LINEITEMTEXT}}</td>
+                                            <td>{{invData.QUANTITY | number:'1.3-3'}}</td>
+                                            <td>{{invoicedate | date:'dd-MMM-yyyy'}}</td>
+                                            <td
+                                                *ngIf="quantitiesaccepted==false && usertype != 'manager' && invData.CREDITADVICENO ==null">
+                                                <div class="text-right">
+                                                    <input type="text" valThreeDecimal
+                                                        (input)="checkacceptedquantity($event, invData.QUANTITY,i);calculateAmount($event,invData.RATEPERQTY,i)"
+                                                        id="AcceptedQtyId{{i}}" [value]="invData.QUANTITY" />
+                                                    <!-- {{invData.QUANTITY}} -->
+                                                </div>
+                                                <div class="exceededMsg" id="exceeded{{i}}" style="display: none;">
+                                                    Accepted quantity cannot exceed invoiced quantity.
+                                                </div>
+                                                <div class="exceededMsg" id="zero{{i}}" style="display: none;">
+                                                    Accepted quantity cannot be empty.
+                                                </div>
+                                            </td>
+
+                                            <td class="text-right">{{invData.ACCEPTEDQTY | number:'1.3-3'}}</td>
+                                            <td class="text-right">
+                                                <!-- {{invData.TOTALAMTINCTAXES}} -->
+                                                 {{totalamount}}
+                                            </td>
+                                            <!-- <td class="text-center"><a href="#"><img src="images/unreadMessages.png" alt=""></a>
+                     </td> -->
+                                            <!-- <td> {{totalamount}}</td> -->
+                                        </tr>
+
+                                        <!-- <tr>
+                  <td><a href="#">290420241</a></td> 
+                    <td>Printers</td>
+                    <td>NIV2024-25-132</td>
+                    <td>04-feb-2025</td>
+                    <td class="text-right">67,568.50</td>
+                    <td class="text-right">60,000</td>
+                     <td class="text-center"><a href="#"><img src="images/unreadMessages.png" alt=""></a>
+                     </td>
+                     <td></td>
+                </tr> -->
+
+                                    </tbody>
+                                </table>
+
+
+
+                                <!-- </form> -->
+
+                            </div>
+                            <!-- <div class="go text-center mt-5">
+        <button type="button" class="go-btn invoice-upload"><img src="images/arrow_icon_red.png" alt="">upload invoice</button>
+      </div> -->
+                        </div>
+
+
+                        <div class="invoice-bill ">
+                            <div class=" no-radius">
+                                <div class="card-body padlr0 pad_inv">
+                                    <form>
+                                        <div class="row">
+                                             <div class="col-lg-6">
+                                        <div>End User Supporting Docs<span style="margin-left: 5px;"
+                                                class="InvStatus__date">(Filename can have spaces but no special
+                                                characters)</span></div>
+                                        <div class="inv-form-inputs w-100">
+                                            <div
+                                                *ngIf="usertype != 'manager'  && quantitiesaccepted == false && creditadvice ==null && multipleactualendfilename == null">
+
+
+                                                <div class=" FileUploadIconWrap" style="width: 100%;">
+                                                    <div class="add-file-input pdfFileListing">
+                                                        <!-- <label for="input-file3" class="file-input" *ngIf="viewAttachmentNames==null || viewAttachmentNames==''"> -->
+                                                        <label for="input-file3" class="file-input">
+                                                            <span *ngIf="usertype != 'manager'"><img
+                                                                    src="./assets/img/cloud-computing.png"
+                                                                    style="cursor: pointer; " /></span>
+                                                            <!-- BCCL Supporting Docs -->
+                                                        </label>
+                                                        <div>
+                                                            <input type="file" id="input-file3" class="d-none"
+                                                                multiple="multiple" (change)="onFileChanged($event)"
+                                                                onclick="value = null">
+
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <ul class="listFiles">
+                                                    <li *ngFor="let selected of ArrayOfSelectedFilename;let i=index"
+                                                        class="fileUploadSingle">
+                                                        {{selected}} <i class="fa fa-close fileCrossIcon fileCrossIcon"
+                                                            aria-hidden="true" (click)="removeitem(i)"></i>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div *ngIf="usertype == 'manager' || (usertype != 'manager' && quantitiesaccepted == true) || 
+                                                creditadvice !=null || multipleactualendfilename != null">
+                                                <span *ngIf="IsFileUploaded">
+                                                    <span
+                                                        style="cursor: pointer; text-decoration: underline;color: #0645AD;">
+                                                        <ul class="supportingDocList">
+                                                            <li *ngFor="let multipleindividualactualfilename of multipleactualendfilename?.split(','); let i=index"
+                                                                (click)="downloadfile(individualsavedendname[i],multipleindividualactualfilename,'listdownload')"
+                                                                class="supportingDocList__icon">
+                                                                <a style="cursor: pointer;"
+                                                                    tooltip="{{multipleindividualactualfilename}}"
+                                                                    placement="bottom" showDelay="300">
+                                                                    <img src="./assets/img/downloadfile.png">
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </span>
+                                                </span>
+                                                <span *ngIf="!IsFileUploaded">
+                                                    No Docs Attached.
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                            <div class="col-sm-6 col-xs-12">
+                                                <!-- <div class="form-group">
+                                                    <label class="invlb" for="text">Remarks</label>
+                                                    <textarea class="form-control ta"
+                                                        placeholder="Enter Remarks"></textarea>
+                                                </div> -->
+                                                <!-- <div class="col-sm-6 col-xs-12"> -->
+                                                <div class="form-group"
+                                                    *ngIf="usertype != 'manager'  && quantitiesaccepted == false && creditadvice ==null">
+                                                    <!-- <mat-label>Remarks</mat-label> -->
+                                                    <!-- <mat-form-field appearance="none">
+                                                <textarea class="mat_textArea" matInput placeholder="Enter Remark" id="enduserremarks" maxlength="500" value=""></textarea>
+                                            </mat-form-field> -->
+                                                    <label class="invlb" for="text">Remarks</label>
+                                                    <!-- <mat-form-field class="example-full-width" appearance="none"> -->
+                                                    <!-- <mat-label>Remarks</mat-label> -->
+                                                    <textarea class="form-control ta" (input)="checklength('remark')"
+                                                        placeholder="Enter Remarks" id="enduserremarks" autofocus
+                                                        maxlength="160" value=""></textarea>
+                                                    <!-- </mat-form-field> -->
+                                                    <mat-label style="font-size: 10px;">{{remarklength}} characters
+                                                        out of 160
+                                                    </mat-label>
+                                                    <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="Description"
+                                                        placement="left" showDelay="300"></span> -->
+                                                </div>
+                                                <div class="invInputWicon"
+                                                    *ngIf="usertype == 'manager' || (usertype != 'manager' && quantitiesaccepted == true) || creditadvice !=null">
+                                                    <!-- <mat-label>Remarks</mat-label>
+                                            <mat-form-field appearance="none">                                        
+                                                <textarea matInput placeholder="Enter Remark" id="enduserremarks" maxlength="500" value="" readonly>
+                                                {{enduserremarkspresent}}
+                                                </textarea>
+                                            </mat-form-field> -->
+                                                    <!-- <mat-label>Remarks</mat-label>
+                                            <mat-form-field class="example-full-width" appearance="none">
+                                                <textarea matInput placeholder="Enter Remark" id="enduserremarks" class="remarksTextArea"
+                                                    maxlength="500" value=""
+                                                    readonly>{{enduserremarkspresent}}</textarea>
+                                            </mat-form-field> -->
+
+                                                    <!-- ********************************************** Remove textarea and add Dropdown 05/01/2023 "Start" ********************************************* -->
+                                                    <!-- <div class="inv-form-inputs"> -->
+                                                    <div style=" display:flex; margin-right: -3%;">
+                                                        <p>
+                                                            <span class="input-title"><b>Remarks :</b></span>
+                                                            <span id="messagescrollMore3" class="showNothing"
+                                                                style="font-size: 14px;">
+                                                                {{ enduserremarkspresent }}
+                                                                <div class="dgTextRight dropdowntext1"
+                                                                    style="float: right; top: 0">
+                                                                    <img src="./assets/img/open_arrow_up_light_grey.png"
+                                                                        (click)="toggle3()" class="expandIcon5" />
+                                                                </div>
+                                                            </span>
+                                                        </p>
+
+                                                        <div class="prevChar commonDgWrapper1" id="showId3">
+                                                            <div class="dgTextLeft dropdowntext1">
+                                                                <div>
+                                                                    <span
+                                                                        style="white-space: nowrap; margin-top: -3px;  font-size: 14px;">
+                                                                        {{ enduserremarkspresent | slice: 0:45 }}
+                                                                    </span>
+                                                                    <span
+                                                                        *ngIf="enduserremarkspresent != null && enduserremarkspresent.length > 60">...
+                                                                    </span>
+                                                                </div>
+                                                                <div class="dgTextRight dropdowntext1">
+                                                                    <img src="./assets/img/open_arrow_down_dark_grey.png"
+                                                                        align="right"
+                                                                        *ngIf="enduserremarkspresent!= null && enduserremarkspresent.length > 60"
+                                                                        (click)="toggle3()" class="expandIcon4" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- </div> -->
+                                                    </div>
+
+                                                    <!-- ********************************************** Remove textarea and add Dropdown 05/01/2023 "End" ************************************************* -->
+
+                                                    <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="Description"
+                                                        placement="left" showDelay="300"></span> -->
+                                                </div>
+                                                <!-- <mat-error *ngIf="hasError('invoiceNo', 'required') && invoiceForm.controls['invoiceNo'].touched">*Name is required
+                                                </mat-error> -->
+                                                <!-- </div> -->
+                                            </div>
+                                            <!--<div class="col-sm-6 col-xs-12">
+						<div class="form-group">
+							<label for="text">Duration</label>
+							<input type="text" class="form-control" placeholder="Enter Duration Number">
+						</div>
+					</div> -->
+                                        </div>
+
+                                    </form>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="row note">
+                            <div class="col-sm-12 col-xs-12">
+                                <h6>Compliance Note:</h6>
+                                <p>
+                                    1. End user confirmation mandatory on tool for
+                                    <em>"on behalf of end user"</em> goods acceptances (for non-stock based invoices).
+                                </p>
+                            </div>
+                            <div class="card-body padlr0" *ngIf="quantitiesaccepted == true  && status !='V' 
+                    && ((creditadvice == null && creditnote == null) 
+                    || (creditadvice != null && creditnote != null))">
+                                    <div class="container">
+                                        <div class="invoice-bill " id="faq">
+                                            <div class="card no-radius">
+                                                <div id="faq1">
+                                                    <div class="card-body padlr0" *ngIf="usertype == 'enduser' && quantitiesaccepted == true && customManagerList.length == 1 && cmPresent == false && behalf && (behalf || submitdone)">
+                                                        <div class="row note">
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <h6>End Users</h6>
+                                                            </div>
+                                                        </div>
+                                                         <div class="approval__box" id="approvalBox4">
+                                                            <br>
+                                                            <div class="invoice-form pt-0" >
+                                                                <div class="inv-form-inputs">
+                                                                        <!-- <div class="form-group">
+                                                                            <div class="customFormGroup">
+                                                                                <label
+                                                                                    style="font-size: 20px; font-weight: 600; color: black;">
+                                                                                   
+                                                                                    End User's Status
+                                                                                </label>
+                                                                                <select id="selectManager"
+                                                                                    class="form-control form-select"
+                                                                                    [disabled]="stage =='2'"
+                                                                                    (change)="enduserstatuschange($event)"
+                                                                                    aria-label="Default select example">
+                                                                                    <option value="P">Pending</option>
+                                                                                    <option value="A">Approved</option>
+                                                                                    
+                                                                                    <option value="V"
+                                                                                        *ngIf="managerStatusDisplay == 'CM' || managerStatusDisplay == 'CO'">
+                                                                                        Return To Vendor</option>
+                                                                                </select>
+                                                                                <div class="wizard-form-error"></div>
+                                                                            </div>
+                                                                        </div> -->
+
+                                                                    </div>
+                                                    <div class="form-group">
+                                                       
+                                                        
+                                                        <div class="">
+                                                            <label
+                                                                style="font-size: 20px; font-weight: 600; color: black;">Add
+                                                                End
+                                                                Users :<span
+                                                                    style="display: block;font-size: 14px; font-weight:400; color: #555;">Add
+                                                                    Email ID of end users (Max upto 3) by using search
+                                                                    icon in the
+                                                                    field</span></label>
+                                                            <div style="position: relative;">
+                                                                <input matInput class="form-control searchText"
+                                                                    type="search" id="search1"
+                                                                    placeholder="Please enter enduser"
+                                                                    [(ngModel)]="queryString1"
+                                                                    (keydown.enter)="callConfirmatoryDynamicData()"
+                                                                    (blur)="clearConfirmationSearchData()" />
+                                                                <!-- <button class="btn btn-primary addbtn" (click)="addNewColleagues($event)"><i class="fa fa-plus"></i></button> -->
+                                                                <i class="fa fa-search"
+                                                                    (click)="callConfirmatoryDynamicData()"
+                                                                    style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i>
+                                                            </div>
+                                                            <div class="suggestion-core">
+                                                                <ul class="suggestion-list"
+                                                                    *ngIf="confirmatoryList != null">
+                                                                    <li class="displaytitle suggestionlistli"
+                                                                        (click)="addConfirmatoriesToSuggestionList($event,item)"
+                                                                        *ngFor="let item of confirmatoryList">
+                                                                        {{item.email}} | <b>{{item.designation}}</b>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="suggestion-lhs">
+
+                                                                <ul class="suggestion-list selectedcolegues"
+                                                                    *ngIf="selectedConfirmatoryList!=null">
+                                                                    <li class="displaytitle"
+                                                                        *ngFor="let n of selectedConfirmatoryList">
+                                                                        <label class="check-box">
+                                                                            {{n.email}}
+                                                                            <span class="checkmark"></span>
+                                                                        </label> <img style="height: 12px;" src="./assets/img/cross_icon.png"
+                                                                            (click)="removeConfirmatoryFromSuggestionList($event,n)" />
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+
+                                                </div>
+                                                        </div>
+                                                        <!-- <div class="invoice-form pt-0" *ngIf="showmanagerlist">
+                                                                    <div class="inv-form-inputs">
+
+                                                                        <div class="form-group">
+                                                                            <div class="customFormGroup">
+                                                                                <label class="withoutSubLabel" for=""
+                                                                                    style="font-size: 20px; font-weight: 600; color: black;">Select
+                                                                                    Approver :</label>
+                                                                                <select name=""
+                                                                                    id="custommanagerselectedID"
+                                                                                    class="form-control"
+                                                                                    (change)="addApprover($event)">
+                                                                                    <option value="0">--Select--
+                                                                                    </option>
+                                                                                    <option id="customID{{m}}"
+                                                                                        *ngFor="let customMangerlist of customManagerListNames;  let m = index"
+                                                                                        [value]="customMangerlist">
+                                                                                        {{customMangerlist}}
+                                                                                    </option>
+                                                                                </select>
+                                                                                <div class="wizard-form-error"></div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="inv-form-inputs">
+                                                                        <div class="form-group" *ngIf="showmanagerlist">
+                                                                           
+                                                                            <div class="">
+                                                                                <label
+                                                                                    style="font-size: 20px; font-weight: 600; color: black;">Add
+                                                                                    more
+                                                                                    Approver(s) :<span
+                                                                                        style="display: block;font-size: 14px; font-weight:400; color: #555;">Add
+                                                                                        Email ID by using search icon in
+                                                                                        the field</span></label>
+                                                                                <div style="position: relative;">
+                                                                                    <input matInput
+                                                                                        class="form-control searchText"
+                                                                                        type="search" id="search"
+                                                                                        placeholder="Please enter approver"
+                                                                                        [(ngModel)]="queryString"
+                                                                                        (keydown.enter)="callDynamicData()"
+                                                                                        (blur)="clearSearchData()" />
+                                                                                    <i class="fa fa-search"
+                                                                                        (click)="callDynamicData()"
+                                                                                        style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i>
+                                                                                </div>
+                                                                                <div class="suggestion-core">
+                                                                                    <ul class="suggestion-list"
+                                                                                        *ngIf="colleaguesList != null">
+                                                                                        <li class="displaytitle suggestionlistli"
+                                                                                            (click)="addColleaguesToSuggestionList($event,item)"
+                                                                                            *ngFor="let item of colleaguesList">
+                                                                                            {{item.email}} |
+                                                                                            <b>{{item.designation}}</b>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <div class="suggestion-lhs">
+
+                                                                                    <ul class="suggestion-list selectedcolegues"
+                                                                                        *ngIf="selectedColleaguesList!=null">
+                                                                                        <li class="displaytitle"
+                                                                                            *ngFor="let n of selectedColleaguesList">
+                                                                                            <label class="check-box">
+                                                                                                {{n.email}}
+                                                                                                <span
+                                                                                                    class="checkmark"></span>
+                                                                                            </label> <img style="height: 12px;"
+                                                                                                src="./assets/img/cross_icon.png"
+                                                                                                (click)="removeColleaguesFromSuggestionList($event,n)" />
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+
+
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div> -->
+                                                                <!-- <div>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-12 text-center">
+                                                                            <button type="submit"
+                                                                                class="btn button-primary"
+                                                                                id="UpdateInvoiceID"
+                                                                                [disabled]="submitdone == true || (behalf && selectedConfirmatoryList.length ==0 && usertype == 'enduser')"
+                                                                                (click)="trackInvoice()">
+                                                                                <img src="./assets/img/arrow_icon_red.png"
+                                                                                    class="activeImg arrowIcon">
+                                                                                <img src="./assets/img/arrow_icon_light_grey.png"
+                                                                                    alt="arrow icon"
+                                                                                    class="disabledImg arrowIcon">
+                                                                                Submit
+                                                                            </button>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div> -->
+
+                                                        
+                                                    </div>
+                                                   
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+
+                           
+
+                            <!-- Angular condition preserved -->
+                            <form *ngIf="quantitiesaccepted == false && hide == true && creditadvice == null">
+                                <div class="col-sm-12 col-xs-12 formpart">
+
+                                    <!-- First Checkbox -->
+                                    <div style="margin-bottom: 10px; display: flex;">
+                                        <input type="checkbox" id="acceptcheck1" (click)="getvalue($event, 'behalf')" />
+                                        <label for="acceptcheck1" style="margin-left: 16px;">
+                                            I confirm the receipt of the said material / services
+                                            <span style="color: #cc0000;">on behalf of end user</span>
+                                            and confirm that they are in accordance with the invoice.
+                                        </label>
+                                    </div>
+
+                                    <div style="padding-bottom: 2%; display: flex;">
+                                        <input type="checkbox" id="acceptcheck" (click)="getvalue($event, 'self')" />
+                                        <label for="acceptcheck" style="margin-left: 16px;">
+                                            <span style="color: #cc0000;">I am the recipient</span>
+                                            of the said material / services and confirm that they are in accordance with
+                                            the invoice.
+                                        </label>
+                                    </div>
+
+                                    <!-- <a href="#" class="text-primary sm">Show more</a> -->
+                                </div>
+                            </form>
+                        </div>
+
+
+
+
+
+                        <div id="acceptQuantityConfirm" class="overlay">
+                            <div class="popup confirmationPopup">
+                                <!-- <a class="close" (click)="closePopup()">&times;</a><br /> -->
+                                <div class="container text-center">
+                                    <div class="confirmationpopup mb-2">
+                                        <div class="confirmation-title">Confirmation
+                                            <button type="button" class="close"
+                                                (click)="CloseconfirmAcceptQuantityPopup()">&times;</button>
+                                        </div>
+                                        <p class="confirmation-para">
+                                            Do you want to accept quantities? Once you accept, it cannot be reversed.
+                                        </p>
+                                        <div class="button__wrapper">
+                                            <a class="btn btn-primary button-primary" id="btnConfirmOk"
+                                                (click)="submitgrn()">Yes</a>
+                                            <a class="btn btn-primary button-primary confirmationNo"
+                                                (click)="CloseconfirmAcceptQuantityPopup()" id="btnConfirmBack">No</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <div *ngIf="quantitiesaccepted == false && hide == true">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="buttonWrapper text-center">
+                                            <!-- Accept Quantities Button -->
+                                            <button type="submit" class="btn button-primary"
+                                                [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue || acceptedqty"
+                                                [ngClass]="{
+                            'highlight-red': acceptCheckboxState?.behalf || acceptCheckboxState?.self
+                        }" (click)="confirmAcceptQuantityPopup()">
+                                                <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                                <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                                    class="disabledImg arrowIcon">
+                                                Accept Quantities
+                                            </button>
+
+                                            <!-- Return to Vendor Button -->
+                                            <button type="submit" class="btn button-primary"
+                                                [disabled]="(usertype == 'manager' || actiontaken ) || nullacceptedvalue || !acceptedqty"
+                                                (click)="returnInvoice()">
+                                                <img src="./assets/img/arrow_icon_red.png" class="activeImg arrowIcon">
+                                                <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                                                    class="disabledImg arrowIcon">
+                                                Return to Vendor
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+                <div>
+                    <div>
+                        <div>
+                            <div>
+                                <!-- <div class="card-header heading-align">
+                                            <a href="#"><img src="images/back-arrow.png" alt="" /></a> Approve Invoices
+                                        </div> -->
+
+                                <div class="card-body padlr0"   *ngIf="quantitiesaccepted == true  && status !='V' 
+                    && ((creditadvice == null && creditnote == null) 
+                    || (creditadvice != null && creditnote != null))">
+                                    <!-- *ngIf="!(quantitiesaccepted == true && status != 'V' 
+    && ((creditadvice == null && creditnote == null) 
+    || (creditadvice != null && creditnote != null)))" -->
+                                    <div class="container">
+                                        <div class="invoice-bill " id="faq">
+                                            <div >
+                                                <!-- class="card no-radius" -->
+                                                <div id="faq1">
+                                                    <div class="card-body padlr0">
+
+                                                        <div class="row note">
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <h6>Approvals</h6>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="approval__box" id="approvalBox4">
+                                                            <div class="">
+                                                                <!-- <div class="formWrapper__heading no-bg pl-6"></div> -->
+                                                                <!-- <b style="text-align: 5px; font-style: oblique; font-size: 15px; margin: 5px;">Approver:</b><span style="text-align: 5px; font-style: oblique; font-size: 15px"> A person who confirms receipt of material/services and that the approved invoice is in accordance with the same.</span> -->
+                                                                <br>
+                                                                <span
+                                                                    style="text-align: 5px; font-style: oblique; font-size: 15px;margin: 60px;">An
+                                                                    <b>Approver</b> confirms receipt of
+                                                                    material/services and that the approved invoice
+                                                                    is in accordance with the same.</span>
+                                                                <div class="invoice-form">
+                                                                    <div class="inv-form-inputs">
+                                                                        <div class="form-group">
+                                                                            <div class="customFormGroup">
+                                                                                <label
+                                                                                    style="font-size: 20px; font-weight: 600; color: black;">
+                                                                                    <!-- <span *ngIf="storekeeper != 'true'">Requisitioner's</span>
+                                    <span *ngIf="storekeeper == 'true'">Storekeeper's</span>  -->
+                                                                                    End User's Status
+                                                                                </label>
+                                                                                <select id="selectManager"
+                                                                                    
+                                                                                    class="form-control form-select custom-disabled"
+                                                                                    [disabled]="stage =='2'"
+                                                                                    (change)="enduserstatuschange($event)"
+
+                                                                                    aria-label="Default select example">
+                                                                                    <!-- <option selected disabled>--Select--</option> -->
+                                                                                    <option value="P">Pending</option>
+                                                                                    <option value="A">Approved</option>
+                                                                                    <!-- <option value="R">Rejected</option> -->
+                                                                                    <!-- <option value="O">On Hold</option> -->
+                                                                                    <option value="V"
+                                                                                        *ngIf="managerStatusDisplay == 'CM' || managerStatusDisplay == 'CO'">
+                                                                                        Return To Vendor</option>
+                                                                                </select>
+                                                                                 <span
+      style="
+        position: absolute;
+        right: 12px;
+        top: 70%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        font-size: 16px;
+        color: #555;
+      ">
+      ▼
+    </span>
+                              
+                                                                                <span
+      style="
+        position: absolute;
+        right: 12px;
+        top: 70%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        font-size: 16px;
+        color: #555;
+      ">
+      ▼
+    </span>
+                                                                                <div class="wizard-form-error"></div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="inv-form-inputs">
+                                                                        <div class="form-group">
+                                                                            <div class="customFormGroup">
+                                                                                <label
+                                                                                    style="font-size: 20px; font-weight: 600; color: black;">
+                                                                                    Invoice Approver's Status</label>
+                                                                                <div *ngIf="OnHold == 'True'">
+                                                                                    <select id="selectuser"
+                                                                                                                                                                            class="form-control form-select custom-disabled"
+                                                                                    class="form-control form-select custom-disabled"
+
+                                                                                        [disabled]="stage =='1'"
+                                                                                        aria-label="Default select example"
+                                                                                        (change)="approverstatuschange($event)"
+                                                                                        style="appearance: none; background-color: #e9ecef; cursor: not-allowed;">
+                                                                                        <option value="A">Approved
+                                                                                        </option>
+                                                                                        <option value="O">On Hold
+                                                                                        </option>
+                                                                                    </select>
+                                                                                    <span
+      style="
+        position: absolute;
+        right: 12px;
+        top: 70%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        font-size: 16px;
+        color: #555;
+      ">
+      ▼
+    </span>
+                                                                                </div>
+                                                                                <div *ngIf="OnHold != 'True'">
+                                                                                    <select id="selectuser"
+                                                                                                                                                                            class="form-control form-select custom-disabled"
+
+                                                                                        [disabled]="stage =='1'"
+                                                                                        aria-label="Default select example"
+                                                                                        (change)="approverstatuschange($event)">
+                                                                                        <option value="P">Pending
+                                                                                        </option>
+                                                                                        <option value="A">Approved
+                                                                                        </option>
+                                                                                        <option value="O">On Hold
+                                                                                        </option>
+                                                                                    </select>
+                                                                                     <span
+      style="
+        position: absolute;
+        right: 12px;
+        top: 70%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        font-size: 16px;
+        color: #555;
+      ">
+      ▼
+    </span>
+                              
+                                                                                </div>
+                                                                                <div class="wizard-form-error"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="invoice-form pt-0" *ngIf="showmanagerlist">
+                                                                    <div class="inv-form-inputs">
+
+                                                                        <div class="form-group">
+                                                                            <div class="customFormGroup">
+                                                                                <label class="withoutSubLabel" for=""
+                                                                                    style="font-size: 20px; font-weight: 600; color: black;">Select
+                                                                                    Approver :</label>
+                                                                                <select name=""
+                                                                                    id="custommanagerselectedID"
+                                                                                    class="form-control"
+                                                                                    (change)="addApprover($event)">
+                                                                                    <option value="0">--Select--
+                                                                                    </option>
+                                                                                    <option id="customID{{m}}"
+                                                                                        *ngFor="let customMangerlist of customManagerListNames;  let m = index"
+                                                                                        [value]="customMangerlist">
+                                                                                        {{customMangerlist}}
+                                                                                    </option>
+                                                                                </select>
+                                                                                 <span
+      style="
+        position: absolute;
+        right: 12px;
+        top: 70%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        font-size: 16px;
+        color: #555;
+      ">
+      ▼
+    </span>
+                              
+                                                                                <div class="wizard-form-error"></div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="inv-form-inputs">
+                                                                        <div class="form-group" *ngIf="showmanagerlist">
+                                                                            <!-- <input class="form-control" placeholder="Select Colleagues"/> -->
+                                                                            <!-- <input  matInput class="form-control" type="search" [(ngModel)]="queryString" id="search" (keyup)="onKey()" placeholder="Search Apps" (blur)="claerSearchApps()"/> -->
+                                                                            <div class="">
+                                                                                <label
+                                                                                    style="font-size: 20px; font-weight: 600; color: black;">Add
+                                                                                    more
+                                                                                    Approver(s) :<span
+                                                                                        style="display: block;font-size: 14px; font-weight:400; color: #555;">Add
+                                                                                        Email ID by using search icon in
+                                                                                        the field</span></label>
+                                                                                <div style="position: relative;">
+                                                                                    <input matInput
+                                                                                        class="form-control searchText"
+                                                                                        type="search" id="search"
+                                                                                        placeholder="Please enter approver"
+                                                                                        [(ngModel)]="queryString"
+                                                                                        (keydown.enter)="callDynamicData()"
+                                                                                        (blur)="clearSearchData()" />
+                                                                                    <!-- <button class="btn btn-primary addbtn" (click)="addNewColleagues($event)"><i class="fa fa-plus"></i></button> -->
+                                                                                    <i class="fa fa-search"
+                                                                                        (click)="callDynamicData()"
+                                                                                        style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 10px;transform: translateY(-50%);"></i>
+                                                                                </div>
+                                                                                <div class="suggestion-core">
+                                                                                    <ul class="suggestion-list"
+                                                                                        *ngIf="colleaguesList != null">
+                                                                                        <li class="displaytitle suggestionlistli"
+                                                                                            (click)="addColleaguesToSuggestionList($event,item)"
+                                                                                            *ngFor="let item of colleaguesList">
+                                                                                            {{item.email}} |
+                                                                                            <b>{{item.designation}}</b>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <div class="suggestion-lhs">
+
+                                                                                    <ul class="suggestion-list selectedcolegues"
+                                                                                        *ngIf="selectedColleaguesList!=null">
+                                                                                        <li class="displaytitle"
+                                                                                            *ngFor="let n of selectedColleaguesList">
+                                                                                            <label class="check-box">
+                                                                                                {{n.email}}
+                                                                                                <span
+                                                                                                    class="checkmark"></span>
+                                                                                            </label> <img style="height: 12px;"
+                                                                                                src="./assets/img/cross_icon.png"
+                                                                                                (click)="removeColleaguesFromSuggestionList($event,n)" />
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+
+
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <!-- button wrapper  -->
+                                                                <div>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-12 text-center">
+                                                                            <button type="submit"
+                                                                                class="btn button-primary"
+                                                                                id="UpdateInvoiceID"
+                                                                                [disabled]="submitdone == true || (behalf && selectedConfirmatoryList.length ==0 && usertype == 'enduser')"
+                                                                                (click)="trackInvoice()">
+                                                                                <img src="./assets/img/arrow_icon_red.png"
+                                                                                    class="activeImg arrowIcon">
+                                                                                <img src="./assets/img/arrow_icon_light_grey.png"
+                                                                                    alt="arrow icon"
+                                                                                    class="disabledImg arrowIcon">
+                                                                                Submit
+                                                                            </button>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="formWrapper__heading no-bg pl-6"
+                                                                    *ngIf="showcustomManagerList">
+                                                                    Approval Status</div>
+                                                                <div class="table-responsive pl-forIcon"
+                                                                    *ngIf="showcustomManagerList">
+
+                                                                    <div class="custom-carousel-wrapper">
+                                                                        <div class="custom-carousel-container">
+
+                                                                            <!-- Individual Carousel Cards -->
+                                                                            <div class="carousel-card"
+                                                                                *ngFor="let customManager of customManagerList">
+                                                                                <!-- Static Avatar -->
+                                                                                <img src="assets/img/profile.png"
+                                                                                    alt="Manager Profile"
+                                                                                    class="profile-img">
+
+                                                                                <!-- Manager Name -->
+                                                                                <p class="manager-name"
+                                                                                    [attr.title]="customManager.DESIGNATION">
+                                                                                    {{ customManager.EUMANAGER }}
+                                                                                </p>
+
+                                                                                <!-- Role/Status -->
+                                                                                <p class="manager-status">
+                                                                                    <ng-container
+                                                                                        [ngSwitch]="customManager.STATUS">
+                                                                                        <ng-container
+                                                                                            *ngSwitchCase="'P'">Pending</ng-container>
+                                                                                        <ng-container
+                                                                                            *ngSwitchCase="'M'">Pending</ng-container>
+                                                                                        <ng-container
+                                                                                            *ngSwitchCase="'CM'">Pending</ng-container>
+                                                                                        <ng-container
+                                                                                            *ngSwitchCase="'CA'">GRN
+                                                                                            Confirmed</ng-container>
+                                                                                        <ng-container
+                                                                                            *ngSwitchCase="'A'">
+                                                                                            <ng-container
+                                                                                                *ngIf="enduserid === customManager.EUMANAGER">
+                                                                                                GRN Creator
+                                                                                            </ng-container>
+                                                                                            <ng-container
+                                                                                                *ngIf="enduserid !== customManager.EUMANAGER">
+                                                                                                Invoice Approver
+                                                                                            </ng-container>
+                                                                                        </ng-container>
+                                                                                        <ng-container
+                                                                                            *ngSwitchCase="'R'">Invoice
+                                                                                            Rejected</ng-container>
+                                                                                        <ng-container
+                                                                                            *ngSwitchCase="'CR'">Invoice
+                                                                                            Rejected</ng-container>
+                                                                                        <ng-container
+                                                                                            *ngSwitchCase="'O'">On
+                                                                                            Hold</ng-container>
+                                                                                        <ng-container
+                                                                                            *ngSwitchCase="'CO'">On
+                                                                                            Hold</ng-container>
+                                                                                        <ng-container
+                                                                                            *ngSwitchDefault>Unknown</ng-container>
+                                                                                    </ng-container>
+                                                                                </p>
+
+                                                                                <!-- Last Message Preview -->
+                                                                                <ng-container
+                                                                                    *ngFor="let chatmessage of statuschatmessage">
+                                                                                    <ng-container
+                                                                                        *ngIf="chatmessage.SENDER === customManager.EUMANAGER">
+                                                                                        <div>
+                                                                                            <small
+                                                                                                class="message-date">{{
+                                                                                                chatmessage.CREATEDON
+                                                                                                }}</small>
+                                                                                            <div
+                                                                                                class="message-preview">
+                                                                                                {{
+                                                                                                chatmessage.MESSAGETEXT
+                                                                                                | slice:0:60 }}
+                                                                                                <span
+                                                                                                    *ngIf="chatmessage.MESSAGETEXT?.length > 60">...</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <ng-container
+                                                                                            *ngIf="true; then breakLoop"></ng-container>
+                                                                                    </ng-container>
+                                                                                </ng-container>
+                                                                                <ng-template #breakLoop></ng-template>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- Optional Scroll Dots Indicator -->
+                                                                        <div class="dots-indicator">
+                                                                            <span *ngFor="let item of customManagerList"
+                                                                                class="dot"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Carousel Wrapper -->
+
+
+
+
+
+                                                        <!-- <form>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6 col-xs-12 addusr">
+                                                                            <div class="inv-form-inputs">
+                                                                                <div class="form-group">
+                                                                                    <div class="customFormGroup">
+                                                                                        <label
+                                                                                            style="font-size: 20px; font-weight: 600; color: black;">
+                                                                                            Invoice Approver's
+                                                                                            Status</label>
+                                                                                        <div *ngIf="OnHold == 'True'">
+                                                                                            <select id="selectuser"
+                                                                                                class="form-control form-select"
+                                                                                                [disabled]="stage =='1'"
+                                                                                                aria-label="Default select example"
+                                                                                                (change)="approverstatuschange($event)">
+                                                                                                <option value="A">
+                                                                                                    Approved</option>
+                                                                                                <option value="O">On
+                                                                                                    Hold</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div *ngIf="OnHold != 'True'">
+                                                                                            <select id="selectuser"
+                                                                                                class="form-control form-select"
+                                                                                                [disabled]="stage =='1'"
+                                                                                                aria-label="Default select example"
+                                                                                                (change)="approverstatuschange($event)">
+                                                                                                <option value="P">
+                                                                                                    Pending</option>
+                                                                                                <option value="A">
+                                                                                                    Approved</option>
+                                                                                                <option value="O">On
+                                                                                                    Hold</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="wizard-form-error">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form> -->
+                                                        <!-- <form>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6 col-xs-12 addusr">
+                                                                            <div class="form-group">
+                                                                                <label
+                                                                                    style="font-size: 16px; font-weight: 500; color: #333;">
+                                                                                    Invoice Approver Status
+                                                                                </label>
+
+                                                                                <select class="form-control"
+                                                                                    [disabled]="stage == '1'"
+                                                                                    (change)="approverstatuschange($event)">
+                                                                                    <option *ngIf="OnHold != 'True'"
+                                                                                        value="P">Pending</option>
+                                                                                    <option value="A">Approved</option>
+                                                                                    <option value="O">On Hold</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form> -->
+
+
+
+                                                        <div class="row note pt-5">
+                                                            <div class="col-sm-12 col-xs-12">
+                                                                <h6>Vendor Supporting Docs</h6>
+                                                                <!-- <p>Vendor Supporting Docs:</p> -->
+
+                                                                <div *ngIf="multipleactualfilename != null">
+                                                                    <div *ngFor="let multipleindividualactualfilename of multipleactualfilename?.split(','); let i = index"
+                                                                        class="d-flex align-items-center gap-2 pt-2"
+                                                                        (click)="downloadfile(individualsavedname[i], multipleindividualactualfilename, 'listdownload')"
+                                                                        style="cursor: pointer;">
+
+                                                                        <i
+                                                                            class="bi bi-file-earmark-arrow-down-fill pdf-icon1"></i>
+
+                                                                        <span class="text-muted"
+                                                                            tooltip="{{multipleindividualactualfilename}}"
+                                                                            placement="bottom" showDelay="300">
+                                                                            {{multipleindividualactualfilename}}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div *ngIf="multipleactualfilename == null"
+                                                                    class="pt-2">
+                                                                    <span class="text-muted">No Docs
+                                                                        Attached</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-responsive pl-forIcon approval__box" *ngIf="showcustomManagerList">
+  <div class="custom-carousel-wrapper">
+    <div class="custom-carousel-container">
+      <div class="carousel-card"
+           *ngFor="let customManager of customManagerList; let i = index; trackBy: trackByIndex"
+           [class.active]="i === activeIndex">
+
+        <img src="assets/img/profile.png" alt="Manager Profile" class="profile-img" />
+
+        <p class="manager-name" [attr.title]="customManager.DESIGNATION">
+          {{ customManager.EUMANAGER?.split('@')[0] }}
+        </p>
+
+        <p class="manager-status">
+          <ng-container [ngSwitch]="customManager.STATUS">
+            <ng-container *ngSwitchCase="'P'">Pending</ng-container>
+            <ng-container *ngSwitchCase="'M'">Pending</ng-container>
+            <ng-container *ngSwitchCase="'CM'">Pending</ng-container>
+            <ng-container *ngSwitchCase="'CA'">GRN Confirmed</ng-container>
+            <ng-container *ngSwitchCase="'A'">
+              <ng-container *ngIf="enduserid === customManager.EUMANAGER">GRN Creator</ng-container>
+              <ng-container *ngIf="enduserid !== customManager.EUMANAGER">Invoice Approver</ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'R'">Invoice Rejected</ng-container>
+            <ng-container *ngSwitchCase="'CR'">Invoice Rejected</ng-container>
+            <ng-container *ngSwitchCase="'O'">On Hold</ng-container>
+            <ng-container *ngSwitchCase="'CO'">On Hold</ng-container>
+            <ng-container *ngSwitchDefault>Unknown</ng-container>
+          </ng-container>
+        </p>
+
+        <ng-container *ngFor="let chatmessage of statuschatmessage">
+          <ng-container *ngIf="chatmessage.SENDER === customManager.EUMANAGER">
+            <div>
+              <small class="message-date">{{ chatmessage.CREATEDON }}</small>
+              <div class="message-preview">
+                {{ chatmessage.MESSAGETEXT }}
+              </div>
+            </div>
+            <ng-container *ngIf="true; then breakLoop"></ng-container>
+          </ng-container>
+        </ng-container>
+        <ng-template #breakLoop></ng-template>
+      </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <button class="carousel-arrow left-arrow"
+            (click)="goToPrevious()"
+            [disabled]="activeIndex === 0">‹</button>
+
+    <button class="carousel-arrow right-arrow"
+            (click)="goToNext()"
+            [disabled]="activeIndex === customManagerList.length - 1">›</button>
+
+    <!-- Dot Indicators -->
+    <div class="dots-indicator">
+      <span *ngFor="let item of customManagerList; let i = index"
+            class="dot"
+            [class.active]="i === activeIndex"
+            (click)="activeIndex = i"></span>
+    </div>
+  </div>
+</div>

@@ -1170,15 +1170,42 @@ return this.http.post<any>(AppSettings.multiplefileupload, formData1, { headers:
   
   }
   GetPanGstVal(pan,gst){
-  
-    let urlSearchParams: HttpParams = new HttpParams();
-    urlSearchParams = urlSearchParams.append('panNumber', pan);
-    urlSearchParams = urlSearchParams.append('gstNumber', gst);
-    let jsonData = urlSearchParams.toString();
-    return this.http.post<any>(AppSettings.PanGSVal, jsonData , { withCredentials: true }).pipe(
-      catchError(err => throwError(console.log(err)) )
-    );
-  }
+
+  let urlSearchParams: HttpParams = new HttpParams();
+  urlSearchParams = urlSearchParams.append('panNumber', pan);
+  urlSearchParams = urlSearchParams.append('gstNumber', gst);
+  let jsonData = urlSearchParams.toString();
+  return this.http.post<any>(AppSettings.PanGSVal, jsonData , { withCredentials: true }).pipe(
+    catchError(err => throwError(console.log(err)) )
+  );
+}
+ChecActiveInactive(pan): Observable<any> {
+// debugger
+  let urlSearchParams: HttpParams = new HttpParams();
+  urlSearchParams = urlSearchParams.append('panNumber', pan);  
+  let jsonData = urlSearchParams.toString();
+  return this.http.post<any>(AppSettings.CheckActiveInactivePan, jsonData, { withCredentials: true }).pipe(
+    catchError(err => throwError(console.log(err)))
+  );
+}
+ChecActiveInactiveGST(gst): Observable<any> {
+// debugger
+  let urlSearchParams: HttpParams = new HttpParams();
+  urlSearchParams = urlSearchParams.append('gstNumber', gst);  
+  let jsonData = urlSearchParams.toString();
+  return this.http.post<any>(AppSettings.CheckActiveInactiveGst, jsonData, { withCredentials: true }).pipe(
+    catchError(err => throwError(console.log(err)))
+  );
+}
+
+DownloadPDF(gstPanNumber: string): Observable<Blob> {
+  const url = `${AppSettings.DownloadPDF}?numberGST_PAN=${encodeURIComponent(gstPanNumber)}`;
+
+  return this.http.post(url, null, {
+    responseType: 'blob',
+    withCredentials: true
+  });
+}
   getVendorData(requestID:string): Observable<any> {
     
     let urlSearchParams: HttpParams = new HttpParams();

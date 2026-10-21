@@ -254,6 +254,7 @@ export class AmendmentRegistration{
 	   status:string;
 	   whTaxList:any[];
 	   addtionalFileName:string;
+       rejectionRemarks: any;
    }
    export class region{
 	   countryCode:string;

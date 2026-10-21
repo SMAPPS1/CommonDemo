@@ -1,0 +1,804 @@
+<!-- <section class="sec-1" >
+  <div class="container">
+    <div class="row">
+      <div
+        (click)="
+          viewDetails(
+            k,
+            invoice.INVOICENUMBER,
+            invoice.PONUMBER,
+            specificemailid,
+            invoice.ACTIONBY,
+            invoice.ALLPO,
+            ENDUSERStatus[k],
+            ManagerStatus[k]
+          )
+        "
+        class="col-12"
+        *ngFor="
+          let invoice of invoicedetailsList
+            | slice
+              : (mPageNo - 1) * pageSize
+              : (mPageNo - 1) * pageSize + pageSize;
+          let k = index
+        "
+      >
+        <div class="invoice-details-wrap">
+          <div class="info-wrap">
+            <div class="invoice-num">
+              {{ invoice.INVOICENUMBER }}
+            </div>
+            <div class="invoice-amt">
+              {{ invoice.TOTALAMOUNT | currency : "INR" }}<span>INR</span>
+            </div>
+          </div>
+          <div class="company-name">{{ invoice.VENDORNAME }}</div>
+          <div class="company-date">
+            Invoice Date:{{ invoice.INVOICEDATE | date : "dd-MMM-yyyy" }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<div class="main-content margin-top">
+  <div class="table-bg">
+
+    <div class="container">
+
+      <div class="consultant-section paddingtop">
+        <div class="card">
+          <div class="card-header heading-align">
+            <!-- <img src="" alt="" /> -->
+            <span>Approve Invoices</span>
+            <!-- <img src="./assets/img/logout_icon_option2.png" (click)="logOut()"> -->
+            <!-- <img src="./assets/img/logout_icon.png" (click)="logOut()"> -->
+          </div>
+            <!-- Logout</button> -->
+          <div class="card-body padlr0">
+
+            <div class="container">
+              <div class="accordion invoice-bill " id="faq">
+                <div class="no-radius">
+                  <div class="submitSearchByPoHeader" style="    display: flex
+;
+    /* align-content: flex-start; */
+    /* align-items: stretch; */
+    justify-content: space-between;" id="faqhead1" data-toggle="collapse" data-target="#faq1" aria-expanded="true"
+                    aria-controls="faq1">
+                    <p >Search by <span style="font-size:14px; color: #cccccc;"> PO
+                        No, Duration,
+                        Date Range, Plant</span> </p>
+                    <div class="advanceSearcIcon" (click)="openAdavnceSearch()">
+                      <img src="./assets/img/close-arrow.png" alt="download image" id="closeArrow"
+                        style="display: none;">
+                      <img src="./assets/img/open-arrow.png" alt="refresh image" id="openArrow">
+                    </div>
+
+                  </div>
+
+                  <div id="faq1" class="collapse" aria-labelledby="faqhead1" data-parent="#faq">
+                    <div class="card-body padlr0" style="display: none;" id="advanceSearcBox">
+                      <!-- <form>
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                              <div class="form-group">
+                                <label for="text">PO Number</label>
+                                <input type="text" class="form-control" placeholder="Enter PO Number">
+                              </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                              <div class="form-group">
+                                <label for="text">Duration</label>
+                                <input type="text" class="form-control" placeholder="Enter Duration Number">
+                              </div>
+                            </div>
+
+                            <div class="w-100"></div>
+
+                            <div class="col-sm-6 col-xs-12">
+                              <div class="form-group">
+                                <label for="text">From Date</label>
+                                <input type="text" class="form-control" id="datepicker" placeholder="From">
+                                <div class="calender-icon"> 
+                                  <i class="fa-solid fa-calendar-days" id="datepickerIcon"></i>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-6 col-xs-12">
+                              <div class="form-group">
+                                <label for="text">To Date</label>
+                                <input type="text" class="form-control" id="datepicker1" placeholder="To">
+                                <div class="calender-icon"> 
+                                  <i class="fa-solid fa-calendar-days" id="datepickerIcon1"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                              <div class="form-group">
+                                <label for="text">Invoice Number</label>
+                                <input type="text" class="form-control" placeholder="Enter Invoice Number">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row d-block text-center pt-5">
+                            <div class="go">
+                              <button type="submit" class="btn button-primary" (click)="trackPayment('','','');"
+                                    [disabled]="disable">
+                                    <img _ngcontent-dnd-c329="" src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                        class="activeImg arrowIcon">
+                                    <img ngcontent-dnd-c329="" src="./assets/img/arrow_icon_light_grey.png"
+                                        alt="arrow icon" class="disabledImg arrowIcon">
+                                    search
+                                </button>&nbsp; &#160; &#160; &#160;<button type="submit" class="btn button-primary"
+                                (click)="ResetData()">
+                                <img _ngcontent-dnd-c329="" src="./assets/img/arrow_icon_red.png"
+                                    alt="arrow icon" class="activeImg arrowIcon" />
+                                reset
+                            </button>
+                            </div>
+                          </div>
+                         
+                        </div>
+                      </form> -->
+                      <form [formGroup]="invoiceList">
+                        <div class="invoice-form">
+                          <div class="inv-form-inputs mb-mt">
+                            <div class="invInputWicon">
+                              <mat-label class="submitInputLabel">Invoice Number</mat-label>
+                              <mat-form-field appearance="none">
+                                <mat-label>Enter Invoice Number</mat-label>
+                                <input matInput placeholder="Enter Invoice Number" class="submitInputBox" 
+                                  (keypress)="keyPressAlphanumeric($event)" formControlName="InvoiceNumber" value=""
+                                  maxlength="16">
+                              </mat-form-field>
+                              <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="Invoice Number " placement="left" showDelay="300"></span> -->
+                            </div>
+                            <!-- <mat-error *ngIf="hasError('InvoiceNumber', 'required') && paymentList.controls['InvoiceNumber'].touched">
+                            *Invoice Number is required</mat-error> -->
+                          </div>
+
+                          <div class="inv-form-inputs mb-mt">
+                            <div class="invInputWicon">
+                              <mat-label class="submitInputLabel">PO Number</mat-label>
+                              <mat-form-field appearance="none">
+                                <mat-label>Enter PO Number</mat-label>
+                                <input matInput placeholder="Enter PO Number"  class="submitInputBox" formControlName="POrealNumber" value="">
+                                <!-- <mat-select formControlName="paymentMethod">
+                                    <mat-option *ngFor="let payment of [1,2,3,5]" [value]="payment">
+                                        {{payment}}
+                                    </mat-option>
+                                </mat-select> -->
+                              </mat-form-field>
+                              <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="PO Number" placement="left" showDelay="300"></span> -->
+                            </div>
+                            <!-- <mat-error *ngIf="hasError('POrealNumber', 'required') && POrealNumber.controls['PONumber'].touched">
+                            *PO Number is required</mat-error> -->
+                          </div>
+                          <div class="inv-form-inputs mb-mt">
+                            <div class="invInputWicon">
+                              <mat-label class="submitInputLabel">From Date </mat-label>
+                              <mat-form-field appearance="none">
+                                <mat-label>From Date</mat-label>
+                                <input matInput [max]="maxdate" [min]="mindate" [matDatepicker]="picker"
+                                  formControlName="fromDate" class="submitInputBox"  (dateChange)="onDateChange()">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                            <mat-error *ngIf="fromdateerror">
+                              From date is required</mat-error>
+                            <!-- <mat-error *ngIf="hasError('PODate', 'required') && POOrderList.controls['PODate'].touched">
+                            *PO Date is required</mat-error> -->
+                          </div>
+                          <div class="inv-form-inputs mb-mt">
+                            <div class="invInputWicon">
+                              <mat-label class="submitInputLabel">To Date </mat-label>
+                              <mat-form-field appearance="none">
+                                <mat-label>To Date </mat-label>
+                                <input matInput [max]="maxdate" [min]="mintodate" [matDatepicker]="Topicker" class="submitInputBox" 
+                                  formControlName="toDate" (dateChange)="onDateChange()">
+                                <mat-datepicker-toggle matSuffix [for]="Topicker"></mat-datepicker-toggle>
+                                <mat-datepicker #Topicker></mat-datepicker>
+                              </mat-form-field>
+                              <!-- <span class="fa fa-info-circle inputInfoIcon" tooltip-class="" tooltip="Quantity" placement="left" showDelay="300"></span> -->
+                            </div>
+                            <mat-error *ngIf="todateerror">
+                              To date is required</mat-error>
+                          </div>
+                          <div class="inv-form-inputs mb-mt">
+                            <mat-label class="submitInputLabel">By Plant</mat-label>
+                            <mat-form-field appearance="none">
+                              <mat-label>By Plant</mat-label>
+                              <input type="text" matInput formControlName="Plant" (input)="getPlantData($event)" class="submitInputBox" 
+                                [matAutocomplete]="auto1">
+                              <mat-autocomplete #auto1="matAutocomplete">
+                                <mat-option *ngFor="let plantdata of tempPlantList" [value]="plantdata.PLANTCODE">
+                                  {{plantdata.PLANTNAME}} ({{ plantdata.PLANTCODE}})
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <!-- <div class="inv-form-inputs mb-mt">
+                                    <mat-label>By Vendor</mat-label>
+                                    <mat-form-field appearance="none">
+                                        <mat-label>By Vendor</mat-label> -->
+                          <!-- <mat-select formControlName="Plant">
+                                            <mat-option *ngFor="let plantdata of PlantList" [value]="plantdata">
+                                                {{ plantdata }}
+                                            </mat-option>
+                                        </mat-select> -->
+                          <!-- <input type="text"  matInput formControlName="Vendor" (input) = "getVendorData($event)" [matAutocomplete]="auto2">
+                                        <mat-autocomplete #auto2="matAutocomplete" >
+                                            <mat-option *ngFor="let vendordata of vendorList" [value]="vendordata.VENDORID">
+                                               {{vendordata.BUSINESSPARTNERTEXT}} ({{ vendordata.VENDORID}})
+                                            </mat-option>
+                                          </mat-autocomplete>
+                                    </mat-form-field>
+                                </div> -->
+
+                          <!-- ************************************Add Tooltip Start:-04/01/2023 ******************************************** -->
+                          <div class="inv-form-inputs mb-mt">
+                            <mat-label class="submitInputLabel">By Vendor</mat-label>
+                            <mat-form-field appearance="none">
+                              <mat-label>By Vendor</mat-label>
+                              <!-- <mat-select formControlName="Plant">
+                                                                        <mat-option *ngFor="let plantdata of PlantList" [value]="plantdata">
+                                                                            {{ plantdata }}
+                                                                        </mat-option>
+                                                                    </mat-select> -->
+                              <input type="text" matInput placeholder="Enter Vendor name" formControlName="Vendor" class="submitInputBox" 
+                                [matAutocomplete]="auto2" (mouseenter)="onMouseEnter()" />
+                              <i class="fa fa-search" (click)="getVendorData()"
+                         style="cursor: pointer;padding: 8px;position: absolute;top: 50%;right: 6px;transform: translateY(-50%);"></i>
+                              <mat-autocomplete #auto2="matAutocomplete">
+                                <mat-option *ngFor="let vendordata of vendorList" [value]="vendordata.VENDORID"
+                                  (click)="onClick()">
+
+                                  <div style="display: flex;flex-direction: column;" *ngIf="statusTemplate1">
+                                    <ng-template #statusTemplate1>
+                                      <div style="color: white;">
+                                        {{vendordata.BUSINESSPARTNERTEXT}} ({{
+                                        vendordata.VENDORID}})<br>
+                                      </div>
+                                    </ng-template>
+                                    <a style="cursor: pointer;" [ngbTooltip]="statusTemplate1" container="body">
+                                      {{vendordata.BUSINESSPARTNERTEXT}} ({{
+                                      vendordata.VENDORID}})</a>
+                                  </div>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                          <!-- ************************************Add Tooltip End:-04/01/2023 ******************************************** -->
+
+                          <!-- <div class="inv-form-inputs mb-mt">
+                        <mat-form-field appearance="none">
+                            <mat-label>Enter Payment Method</mat-label>
+                            <mat-select formControlName="paymentMethod">
+                                <mat-option *ngFor="let payment of [1,2,3,5]" [value]="payment">
+                                    {{payment}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="hasError('paymentMethod', 'required') && paymentList.controls['paymentMethod'].touched">
+                            *payment method is required</mat-error>
+                    </div>
+                    <div class="inv-form-inputs mb-mt">
+                        <mat-form-field appearance="none">
+                            <mat-label>Enter Payment Status</mat-label>
+                            <mat-select formControlName="paymentStatus">
+                                <mat-option *ngFor="let status of [1,2,3,5]" [value]="status">
+                                    {{status}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-error *ngIf="hasError('paymentStatus', 'required') && paymentList.controls['paymentStatus'].touched">
+                            *payment status is required</mat-error>
+                    </div> -->
+                          <div class="inv-form-inputs mb-mt">
+                            <div class="invInputWicon">
+                              <section class="example-section">
+                                <div class="customCheckbox">
+                                  <input type="checkbox" id="ch1" (click)="searchType($event,'C')" /><label for="ch1" style="color: #212529;"> Short Quantity </label>
+                                </div>
+                              </section>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <div class="w-100 text-center">
+                                <button type="submit" class="btn button-primary" (click)="trackPayment('','','');"
+                                    [disabled]="disable">
+                                    <img _ngcontent-dnd-c329="" src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                        class="activeImg arrowIcon">
+                                    <img ngcontent-dnd-c329="" src="./assets/img/arrow_icon_light_grey.png"
+                                        alt="arrow icon" class="disabledImg arrowIcon">search
+                                </button>&nbsp; &#160; &#160; &#160;<button type="submit" class="btn button-primary"
+                                    (click)="ResetData()">
+                                    <img _ngcontent-dnd-c329="" src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                                        class="activeImg arrowIcon" />
+                                    reset
+                                </button>
+
+
+                            </div> -->
+                        <!-- <button class="submit-btn" (click)="trackPayment()">
+                    <img src="./assets/img/arrow_icon_red.png" />
+                    <span>Search Invoice</span>
+                </button> -->
+                      </form>
+                      <!-- <div class="row d-block text-center">
+                        <div class="go">
+                          <button type="submit" class="btn submitButton" (click)="trackPayment('','','');"
+                            [disabled]="disable">
+                            <img _ngcontent-dnd-c329="" src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                              class="activeImg arrowIcon">
+                            <img ngcontent-dnd-c329="" src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon"
+                              class="disabledImg arrowIcon">
+                            search
+                          </button>&nbsp; &#160; &#160; &#160;<button type="submit" class="btn submitButton"
+                            (click)="ResetData()">
+                            <img _ngcontent-dnd-c329="" src="./assets/img/arrow_icon_red.png" alt="arrow icon"
+                              class="activeImg arrowIcon" />
+                            reset
+                          </button>
+                        </div>
+                      </div> -->
+                     <div class="row d-block text-center">
+                                <button type="submit" class="btn submitButton" (click)="trackPayment('','','');" [disabled]="disable">
+                                    Search
+                                        </button>&nbsp; &#160; &#160; &#160;
+                                        <button type="submit" class="btn submitButton"
+                                    (click)="ResetData()">
+                                    Reset
+                                </button>
+
+
+                            </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="no-radius margintop">
+                  <div class="card-header ">
+                    <p style="font-size: 18px;">Invoice List</p>
+                  </div>
+                </div>
+                <!-- (click)="
+        viewDetails(
+          k,
+          invoice.INVOICENUMBER,
+          invoice.PONUMBER,
+          specificemailid,
+          invoice.ACTIONBY,
+          invoice.ALLPO,
+          ENDUSERStatus[k],
+          ManagerStatus[k]
+        ) -->
+                <div class="invoice_details_box margintop4" *ngFor="
+        let invoice of invoicedetailsList
+          | slice
+            : (mPageNo - 1) * pageSize
+            : (mPageNo - 1) * pageSize + pageSize;
+        let k = index
+      ">
+                  <div class="dropPmWrapper settingwrapper " style="min-width: 60px;max-width: 60px;margin-right:0">
+                    <div ngbDropdown container="body" placement="bottom-right">
+                      <a ngbDropdownToggle href="javascript:void;" type="button" id="dropdownBasic1">
+                        <!-- (click)="displayviewDetails(invoice.INVOICENUMBER,invoice.PONUMBER)" -->
+                        <div class="settingIconWrapper">
+                          <div class="settingIcon">
+                            <img class="setting-icon" src="./assets/img/setting.png" />
+                          </div>
+                          <span class="fa fa-chevron-down downArrow"></span>
+                        </div>
+                      </a>
+                      <div ngbDropdownMenu class="settingIconWrapper__dropdown dropdown-menu"
+                        aria-labelledby="dropdownBasic1">
+                        <!-- <a class="dropdown-item">
+                                                        <div class="settingIconWrapper__text" (click)="viewDetails(k,invoice.INVOICENUMBER,
+                                                    invoice.PONUMBER,specificemailid,ENDUSERStatus[k],ManagerStatus[k])">
+                                                             {{Viewdetail}} view and approve invoices
+                                                        </div>
+                                                    </a> -->
+                        <a ngbDropdownItem class="ngCustomdropdown"
+                          (click)="viewDetails(k,invoice.INVOICENUMBER,
+                                                    invoice.PONUMBER,specificemailid,invoice.ACTIONBY,invoice.ALLPO,ENDUSERStatus[k],ManagerStatus[k])">
+
+                          <div class="settingIconDropdown">
+                            <div class="settingIcon">
+                              <img class="setting-icon" src="./assets/img/view_icon.png" /> View and Approve
+                              Invoice
+                            </div>
+
+                          </div>
+                        </a>
+                        <!-- <a ngbDropdownItem class="ngCustomdropdown" (click)="reassign(k,invoice.INVOICENUMBER,
+                                                    invoice.PONUMBER,specificemailid,ENDUSERStatus[k],ManagerStatus[k])" *ngIf="(ENDUSERStatus[k] =='P' || ENDUSERStatus[k] =='O') && (invoice.EUMANAGER == '[null]' || invoice.EUMANAGER == 'null')  && invoice.GRNNUMBER == null"> -->
+
+                        <!-- ***************************************************************09-01-2023 Reassign Comment & Changed Start****************************************************************** -->
+                        <a ngbDropdownItem class="ngCustomdropdown" (click)="reassign(k,invoice.INVOICENUMBER,
+                                                invoice.PONUMBER,specificemailid,ENDUSERStatus[k],ManagerStatus[k])"
+                          *ngIf="invoice.OVERALLSTATUS!='V' && invoice.ACCEPTEDFLAG!='Y'">
+
+                          <!-- ***************************************************************09-01-2023 Reassign Comment & Changed End****************************************************************** -->
+
+                          <div class="settingIconDropdown">
+                            <div class="settingIcon">
+                              <img class="setting-icon" src="./assets/img/reassign.png" /> Re-Assign Invoice
+                            </div>
+
+                          </div>
+                        </a>
+                        <a ngbDropdownItem class="ngCustomdropdown"
+                          (click)="showFilePopup(invoice.INVOICENUMBER,invoice.PONUMBER);">
+
+                          <div class="settingIconDropdown">
+                            <div class="settingIcon">
+                              <img class="setting-icon" src="./assets/img/attachment_icon.png" /> Attach
+                              Supporting Docs
+                            </div>
+
+                          </div>
+                        </a>
+
+                      </div>
+                    </div>
+                     <div *ngIf="invoice.MPO">
+    <img id="imageTwo settingwrapper"
+         src="./assets/img/multiple invoice.png"
+         tooltip="{{invoice.ALLPO}}"
+         alt="pdf image"
+         style="cursor: pointer;
+    height: 30px;
+    
+  " />
+  </div>
+   <!-- <div class="commentDiv  " style="display: flex; align-items: center;  "> -->
+                                                <div class="commentIcon " style="cursor: pointer; "
+                                                    (click)="createCreditNote(invoice.INVOICENUMBER,invoice.PONUMBER,invoice.CREDITADVICENO)"
+                                                    *ngIf="invoice.CREDITNOTENO == null && invoice.CREDITADVICENO != null">
+                                                    <img src="./assets/img/credit_note_icon.png "
+                                                        style="max-width: 30px; cursor: pointer;" />
+                                                </div>
+                                                <div class="commentIcon " style="cursor: pointer; "
+                                                    (click)="getCreditNoteDetails(invoice.INVOICENUMBER,invoice.PONUMBER,invoice.CREDITADVICENO,invoice.CREDITNOTENO)"
+                                                    *ngIf="invoice.CREDITADVICENO != null && invoice.CREDITNOTENO != null">
+                                                    <img src="./assets/img/credit_note_icon_with_tick.png "
+                                                        style="max-width: 30px; cursor: pointer;" />
+                                                </div>
+                                                <!-- <img src="./assets/img/resubmit.png " *ngIf="invoice.OVERALLSTATUS =='V'" style="max-width: 38px; cursor: pointer; margin-left: 5px;" /> -->
+                                            </div>
+                  <!-- </div> -->
+                  <a (click)="
+        viewDetails(
+          k,
+          invoice.INVOICENUMBER,
+          invoice.PONUMBER,
+          specificemailid,
+          invoice.ACTIONBY,
+          invoice.ALLPO,
+          ENDUSERStatus[k],
+          ManagerStatus[k]
+        ) " style="text-decoration:none;color:#212529">
+                    <ul>
+                      <li class="pd"><span class="details-head">Inv No: </span>
+                        <span style="font-size: 16px;"> {{ invoice.INVOICENUMBER }}
+                          
+                        </span>
+                      </li>
+                      <!-- <li class="pd">
+                                                
+                      </li> -->
+                      <li class="pd"><span class="details-head">Inv Amt: </span>
+                        <span style="font-size: 16px;" >{{ invoice.TOTALAMOUNT | currency : "INR" }} INR</span>
+                      </li>
+                      <li class="pd"><span class="details-head">Vendor: </span>
+                        <span style="font-size: 16px;">{{ invoice.VENDORNAME }}</span>
+                      </li>
+                      <!-- <li class="pd"><span class="details-head">Inv Date: </span>
+                        <span style="font-size: 16px;">{{ invoice.INVOICEDATE | date : "dd-MMM-yyyy" }} </span>
+                        <span *ngIf="invoice.MPO" class="details-head">
+                                                    <img id="imageTwo"  src="./assets/img/multiple invoice.png"
+                                                        tooltip="{{invoice.ALLPO}}" alt="pdf image"
+                                                        style="cursor: pointer; height: 26px;" />
+                                                        </span>
+                      </li> -->
+                      <li class="pd" style="display: flex; justify-content: space-between; align-items: center;">
+  <div>
+    <span class="details-head">Inv Date: </span>
+    <span style="font-size: 16px;">{{ invoice.INVOICEDATE | date : "dd-MMM-yyyy" }}</span>
+  </div>
+ 
+</li>
+<li class="pd">
+  <!-- <td class="text-left" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div class="text-left ">
+                                           
+                                        </div>
+                                    </td>
+</li> -->
+                    </ul>
+                  </a>
+                </div>
+                <div *ngIf="invoicedetailsList.length==0"
+                            style="color: #777; font-size: 16px; font-weight: 600; text-align: center;">
+                            <p class="text-center w-100" style="margin-top: 30px; color: #777;">No Data Found</p>
+                        </div>
+                
+
+                <!-- <div class="invoice_details_box margintop4">
+                  <ul>
+                    <li><span class="details-head">Inv No:.</span>
+                      <span>NIV2024-25-131</span> </li>
+                    <li class="pd"><span class="details-head">Inv Amt:</span>
+                      <span>2,2112789.32 INR</span> </li>
+                    <li class="pd"><span class="details-head">Vendor:</span>
+                      <span>DNV Security Solution PVT LTD</span> </li>
+                    <li class="pd"><span class="details-head">Inv Date:</span>
+                      <span>01-Dec-2024</span> </li>
+                  </ul>
+                </div>
+
+                <div class="invoice_details_box margintop4">
+                  <ul>
+                    <li><span class="details-head">Inv No:.</span>
+                      <span>NIV2024-25-131</span> </li>
+                    <li class="pd"><span class="details-head">Inv Amt:</span>
+                      <span>2,2112789.32 INR</span> </li>
+                    <li class="pd"><span class="details-head">Vendor:</span>
+                      <span>DNV Security Solution PVT LTD</span> </li>
+                    <li class="pd"><span class="details-head">Inv Date:</span>
+                      <span>01-Dec-2024</span> </li>
+                  </ul>
+                </div>
+
+                <div class="invoice_details_box margintop4">
+                  <ul>
+                    <li><span class="details-head">Inv No:.</span>
+                      <span>NIV2024-25-131</span> </li>
+                    <li class="pd"><span class="details-head">Inv Amt:</span>
+                      <span>2,2112789.32 INR</span> </li>
+                    <li class="pd"><span class="details-head">Vendor:</span>
+                      <span>DNV Security Solution PVT LTD</span> </li>
+                    <li class="pd"><span class="details-head">Inv Date:</span>
+                      <span>01-Dec-2024</span> </li>
+                  </ul>
+                </div> -->
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div> <!-- .main-content -->
+
+<div id="popupAttach" class="overlay" style="z-index: 999;">
+  <div class="popup customPopup__large">
+    <a class="close" (click)="closeAttachPopup($event)">&times;</a><br />
+    <div class="container">
+      <div class="confirmationpopup mb-2">
+        <div class="confirmation-title text-center">Attachments</div>
+        <div class="approvalWrapper" style="margin: 0px; margin-bottom: 15px;">
+          <div class="approval__header">
+            <p class="approval__title">Details</p>
+          </div>
+          <div class="approval__box" style="margin: 0;">
+            <div class="invoice-form invoiceFormLarge">
+              <div class="inv-form-inputs">
+                <p class="input-title">Invoice Number : <span>{{InvoiceNumber}}</span></p>
+              </div>
+              <div class="inv-form-inputs">
+                <p class="input-title">Invoice Date : <span>{{INVOICEDATE | date:'dd-MMM-yyyy'}}</span>
+              </div>
+              <div class="inv-form-inputs">
+                <a>
+                  <p class="input-title">PO No. : <span>{{PONUMBER}}</span>
+                  </p>
+                </a>
+
+              </div>
+              <div class="inv-form-inputs">
+                <p class="input-title">Invoice Amount (Incl Taxes) : <span>{{INVAMT}}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="inv-form-inputs w-100">
+          <div>
+
+
+            <div class=" FileUploadIconWrap" style="width: 100%;">
+              <div style="align-items: baseline;">
+                <!-- <label for="input-file3" class="file-input" *ngIf="viewAttachmentNames==null || viewAttachmentNames==''"> -->
+                <span class="approval__headings">End User Supporting Docs</span>
+                <!-- <label for="input-file3" class="file-input">
+                                    <span *ngIf="usertype != 'manager'"><img
+                                            src="./assets/img/cloud-computing.png"
+                                            style="cursor: pointer; margin-left: 10px;" /></span>
+                                   
+                                </label> -->
+                <!-- <div>
+                                    <input type="file" id="input-file3" class="d-none" multiple="multiple" (change)="onFileChanged($event)">
+
+
+                                </div> -->
+              </div>
+
+            </div>
+            <!-- <ul class="listFiles">
+                            <li *ngFor="let selected of ArrayOfSelectedFilename;let i=index" class="fileUploadSingle">
+                                {{selected}} <i class="fa fa-close fileCrossIcon fileCrossIcon" aria-hidden="true" (click)="removeitem(i)"></i>
+                            </li>
+                        </ul> -->
+          </div>
+          <div style="padding: 10px 0;">
+            <!-- <span *ngIf="multipleactualendfilename != null">
+              <span style="cursor: pointer; text-decoration: underline;color: #0645AD;">
+                <ul class="supportingDocList">
+                  <li
+                    *ngFor="let multipleindividualactualfilename of multipleactualendfilename?.split(','); let i=index"
+                    (click)="downloadfile(individualsavedendname[i],multipleindividualactualfilename,'listdownload')"
+                    class="supportingDocList__icon">
+                    <div class="labelWithSteps__icon">
+                      <div>
+                        <img src="./assets/img/downloadfile.png">
+                      </div>
+                      <div class="tooltip--multiline">
+                        <p>{{multipleindividualactualfilename}}</p>
+                      </div>
+                    </div>
+                    <a style="cursor: pointer;"
+                                            tooltip="multipleindividualactualfilename"
+                                            placement="bottom" showDelay="300">
+                                            <img src="./assets/img/downloadfile.png">
+                                        </a>
+                  </li>
+                </ul>
+              </span>
+            </span> -->
+            <span *ngIf="multipleactualendfilename != null">
+  <span style="cursor: pointer; text-decoration: underline; color: #0645AD;">
+    <ul class="supportingDocList">
+      <li
+        *ngFor="let multipleindividualactualfilename of multipleactualendfilename?.split(','); let i=index"
+        (click)="downloadfile(individualsavedendname[i], multipleindividualactualfilename, 'listdownload')"
+        class="supportingDocList__icon"
+      >
+        <p class="filename-text">
+          {{ multipleindividualactualfilename }}
+        </p>
+      </li>
+    </ul>
+  </span>
+</span>
+
+
+            <span *ngIf="multipleactualendfilename == null">
+              No Docs Attached.
+            </span>
+
+          </div>
+          <div class=" FileUploadIconWrap" style="width: 100%;">
+            <div class="add-file-input pdfFileListing " style="align-items: baseline;">
+              <!-- <label for="input-file3" class="file-input" *ngIf="viewAttachmentNames==null || viewAttachmentNames==''"> -->
+              <span class="approval__headings">Add more supporting docs</span><span style="margin-left: 5px;"
+                class="InvStatus__date">(Filename can have spaces
+                but no special characters)</span>
+
+              <div>
+                <input type="file" id="input-file3" class="d-none" multiple="multiple" (change)="onFileChanged($event)"
+                  onclick="value = null">
+              </div>
+            </div>
+            <div>
+              <label for="input-file3" class="file-input">
+                <span *ngIf="usertype != 'manager'"><img src="./assets/img/cloud-computing.png"
+                    style="cursor: pointer; margin-left: 10px;max-width:40px;" /></span>
+                <!-- BCCL Supporting Docs -->
+              </label>
+            </div>
+
+          </div>
+          <ul class="listFiles" style=" overflow-y: auto;">
+            <li *ngFor="let selected of ArrayOfSelectedFilename;let i=index" class="fileUploadSingle">
+              {{selected}} <i class="fa fa-close fileCrossIcon fileCrossIcon" aria-hidden="true"
+                (click)="removeitem(i)"></i>
+            </li>
+          </ul>
+        </div>
+        <div class="text-center">
+          <!-- <a class="btn btn-primary button-primary" [disabled]="(email ==null) || (email =='')" id="yesId">Reassign</a> -->
+          <button type="submit" (click)="submitAttachments()" class="btn submitButton" id="submitID"
+            [disabled]="ArrayOfSelectedFilename.length==0">
+            <!-- <img src="./assets/img/arrow_icon_red.png" alt="arrow icon" class="activeImg arrowIcon">
+            <img src="./assets/img/arrow_icon_light_grey.png" alt="arrow icon" class="disabledImg arrowIcon"> -->
+            Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="popup2" class="overlay">
+  <div class="popup customPopup__small">
+    <a class="close" (click)="closePopup($event)">&times;</a><br />
+    <div class="container">
+      <div class="confirmationpopup mb-2">
+        <div class="confirmation-title text-center">Confirmation</div>
+        <p class="confirmation-para text-center">
+          Reassign invoice {{reassigninvoicenumber}}
+        </p>
+        <div class="button__wrapper" style="padding-bottom: 6px;">
+          <div class="inv-form-inputs">
+            <div class="form-group">
+              <!-- <input class="form-control" placeholder="Select Colleagues"/> -->
+              <!-- <input  matInput class="form-control" type="search" [(ngModel)]="queryString" id="search" (keyup)="onKey()" placeholder="Search Apps" (blur)="claerSearchApps()"/> -->
+              <div class="">
+                <label style="font-size: 15px; font-weight: 600; color: black;">User :</label>
+                <input matInput class="form-control searchText" type="search" id="search"
+                  placeholder="Please enter requisitioner" [(ngModel)]="queryString" (keydown.enter)="callDynamicData()"
+                  (blur)="clearSearchData()" />
+                <!-- <button class="btn btn-primary addbtn" (click)="addNewColleagues($event)"><i class="fa fa-plus"></i></button> -->
+                <i class="fa fa-search reassign" (click)="callDynamicData()" style="cursor: pointer;padding: 8px;"></i>
+                <div class="suggestion-core">
+                  <ul class="suggestion-list" *ngIf="colleaguesList != null">
+                    <li class="displaytitle suggestionlistli" (click)="addColleaguesToSuggestionList($event,item)"
+                      *ngFor="let item of colleaguesList">
+                      {{item.email}} | <b>{{item.designation}}</b>
+                    </li>
+                  </ul>
+                </div>
+                <div class="suggestion-lhs">
+
+                  <ul class="suggestion-list selectedcolegues" *ngIf="email!=null">
+                    <li class="displaytitle">
+                      <label class="check-box">
+                        {{email}}
+                        <!-- <span class="checkmark"></span> -->
+                      </label> <img src="./assets/img/cross_icon.png" (click)="removeColleaguesFromSuggestionList()" />
+                    </li>
+                    <!-- <li class="displaytitle" 
+                                            *ngFor="let n of selectedColleaguesList">
+                                                <label class="check-box">
+                                                {{n.email}}
+                                                <span class="checkmark"></span>
+                                            </label> <img src="./assets/img/cross_icon.png" (click)="removeColleaguesFromSuggestionList($event,n)" />
+                                            </li> -->
+                  </ul>
+                </div>
+              </div>
+
+
+
+            </div>
+
+          </div>
+          <!-- acceptdelivery() -->
+          <div class="text-center">
+            <!-- <a class="btn btn-primary button-primary" [disabled]="(email ==null) || (email =='')" id="yesId">Reassign</a> -->
+            <button type="submit" (click)="reassigninvoice()" class="btn submitButton" id="yesId"
+              [disabled]="(email ==null) || (email =='')">Re-Assign</button>
+          </div>
+          <!-- <div class="text-center" *ngIf="(email !=null) && (email !='')">
+                            <a class="btn btn-primary button-primary" id="yesId" (click)="reassigninvoice()">Reassign</a>
+                        </div> -->
+          <!-- <a class="btn btn-primary button-primary confirmationNo" (click)="close()">No</a> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

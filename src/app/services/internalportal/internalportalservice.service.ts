@@ -14,6 +14,7 @@ export class InternalportalserviceService {
   // }
 
   getinvoicedetailsbasedonemailid(emailid: string,mpage,status,invno,pono,fdate,tdate,plant,vendor) {
+    debugger
     // console.log("sending Data", PAN)
     let urlSearchParams: HttpParams = new HttpParams();
     urlSearchParams =  urlSearchParams.append('emailid', emailid);

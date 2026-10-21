@@ -184,7 +184,7 @@ export class InternalportaltrackinvoicelistComponent implements OnInit {
   InvoiceItemCountinvalid: any;
   poDataList: any;
   poItemCount1: any;
-
+  isMobile: boolean
   constructor(private router: Router, private internalportalservice: InternalportalserviceService, private loginService: LoginService,
     private authService: AuthService,
     private trackOrderListService: TrackOrderListService,
@@ -208,41 +208,103 @@ export class InternalportaltrackinvoicelistComponent implements OnInit {
   }
   @ViewChild('message') messagesTextarea: any;
 
-  ngOnInit(): void {
-    this.emailId=sessionStorage.getItem("username")
-    this.disableoff = false;
-    this.getPortalTypebasedonemail(this.emailId)
+  // ngOnInit(): void {
+  //   this.emailId=sessionStorage.getItem("username")
+  //   this.disableoff = false;
+  //   this.getPortalTypebasedonemail(this.emailId)
 
-    // this.ENDUSERStatus="P";
-    // this.ManagerStatus="M";
-    debugger
-    this.getmessageStatus();
-            // this.navigatetointernalportal(this.emailId)
-    // this.route.queryParams.subscribe(params => {
-    //   var data = atob(params.key)
-    //   var data1 = JSON.parse(data)
-    //   // console.log("Params=======> ", data1); // { order: "popular" }
-    //   if (data1.emailId != null && data1.emailId != "" && data1.page == "invoice") {
-    //     this.loaderservice.show();
+  //   // this.ENDUSERStatus="P";
+  //   // this.ManagerStatus="M";
+  //   debugger
+  //   this.getmessageStatus();
+  //           // this.navigatetointernalportal(this.emailId)
+  //   // this.route.queryParams.subscribe(params => {
+  //   //   var data = atob(params.key)
+  //   //   var data1 = JSON.parse(data)
+  //   //   // console.log("Params=======> ", data1); // { order: "popular" }
+  //   //   if (data1.emailId != null && data1.emailId != "" && data1.page == "invoice") {
+  //   //     this.loaderservice.show();
 
-    //     this.navigatetointernalportal(data1.emailId)
-    //   }
+  //   //     this.navigatetointernalportal(data1.emailId)
+  //   //   }
 
-    //   this.message = params.order;
-    //   console.log("message===========>", this.message); // popular
-    // });
-    // $("body").on("click", ".status-link", function () {
-    //   $('.inv-wrapper.active').removeClass('active');
-    //   $(this).parent().addClass('active');
-    // });
-    // // this.pgNolist.length=0;
-    this.getstatus();
-    this.getinvoicedetailsbasedonemailid('1')
-    // this.getPortalTypebasedonemail(this.emailId)
-  }
+  //   //   this.message = params.order;
+  //   //   console.log("message===========>", this.message); // popular
+  //   // });
+  //   // $("body").on("click", ".status-link", function () {
+  //   //   $('.inv-wrapper.active').removeClass('active');
+  //   //   $(this).parent().addClass('active');
+  //   // });
+  //   // // this.pgNolist.length=0;
+  //   this.getstatus();
+  //   this.getinvoicedetailsbasedonemailid('1')
+  //   // this.getPortalTypebasedonemail(this.emailId)
+  // }
+
 
     // ***************************Tooltip 04/01/2023***********************************
-onMouseEnter() {
+ngOnInit(): void {
+    debugger
+     const userAgent = navigator.userAgent.toLowerCase();
+
+// --- Device type detection ---
+const isAndroid = /android/.test(userAgent);
+const isIPhone = /iphone/.test(userAgent);
+const isIPad = /ipad/.test(userAgent) || 
+               (/macintosh/.test(userAgent) && 'ontouchend' in document); // handles iPadOS (which reports as Mac)
+const isTablet = (isAndroid && !/mobile/.test(userAgent)) || isIPad;
+
+// ✅ True only for mobile phones (not tablets or iPads)
+const isMobile = ((isAndroid && /mobile/.test(userAgent)) || isIPhone) && window.innerWidth < 768;
+
+console.log('Device info =>', { isMobile, isTablet, width: window.innerWidth });
+
+this.isMobile = isMobile;
+    if(this.isMobile) {
+     this.route.queryParams.subscribe(params => {
+    const currentParams = { ...params };
+
+    // Optional: If you're encoding data
+    // const encodedKey = btoa(JSON.stringify({ emailId: 'abc@example.com', page: 'invoice' }));
+
+    // Now navigate with existing params or modify as needed
+    this.router.navigate(['/MobileApproval'], { queryParams: currentParams }).then(() => {
+      // window.location.reload(); // optional, only if needed
+    });
+  });
+      }else{
+    sessionStorage.removeItem("onhold")
+    this.disableoff = false;
+    // this.ENDUSERStatus="P";
+    // this.ManagerStatus="M";
+    this.getmessageStatus();
+    this.route.queryParams.subscribe(params => {
+      var data = atob(params.key)
+      var data1 = JSON.parse(data)
+      // console.log("Params=======> ", data1); // { order: "popular" }
+      if (data1.emailId != null && data1.emailId != "" && data1.page == "invoice") {
+        this.loaderservice.show();
+
+        this.navigatetointernalportal(data1.emailId)
+      }
+
+      this.message = params.order;
+      console.log("message===========>", this.message); // popular
+    });
+
+
+    $("body").on("click", ".status-link", function () {
+      $('.inv-wrapper.active').removeClass('active');
+      $(this).parent().addClass('active');
+    });
+    // this.pgNolist.length=0;
+    this.getstatus();
+    this.getinvoicedetailsbasedonemailid('1')
+
+  }
+}
+
+ onMouseEnter() {
   this.statusTemplate1 = true;
 }
 onClick() {
@@ -318,8 +380,8 @@ onClick() {
     debugger
     // this.loaderservice.show();
     this.delteindexes = [];
-    this.emailid = this.emailId
-    // sessionStorage.getItem("username");
+    this.emailid = sessionStorage.getItem("username");
+    // 
     this.specificemailid = this.emailid;
     this.disableprevious = true;
     this.internalportalservice.getinvoicedetailsbasedonemailid(this.emailid, pageno, this.currstatus, 'NA', 'NA', 'NA', 'NA', 'NA', 'NA').subscribe(res => {
@@ -3766,6 +3828,7 @@ POcountforInternal(){
   }
 
   refresh() {
+    debugger
     this.internalpaginationpagenumber = 1;
     console.log("page no :  ", this.pageNo + "mpage:", this.Mpage + "mpage no ", this.mPageNo);
     this.emailid = sessionStorage.getItem("username");

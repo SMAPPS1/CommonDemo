@@ -140,6 +140,8 @@ export class NavbarComponent implements OnInit,OnDestroy {
     enableGo: boolean=false;
     disableBtn: boolean=false;
     private sideBarSubscription: Subscription;
+    isMobile: boolean = false;
+
 
 
     constructor(location: Location, private element: ElementRef, private router: Router,
@@ -176,6 +178,24 @@ export class NavbarComponent implements OnInit,OnDestroy {
     }
 
     ngOnInit() {
+         // const userAgent = navigator.userAgent || navigator.vendor;
+
+  const userAgent = navigator.userAgent.toLowerCase();
+
+// --- Device type detection ---
+const isAndroid = /android/.test(userAgent);
+const isIPhone = /iphone/.test(userAgent);
+const isIPad = /ipad/.test(userAgent) || 
+               (/macintosh/.test(userAgent) && 'ontouchend' in document); // handles iPadOS (which reports as Mac)
+const isTablet = (isAndroid && !/mobile/.test(userAgent)) || isIPad;
+
+// ✅ True only for mobile phones (not tablets or iPads)
+const isMobile = ((isAndroid && /mobile/.test(userAgent)) || isIPhone) && window.innerWidth < 768;
+
+console.log('Device info =>', { isMobile, isTablet, width: window.innerWidth });
+
+this.isMobile = isMobile;
+
         debugger
         this.username = sessionStorage.getItem('username')
         this.type = sessionStorage.getItem("portaltype");

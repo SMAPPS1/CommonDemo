@@ -73,6 +73,7 @@ export class DialogModelComponent implements OnInit {
     public dialog: MatDialog, private purchaseOrderListService: PurchaseOrderListService) { }
 
   ngOnInit(): void {
+    debugger
     this.selection=null;
   }
 
